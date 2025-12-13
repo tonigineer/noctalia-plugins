@@ -6,7 +6,7 @@
   "author": "MannuVilasara",
   "license": "MIT",
   "repository": "https://github.com/noctalia-dev/noctalia-plugins",
-  "description": "Manage Docker containers, volumes, and perform cleanup operations.",
+  "description": "Manage Docker containers, volumes.",
   "entryPoints": {
     "barWidget": "BarWidget.qml",
     "panel": "Panel.qml",
