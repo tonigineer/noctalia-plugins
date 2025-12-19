@@ -23,6 +23,8 @@ Rectangle {
 
   color: root.hovered ? Color.mHover : Style.capsuleColor
   radius: Style.radiusM
+  border.color: Style.capsuleBorderColor
+  border.width: Style.capsuleBorderWidth
 
   property string currentIconName: pluginApi?.pluginSettings?.currentIconName || pluginApi?.manifest?.metadata?.defaultSettings?.currentIconName
   property bool hideOnZero: pluginApi?.pluginSettings.hideOnZero || pluginApi?.manifest?.metadata.defaultSettings?.hideOnZero
@@ -30,6 +32,7 @@ Rectangle {
   visible: root.isVisible
   // also set opacity to zero when invisible as we use opacity to hide the barWidgetLoader
   opacity: root.isVisible ? 1.0 : 0.0
+
 
   //
   // ------ Widget ------
