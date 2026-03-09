@@ -13,7 +13,8 @@
     "started": "Recording started.",
     "stop-recording": "Screen Recorder (stop recording)",
     "stopping": "Stopping recording…",
-    "open-file": "Open file"
+    "open-file": "Open file",
+    "monitor-not-found": "Could not detect the monitor under cursor."
   },
   "name": "Screen Recorder",
   "settings": {
@@ -69,6 +70,7 @@
       "source-desc": "Portal is recommended, if you get artifacts try Screen",
       "sources-portal": "Portal",
       "sources-screen": "Screen",
+      "sources-focused-monitor": "Focused monitor (Hyprland)",
       "title": "Video Settings"
     }
   }

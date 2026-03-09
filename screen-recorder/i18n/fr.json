@@ -12,7 +12,8 @@
     "start-recording": "Enregistreur d'écran (démarrer l'enregistrement)",
     "started": "Enregistrement démarré.",
     "stop-recording": "Enregistreur d'écran (arrêter l'enregistrement)",
-    "stopping": "Arrêt de l'enregistrement..."
+    "stopping": "Arrêt de l'enregistrement...",
+    "monitor-not-found": "Impossible de détecter l'écran sous le curseur."
   },
   "name": "Enregistreur d'Écran",
   "settings": {
@@ -66,6 +67,7 @@
       "source-desc": "Portal est recommandé, si vous obtenez des artefacts essayez Écran",
       "sources-portal": "Portail",
       "sources-screen": "Écran",
+      "sources-focused-monitor": "Écran sous le curseur (Hyprland)",
       "title": "Paramètres Vidéo"
     }
   }
