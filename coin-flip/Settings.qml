@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import qs.Widgets 1.0
+import qs.Widgets
 
 Column {
     anchors.fill: parent

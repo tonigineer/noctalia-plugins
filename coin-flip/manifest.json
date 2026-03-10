@@ -4,11 +4,10 @@
   "version": "1.0.0",
   "author": "DanisDeveloper",
   "description": "Simple bar widget with notification about result",
-  "repository": "https://github.com/DanisDeveloper/coin-flip.git",
+  "repository": "https://github.com/noctalia-dev/noctalia-plugins",
   "tags": ["Bar"],
   "license": "MIT",
   "entryPoints": {
-    "main": "Main.qml",
     "barWidget": "BarWidget.qml",
     "settings": "Settings.qml"
   },
@@ -18,7 +17,6 @@
   "metadata": {
     "defaultSettings": {
       "iconColor": "mPrimary"
-    },
-    "preview": "preview.png"
+    }
   }
 }

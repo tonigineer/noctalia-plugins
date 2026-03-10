@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick
 
 import Quickshell
 import qs.Commons
@@ -9,13 +9,9 @@ NIconButton {
     id: root
     property var pluginApi: null
     property ShellScreen screen
-    property string widgetId: ""
-    property string section: ""
 
-    property var cfg: pluginApi?.pluginSettings || ({})
-    property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
-
-    readonly property string iconColorKey: cfg.iconColor ?? defaults.iconColor
+    property var defaults: pluginApi?.manifest?.metadata?.defaultSettings
+    readonly property string iconColorKey: pluginApi?.pluginSettings.iconColor ?? defaults.iconColor ?? "white"
 
     icon: "coin"
     tooltipText: pluginApi?.tr("widget.tooltip")
