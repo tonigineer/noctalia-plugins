@@ -22,7 +22,7 @@
     "find-device": "Find My Device",
     "pair": "Pair with Device",
     "unpair": "Unpair Device",
-    "kdeconnect-error": {
+    "valent-error": {
       "no-devices": "No devices found. Make sure your phone is on the same network and has KDE Connect open.",
       "unavailable-title": "Valent is not running",
       "unavailable-desc": "Make sure the Valent application is installed and running on your system.",

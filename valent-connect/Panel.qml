@@ -413,7 +413,7 @@ Item {
               Layout.alignment: Qt.AlignHCenter
             }
             NText {
-              text: pluginApi?.tr("panel.kdeconnect-error.no-devices")
+              text: pluginApi?.tr("panel.valent-error.no-devices")
               pointSize: Style.fontSizeL
               color: Color.mOnSurfaceVariant
               Layout.alignment: Qt.AlignCenter
@@ -445,7 +445,7 @@ Item {
               Layout.alignment: Qt.AlignHCenter
             }
             NText {
-              text: pluginApi?.tr("panel.kdeconnect-error.device-unavailable")
+              text: pluginApi?.tr("panel.valent-error.device-unavailable")
               pointSize: Style.fontSizeL
               color: Color.mOnSurfaceVariant
               Layout.alignment: Qt.AlignCenter
@@ -482,14 +482,14 @@ Item {
               Layout.alignment: Qt.AlignHCenter
             }
             NText {
-              text: pluginApi?.tr("panel.kdeconnect-error.unavailable-title")
+              text: pluginApi?.tr("panel.valent-error.unavailable-title")
               pointSize: Style.fontSizeL
               color: Color.mOnSurfaceVariant
               Layout.alignment: Qt.AlignCenter
               horizontalAlignment: Text.AlignHCenter
             }
             NText {
-              text: pluginApi?.tr("panel.kdeconnect-error.unavailable-desc")
+              text: pluginApi?.tr("panel.valent-error.unavailable-desc")
               pointSize: Style.fontSizeS
               color: Color.mOnSurfaceVariant
               Layout.alignment: Qt.AlignCenter

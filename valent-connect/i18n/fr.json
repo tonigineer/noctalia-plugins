@@ -22,8 +22,8 @@
     "find-device": "Trouver mon appareil",
     "pair": "Coupler avec l'appareil",
     "unpair": "Découpler l'appareil",
-    "kdeconnect-error": {
-      "no-devices": "Aucun appareil exécutant KDE Connect trouvé",
+    "valent-error": {
+      "no-devices": "Aucun appareil trouvé. Assurez-vous que votre téléphone est sur le même réseau et que l'application KDE Connect est ouverte.",
       "unavailable-title": "Valent n'est pas en cours d'exécution",
       "unavailable-desc": "Assurez-vous que l'application Valent est installée et en cours d'exécution sur votre système.",
       "device-unavailable": "L'appareil est actuellement indisponible"
