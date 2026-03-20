@@ -135,7 +135,7 @@ Item {
           "isTablerIcon": true,
           "isImage": false,
           "onActivate": function() {
-            Quickshell.execDetached(["zed", resolvedQuery])
+            Quickshell.execDetached(["bash", "-l", "-c", "zed '" + resolvedQuery + "'"])
             launcher.close()
           }
         })
@@ -220,7 +220,7 @@ Item {
             pluginApi.pluginSettings.openCounts = counts
             pluginApi.saveSettings()
           }
-          Quickshell.execDetached(["zed", p.path])
+          Quickshell.execDetached(["bash", "-l", "-c", "zed '" + p.path + "'"])
           launcher.close()
         }
       }
