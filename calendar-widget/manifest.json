@@ -9,7 +9,6 @@
   "description": "Monthly calendar with today highlighted.",
   "tags": ["Desktop", "Utility"],
   "entryPoints": {
-    "main": "Main.qml",
     "desktopWidget": "DesktopWidget.qml",
     "settings": "DesktopWidgetSettings.qml"
   },
