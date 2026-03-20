@@ -118,8 +118,8 @@ Item {
 
     if (!root.zedInstalled) {
       return [{
-        "name": "Zed is not installed",
-        "description": "Install Zed to use this provider",
+        "name": pluginApi?.tr("launcher.not_installed"),
+        "description": pluginApi?.tr("launcher.not_installed_desc"),
         "icon": "alert-circle",
         "isTablerIcon": true,
         "onActivate": function() { launcher.close() }
