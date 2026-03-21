@@ -17,59 +17,53 @@ DraggableDesktopWidget {
     implicitHeight: _height
 
     // --- Data Variables ---
-    // We use a fallback string in case the translation file isn't loaded yet
     property string distroVal: "..."
     property string kernelVal: "..."
     property string uptimeVal: "..."
 
     // --- Data Fetching ---
-
-    // Distribution Fetcher
     Process {
         id: distroProc
         command: ["sh", "-c", "grep '^NAME=' /etc/os-release | cut -d'=' -f2 | tr -d '\"'"]
-        running: true
         stdout: StdioCollector { 
-            onStreamFinished: { if (text.trim() !== "") root.distroVal = text.trim(); } 
+            onTextChanged: if (text.trim() !== "") root.distroVal = text.trim()
         }
     }
 
-    // Kernel Fetcher
     Process {
         id: kernelProc
         command: ["uname", "-r"]
-        running: true
         stdout: StdioCollector { 
-            onStreamFinished: { if (text.trim() !== "") root.kernelVal = text.trim(); } 
+            onTextChanged: if (text.trim() !== "") root.kernelVal = text.trim()
         }
     }
 
-    // Uptime Fetcher
     Process {
         id: uptimeProc
         command: ["sh", "-c", "awk '{d=int($1/86400); h=int(($1%86400)/3600); m=int(($1%3600)/60); if(d>0) printf \"%dd \", d; printf \"%dh %dm\", h, m}' /proc/uptime"]
-        running: true
         stdout: StdioCollector {
-            onStreamFinished: { if (text.trim() !== "") root.uptimeVal = text.trim(); }
+            onTextChanged: if (text.trim() !== "") root.uptimeVal = text.trim()
         }
     }
 
+    // Refresh all data on startup and uptime every minute
     Timer { 
-        interval: 60000; 
-        running: true; 
-        repeat: true; 
-        onTriggered: uptimeProc.running = true 
+        interval: 60000; running: true; repeat: true; triggeredOnStart: true
+        onTriggered: {
+            distroProc.running = true
+            kernelProc.running = true
+            uptimeProc.running = true
+        }
     }
 
     // --- UI Layout ---
-Rectangle {
-    anchors.fill: parent
-    
-    color: (Color && Color.mSurface) 
-    opacity: 0.85
-    radius: Style.radiusM 
-    border.color: (Color && Color.mOutlineVariant) 
-    border.width: 1
+    Rectangle {
+        anchors.fill: parent
+        color: Color.mSurface
+        opacity: 0.85
+        radius: Style.radiusM 
+        border.color: Color.mOutlineVariant
+        border.width: Style.borderS
 
         ColumnLayout {
             anchors.fill: parent
@@ -83,47 +77,46 @@ Rectangle {
 
                 // Row 1: Distribution
                 NText { 
-                    text: pluginApi?.tr("widget.distribution") 
+                    text: pluginApi?.tr("widget.distribution")
                     color: Color.mOnSurfaceVariant
-                    font.pointSize: 11 
+                    font.pointSize: Style.fontSize * widgetScale
                 }
                 NText { 
                     text: root.distroVal
                     color: Color.mOnSurface
                     font.bold: true
-                    font.pointSize: 11
+                    font.pointSize: Style.fontSize * widgetScale
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignRight 
                 }
 
                 // Row 2: Kernel
                 NText { 
-                    text: pluginApi?.tr("widget.kernel") 
+                    text: pluginApi?.tr("widget.kernel")
                     color: Color.mOnSurfaceVariant
-                    font.pointSize: 11
+                    font.pointSize: Style.fontSize * widgetScale
                 }
                 NText { 
                     text: root.kernelVal
                     color: Color.mOnSurface
                     font.bold: true
-                    font.pointSize: 11
+                    font.pointSize: Style.fontSize * widgetScale
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignRight
-                    elide: Text.ElideNone 
-                    wrapMode: Text.NoWrap
+                    elide: Text.ElideRight
                 }
 
                 // Row 3: Uptime
                 NText { 
-                    text: pluginApi?.tr("widget.uptime") 
+                    text: pluginApi?.tr("widget.uptime")
                     color: Color.mOnSurfaceVariant
-                    font.pointSize: 11
+                    font.pointSize: Style.fontSize * widgetScale
                 }
                 NText { 
                     text: root.uptimeVal
                     color: Color.mOnSurface
                     font.bold: true
-                    font.pointSize: 11
+                    font.pointSize: Style.fontSize * widgetScale
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignRight 
                 }
