@@ -61,6 +61,18 @@ ColumnLayout {
   readonly property bool showHomePlaylists: pluginApi?.pluginSettings?.showHomePlaylists
       ?? root.defaults.showHomePlaylists
       ?? true
+  readonly property bool showPanelProviderChips: pluginApi?.pluginSettings?.showPanelProviderChips
+      ?? root.defaults.showPanelProviderChips
+      ?? true
+  readonly property bool showPanelRecentTracks: pluginApi?.pluginSettings?.showPanelRecentTracks
+      ?? root.defaults.showPanelRecentTracks
+      ?? true
+  readonly property bool showPanelSpeedControls: pluginApi?.pluginSettings?.showPanelSpeedControls
+      ?? root.defaults.showPanelSpeedControls
+      ?? true
+  readonly property bool showPanelQueueControls: pluginApi?.pluginSettings?.showPanelQueueControls
+      ?? root.defaults.showPanelQueueControls
+      ?? true
   readonly property bool showBarHoverTrackTitle: pluginApi?.pluginSettings?.showBarHoverTrackTitle
       ?? root.defaults.showBarHoverTrackTitle
       ?? true
@@ -259,6 +271,50 @@ ColumnLayout {
     checked: root.showHomePlaylists
     onToggled: root.saveSetting("showHomePlaylists", checked)
     defaultValue: root.defaults.showHomePlaylists ?? true
+  }
+
+  NDivider {
+    Layout.fillWidth: true
+  }
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.panel.title")
+    pointSize: Style.fontSizeM
+    font.weight: Style.fontWeightBold
+    color: Color.mOnSurface
+  }
+
+  NToggle {
+    label: pluginApi?.tr("settings.panel.providerChips.label")
+    description: pluginApi?.tr("settings.panel.providerChips.desc")
+    checked: root.showPanelProviderChips
+    onToggled: root.saveSetting("showPanelProviderChips", checked)
+    defaultValue: root.defaults.showPanelProviderChips ?? true
+  }
+
+  NToggle {
+    label: pluginApi?.tr("settings.panel.recentTracks.label")
+    description: pluginApi?.tr("settings.panel.recentTracks.desc")
+    checked: root.showPanelRecentTracks
+    onToggled: root.saveSetting("showPanelRecentTracks", checked)
+    defaultValue: root.defaults.showPanelRecentTracks ?? true
+  }
+
+  NToggle {
+    label: pluginApi?.tr("settings.panel.speedControls.label")
+    description: pluginApi?.tr("settings.panel.speedControls.desc")
+    checked: root.showPanelSpeedControls
+    onToggled: root.saveSetting("showPanelSpeedControls", checked)
+    defaultValue: root.defaults.showPanelSpeedControls ?? true
+  }
+
+  NToggle {
+    label: pluginApi?.tr("settings.panel.queueControls.label")
+    description: pluginApi?.tr("settings.panel.queueControls.desc")
+    checked: root.showPanelQueueControls
+    onToggled: root.saveSetting("showPanelQueueControls", checked)
+    defaultValue: root.defaults.showPanelQueueControls ?? true
   }
 
   NDivider {

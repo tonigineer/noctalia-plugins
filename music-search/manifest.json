@@ -42,6 +42,10 @@
       "showHomeTags": true,
       "showHomeArtists": true,
       "showHomePlaylists": true,
+      "showPanelProviderChips": true,
+      "showPanelRecentTracks": true,
+      "showPanelSpeedControls": true,
+      "showPanelQueueControls": true,
       "showBarHoverTrackTitle": true,
       "autoSaveMp3AfterPlayback": false,
       "ytPlayerClient": "android"

@@ -236,6 +236,9 @@
     "stopDesc": "Stop background playback.",
     "alreadyStopped": "music-search is already stopped",
     "nothingPlaying": "Nothing is currently playing.",
+    "searchMprisTrack": "Search current MPRIS track",
+    "mprisTrackDesc": "Search \"{title}\" on {provider}.",
+    "mprisTrackDescWithPlayer": "Search \"{title}\" on {provider} from {player}.",
     "playUrl": "Play URL",
     "saveUrl": "Save URL to library",
     "saveUrlMp3": "Save URL as mp3",
@@ -255,8 +258,15 @@
     "search": "Search",
     "library": "Saved",
     "queue": "Queue",
+    "tracks": "Tracks",
+    "playlists": "Playlists",
+    "artists": "Artists",
+    "tags": "Tags",
     "searchPlaceholder": "Search music, paste a URL, or use yt:/sc:/local:",
     "libraryPlaceholder": "Filter saved tracks",
+    "playlistsPlaceholder": "Filter playlists",
+    "artistsPlaceholder": "Filter artists",
+    "tagsPlaceholder": "Filter tags",
     "searchHint": "Search {provider}, paste a URL, or switch to Saved and Queue tabs.",
     "typeMore": "Type at least 2 characters to search {provider}.",
     "searching": "Searching {provider}...",
@@ -289,9 +299,19 @@
     "playAction": "Play",
     "queueAction": "Queue",
     "saveAction": "Save",
+    "openAction": "Open",
+    "backAction": "Back",
+    "shuffleAction": "Shuffle",
     "downloadAction": "MP3",
     "removeAction": "Remove",
-    "helperHint": "The full command surface is still available in the launcher via >music-search."
+    "playlistCount": "{count} playlists",
+    "artistCount": "{count} artists",
+    "tagCount": "{count} tags",
+    "helperHint": "The full command surface is still available in the launcher via >music-search.",
+    "emptyPlaylists": "No playlists matched this filter yet.",
+    "emptyArtists": "No saved artists matched this filter yet.",
+    "emptyTags": "No saved tags matched this filter yet.",
+    "emptyScopedLibrary": "No tracks are available in this section yet."
   },
   "tooltip": {
     "addToQueue": "Add to queue",
@@ -406,6 +426,25 @@
       "playlists": {
         "label": "Show Playlists",
         "desc": "Show playlist shortcuts on the launcher home."
+      }
+    },
+    "panel": {
+      "title": "Panel",
+      "providerChips": {
+        "label": "Show provider chips",
+        "desc": "Show the YouTube, SoundCloud, and Local provider shortcuts on the Search tab."
+      },
+      "recentTracks": {
+        "label": "Show recent saved tracks",
+        "desc": "Show recently saved tracks below the panel search helper when the Search tab is empty."
+      },
+      "speedControls": {
+        "label": "Show speed controls",
+        "desc": "Show playback speed controls in the now-playing area."
+      },
+      "queueControls": {
+        "label": "Show queue controls",
+        "desc": "Show the Start, Skip, and Clear buttons at the top of the Queue tab."
       }
     },
     "preview": {
