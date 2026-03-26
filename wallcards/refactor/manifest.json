@@ -1,14 +1,14 @@
 {
   "id": "wallcards",
   "name": "Wallcards",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "minNoctaliaVersion": "4.7.0",
   "author": "tonigineer",
   "official": false,
   "license": "MIT",
   "repository": "https://github.com/noctalia-dev/noctalia-plugins",
   "description": "A `lively` wallpaper selector.",
-  "tags": ["Desktop", "Theming"],
+  "tags": ["Hyprland", "Desktop", "Theming"],
   "entryPoints": {
     "main": "Main.qml",
     "barWidget": "BarWidget.qml"
@@ -19,8 +19,8 @@
   "metadata": {
     "defaultSettings": {
       "animation_duration": 750,
-      "background_color": null,
-      "background_opacity": null,
+      "background_color": "#ffffff",
+      "background_opacity": 0.5,
       "cards_shown": 11,
       "card_height": 500,
       "card_spacing": 8,

@@ -3,41 +3,49 @@ import Quickshell.Io
 
 Item {
   id: root
+
   property var pluginApi: null
+
+  function hide() {
+    windowLoader.active = false;
+  }
+  function show() {
+    windowLoader.active = true;
+  }
+  function toggle() {
+    windowLoader.active = !windowLoader.active;
+  }
 
   Loader {
     id: windowLoader
+
     active: false
-    sourceComponent: WallcardsWindow {
-      pluginApi: root.pluginApi
+    source: "Wallcards.qml"
+
+    onLoaded: item.pluginApi = Qt.binding(() => root.pluginApi)
+
+    Connections {
+      function onQuitRequested() {
+        root.hide();
+      }
+      function onShowRequested() {
+        root.show();
+      }
+
+      target: windowLoader.item
     }
   }
-
   IpcHandler {
-    target: "plugin:wallcards"
-
+    function hide() {
+      root.hide();
+    }
+    function show() {
+      root.show();
+    }
     function toggle() {
       root.toggle();
     }
 
-    function show() {
-      root.show();
-    }
-
-    function hide() {
-      root.hide();
-    }
-  }
-
-  function toggle() {
-    windowLoader.active = !windowLoader.active
-  }
-
-  function show() {
-    windowLoader.active = true;
-  }
-
-  function hide() {
-    windowLoader.active = false
+    target: "plugin:wallcards"
   }
 }
