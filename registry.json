@@ -352,6 +352,27 @@
       "lastUpdated": "2026-01-29T22:32:10+01:00"
     },
     {
+      "id": "hyprland-visual-editor",
+      "name": "Hyprland Visual Editor",
+      "version": "1.0.0",
+      "official": false,
+      "author": "XimoCP",
+      "description": "Elevate your Hyprland experience. A modular plugin to safely inject custom animations, borders, and visual effects on the fly.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "minNoctaliaVersion": "4.4.1",
+      "license": "MIT",
+      "tags": [
+        "Panel",
+        "Bar",
+        "System",
+        "Fun",
+        "Theming",
+        "Utility",
+        "Hyprland"
+      ],
+      "lastUpdated": "2026-03-24T16:28:01+01:00"
+    },
+    {
       "id": "ideapad-battery-health",
       "name": "Ideapad Battery Health",
       "version": "1.0.0",
