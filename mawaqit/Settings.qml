@@ -36,7 +36,11 @@ ColumnLayout {
     return !match || match.key === "99"
   }
   property string valueMethodCustomInput: valueMethodCustom     ? String(root.valueMethod)         : ""
-  property string valueTune:              cfg.tune              ?? defaults.tune              ?? ""
+  property int    valueTuneFajr:          cfg.tuneFajr          ?? defaults.tuneFajr          ?? 0
+  property int    valueTuneDhuhr:         cfg.tuneDhuhr         ?? defaults.tuneDhuhr         ?? 0
+  property int    valueTuneAsr:           cfg.tuneAsr           ?? defaults.tuneAsr           ?? 0
+  property int    valueTuneMaghrib:       cfg.tuneMaghrib       ?? defaults.tuneMaghrib       ?? 0
+  property int    valueTuneIsha:          cfg.tuneIsha          ?? defaults.tuneIsha          ?? 0
   property int    valueSchool:            cfg.school            ?? defaults.school            ?? 0
   property bool   valueShowCountdown:     cfg.showCountdown     ?? defaults.showCountdown     ?? true
   property bool   valueShowNotifications: cfg.showNotifications ?? defaults.showNotifications ?? true
@@ -134,13 +138,43 @@ ColumnLayout {
     onSelected: key => root.valueHijriDayOffset = parseInt(key)
   }
 
-  NTextInput {
+  NHeader {
+    label: pluginApi?.tr("settings.tune.header")
+    description: pluginApi?.tr("settings.tune.desc")
+    Layout.bottomMargin: -Style.marginM
+  }
+
+  Repeater {
+    model: [
+      { key: "Fajr",    labelKey: "settings.tune.fajr"    },
+      { key: "Dhuhr",   labelKey: "settings.tune.dhuhr"   },
+      { key: "Asr",     labelKey: "settings.tune.asr"     },
+      { key: "Maghrib", labelKey: "settings.tune.maghrib"  },
+      { key: "Isha",    labelKey: "settings.tune.isha"     }
+    ]
+    delegate: NTextInput {
+      required property var modelData
       Layout.fillWidth: true
-      label: pluginApi?.tr("settings.tune.label")
-      description: pluginApi?.tr("settings.tune.desc")
-      placeholderText: "0,0,0,0,0,0,0,0,0"
-      text: root.valueTune
-      onTextChanged: root.valueTune = text
+      label: pluginApi?.tr(modelData.labelKey)
+      placeholderText: "0"
+      text: {
+        const v = modelData.key === "Fajr"    ? root.valueTuneFajr
+               : modelData.key === "Dhuhr"   ? root.valueTuneDhuhr
+               : modelData.key === "Asr"     ? root.valueTuneAsr
+               : modelData.key === "Maghrib" ? root.valueTuneMaghrib
+               :                               root.valueTuneIsha
+        return v === 0 ? "" : String(v)
+      }
+      onTextChanged: {
+        const n = parseInt(text)
+        const v = isNaN(n) ? 0 : n
+        if      (modelData.key === "Fajr")    root.valueTuneFajr    = v
+        else if (modelData.key === "Dhuhr")   root.valueTuneDhuhr   = v
+        else if (modelData.key === "Asr")     root.valueTuneAsr     = v
+        else if (modelData.key === "Maghrib") root.valueTuneMaghrib = v
+        else                                  root.valueTuneIsha    = v
+      }
+    }
   }
 
   NDivider { Layout.fillWidth: true }
@@ -294,7 +328,11 @@ ColumnLayout {
     pluginApi.pluginSettings.school            = root.valueSchool
     pluginApi.pluginSettings.hijriDayOffset    = root.valueHijriDayOffset
     pluginApi.pluginSettings.weekStartDay      = root.valueWeekStartDay
-    pluginApi.pluginSettings.tune              = root.valueTune.trim()
+    pluginApi.pluginSettings.tuneFajr          = root.valueTuneFajr
+    pluginApi.pluginSettings.tuneDhuhr         = root.valueTuneDhuhr
+    pluginApi.pluginSettings.tuneAsr           = root.valueTuneAsr
+    pluginApi.pluginSettings.tuneMaghrib       = root.valueTuneMaghrib
+    pluginApi.pluginSettings.tuneIsha          = root.valueTuneIsha
     pluginApi.saveSettings()
     Logger.d("Mawaqit", "Settings saved")
   }

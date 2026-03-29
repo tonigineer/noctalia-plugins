@@ -40,7 +40,12 @@ Item {
   readonly property string city:              cfg.city              ?? defaults.city              ?? "London"
   readonly property string country:           cfg.country           ?? defaults.country           ?? "UK"
   readonly property int    method:            cfg.method            ?? defaults.method            ?? 3
-  readonly property string tune:              cfg.tune              ?? defaults.tune              ?? ""
+  readonly property int    tuneFajr:    cfg.tuneFajr    ?? defaults.tuneFajr    ?? 0
+  readonly property int    tuneDhuhr:   cfg.tuneDhuhr   ?? defaults.tuneDhuhr   ?? 0
+  readonly property int    tuneAsr:     cfg.tuneAsr     ?? defaults.tuneAsr     ?? 0
+  readonly property int    tuneMaghrib: cfg.tuneMaghrib ?? defaults.tuneMaghrib ?? 0
+  readonly property int    tuneIsha:    cfg.tuneIsha    ?? defaults.tuneIsha    ?? 0
+  readonly property string tune: `0,${tuneFajr},0,${tuneDhuhr},${tuneAsr},${tuneMaghrib},0,${tuneIsha},0`
   readonly property int    school:            cfg.school            ?? defaults.school            ?? 0
   readonly property bool   showNotifications: cfg.showNotifications ?? defaults.showNotifications ?? true
   readonly property bool   playAzan:          cfg.playAzan          ?? defaults.playAzan          ?? false

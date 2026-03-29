@@ -107,8 +107,13 @@
       "desc": "Enter the numeric method ID from the Aladhan API (e.g. 19 for Algeria / MESRS)."
     },
     "tune": {
-      "label": "Timing Offsets (tune)",
-      "desc": "Comma-separated minute offsets for: Imsak, Fajr, Sunrise, Dhuhr, Asr, Maghrib, Sunset, Isha, Midnight. Leave blank for no adjustment. Example: 0,2,0,0,0,1,0,0,0"
+      "header": "Prayer Time Offsets",
+      "desc": "Minute adjustments applied per prayer (negative = earlier, positive = later).",
+      "fajr":    "Fajr offset (min)",
+      "dhuhr":   "Dhuhr offset (min)",
+      "asr":     "Asr offset (min)",
+      "maghrib": "Maghrib offset (min)",
+      "isha":    "Isha offset (min)"
     }
   },
   "error": {
