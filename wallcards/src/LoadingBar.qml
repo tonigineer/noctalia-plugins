@@ -73,7 +73,7 @@ Rectangle {
     NText {
       text: "Generating thumbnails… " + String(loadingBar.total - loadingBar.pending).padStart(String(loadingBar.total).length, " ") + " / " + loadingBar.total
     }
-  }
+      }
 
   //
   Rectangle {
@@ -83,7 +83,7 @@ Rectangle {
     anchors.left: parent.left
     anchors.right: parent.right
     color: Qt.alpha(Color.mOnSurface, 0.1)
-    height: Style.marginS
+        height: Style.marginS
     radius: loadingBar.radius
 
     Rectangle {

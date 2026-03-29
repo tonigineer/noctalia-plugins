@@ -1,8 +1,6 @@
 import "Utils.js" as Utils
-
 import QtQuick
 import Quickshell.Io
-
 import Qt.labs.folderlistmodel
 
 Item {
@@ -18,8 +16,6 @@ Item {
   property int pendingProcesses: 0
   property int thumbnailRevision: 0
   required property string wallpaperDir
-
-  signal ready
 
   function buildFileList() {
     var items = [];
@@ -64,7 +60,6 @@ Item {
 
             if (service.pendingProcesses === 0) {
               service.loading = false;
-              service.ready();
             } else {
               service.loadingMessage = "Generating thumbnails… " + service.pendingProcesses + " remaining";
             }

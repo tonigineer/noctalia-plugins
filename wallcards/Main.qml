@@ -7,13 +7,19 @@ Item {
   property var pluginApi: null
 
   function hide() {
-    windowLoader.active = false;
+    if (windowLoader.item)
+      windowLoader.item.close();
+    else
+      windowLoader.active = false;
   }
   function show() {
     windowLoader.active = true;
   }
   function toggle() {
-    windowLoader.active = !windowLoader.active;
+    if (windowLoader.active)
+      hide();
+    else
+      show();
   }
 
   Loader {
@@ -26,10 +32,7 @@ Item {
 
     Connections {
       function onQuitRequested() {
-        root.hide();
-      }
-      function onShowRequested() {
-        root.show();
+        windowLoader.active = false;
       }
 
       target: windowLoader.item

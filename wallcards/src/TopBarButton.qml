@@ -36,7 +36,7 @@ Rectangle {
     id: contentRow
 
     anchors.centerIn: parent
-    spacing: Style.marginXS
+    spacing: Style.marginS
 
     PulsingDot {
       anchors.verticalCenter: parent.verticalCenter
@@ -56,18 +56,30 @@ Rectangle {
     }
     Rectangle {
       anchors.verticalCenter: parent.verticalCenter
-      color: Qt.alpha(root.accentColor, root.active ? 0.2 : 0.06)
-      height: Style.marginL
-      radius: Style.radiusM
+      border.color: Qt.alpha(root.accentColor, 0.35)
+      border.width: 1
+      color: Qt.alpha(root.accentColor, 0.12)
+      height: Style.marginL + 2
+      opacity: 0.25
+      radius: Style.radiusXS
       visible: root.hotkey !== ""
-      width: Style.marginL
+      width: Style.marginL + 5
 
-      NText {
-        anchors.centerIn: parent
-        color: Qt.alpha(root.accentColor, root.active ? Style.opacityFull : Style.opacityHeavy)
-        font.bold: true
-        font.pointSize: Style.fontSizeXXS
-        text: root.hotkey
+      Rectangle {
+        anchors.bottomMargin: 2
+        anchors.fill: parent
+        border.color: Qt.alpha(root.accentColor, 0.25)
+        border.width: 1
+        color: Qt.alpha(root.accentColor, 0.1)
+        radius: Style.radiusXS
+
+        NText {
+          anchors.centerIn: parent
+          color: Qt.alpha(root.accentColor, 0.7)
+          font.bold: true
+          font.pointSize: Style.fontSizeXXS
+          text: root.hotkey
+        }
       }
     }
   }

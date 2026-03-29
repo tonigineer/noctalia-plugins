@@ -19,6 +19,10 @@ Rectangle {
   signal livePreviewToggled
   signal shuffleRequested
 
+  function flashShuffle() {
+    shuffleBtn.flash();
+  }
+
   color: Color.mSurface
 
   Behavior on entryOffset {

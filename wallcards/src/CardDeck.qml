@@ -1,71 +1,126 @@
-import QtQuick
 import qs.Commons
+import qs.Widgets
+import QtQuick
 
 Item {
-  id: deck
+  id: cardDeck
 
+  required property int animationDuration
+  property real animationIndex: 0
   required property int cardRadius
   required property int cardSpacing
   required property int cardStripWidth
   required property int cardsShown
   property real centerWidth: parent.width / 3
   property real centerX: width / 2 - centerWidth / 2
+  property int currentIndex: 0
+  required property int filteredCount
+  property int halfVisible: Math.floor(visibleCount / 2)
+  property real runningIndex: 0
   required property real shearFactor
   property int sideCount: Math.floor(cardsShown / 2) - 1
+  property int visibleCount: cardsShown
 
-  width: (cardsShown - 1) * cardStripWidth + (cardsShown - 1) * cardSpacing + centerWidth
+  signal applyRequested(int index)
 
-  transform: Shear {
-    xFactor: deck.shearFactor
+  function navigateTo(idx) {
+    var newIdx = wrappedIndex(idx);
+    var diff = 0;
+
+    if (filteredCount > 0) {
+      diff = newIdx - currentIndex;
+      var half = filteredCount / 2;
+      if (diff > half)
+        diff -= filteredCount;
+      else if (diff < -half)
+        diff += filteredCount;
+    }
+
+    runningIndex += diff;
+    animationIndex = runningIndex;
+    currentIndex = newIdx;
+  }
+  function randomJump() {
+    var rnd = Math.floor(Math.random() * filteredCount);
+    if (rnd === currentIndex)
+      rnd = (rnd + 1) % filteredCount;
+    navigateTo(rnd);
+  }
+  function slotToWidth(slot) {
+    var t = Math.min(Math.abs(slot), 1);
+    return centerWidth + (cardStripWidth - centerWidth) * t;
+  }
+  function slotToX(slot) {
+    if (slot >= 0 && slot <= 1)
+      return centerX * (1 - slot) + (centerX + centerWidth + cardSpacing) * slot;
+    if (slot >= -1 && slot < 0)
+      return centerX * (1 + slot) + (centerX - cardSpacing - cardStripWidth) * -slot;
+    if (slot > 1)
+      return centerX + centerWidth + cardSpacing + (slot - 1) * (cardStripWidth + cardSpacing);
+    if (slot < -1)
+      return centerX - cardSpacing - cardStripWidth + (slot + 1) * (cardStripWidth + cardSpacing);
+    return 0;
+  }
+  function wrappedIndex(idx) {
+    return ((idx % filteredCount) + filteredCount) % filteredCount;
   }
 
-  // Center card
-  Rectangle {
-    border.color: Color.mOutline
-    border.width: Style.borderM
-    color: "transparent"
-    height: deck.height
-    radius: deck.cardRadius
-    width: deck.centerWidth
-    x: deck.centerX
-    y: 0
-  }
+  width: (cardsShown - 3) * cardStripWidth + (cardsShown - 3) * cardSpacing + centerWidth
 
-  // Left strips
-  Repeater {
-    model: deck.sideCount
-
-    Rectangle {
-      property int slot: index + 1
-
-      border.color: Color.mSurface
-      border.width: Style.borderS
-      color: "transparent"
-      height: deck.height
-      opacity: Math.max(0, 1 - index * 0.2)
-      radius: deck.cardRadius
-      width: deck.cardStripWidth
-      x: deck.centerX - deck.cardSpacing * slot - deck.cardStripWidth * slot
-      y: 0
+  Behavior on animationIndex {
+    NumberAnimation {
+      duration: cardDeck.animationDuration
+      easing.overshoot: 1
+      easing.type: Easing.OutBack
     }
   }
+  transform: Shear {
+    xFactor: cardDeck.shearFactor
+  }
 
-  // Right strips
   Repeater {
-    model: deck.sideCount
+    model: cardDeck.filteredCount > 0 ? cardDeck.visibleCount : 0
 
-    Rectangle {
-      property int slot: index + 1
+    delegate: Rectangle {
+      id: card
 
-      border.color: Color.mSurface
-      border.width: Style.borderS
+      property real fractionalSlot: offset + (cardDeck.runningIndex - cardDeck.animationIndex)
+      property bool isCenter: offset === 0
+      property int modelIndex: cardDeck.wrappedIndex(Math.round(cardDeck.runningIndex) + offset)
+      property int offset: index - cardDeck.halfVisible
+
+      border.color: isCenter ? Color.mOutline : Color.mSurface
+      border.width: isCenter ? Style.borderM : Style.borderS
       color: "transparent"
-      height: deck.height
-      opacity: Math.max(0, 1 - index * 0.2)
-      radius: deck.cardRadius
-      width: deck.cardStripWidth
-      x: deck.centerX + deck.centerWidth + deck.cardSpacing * slot + deck.cardStripWidth * index
+      height: cardDeck.height
+      opacity: Math.max(0, Math.min(1, cardDeck.halfVisible - Math.abs(fractionalSlot)))
+      radius: cardDeck.cardRadius
+      visible: (x + width) > 0 && x < cardDeck.width
+      width: cardDeck.slotToWidth(fractionalSlot)
+      x: cardDeck.slotToX(fractionalSlot)
       y: 0
+      z: isCenter ? 100 : cardDeck.visibleCount - Math.abs(offset)
+
+      NText {
+        anchors.centerIn: parent
+        color: card.isCenter ? Color.mPrimary : Color.mOnSurface
+        text: card.modelIndex
+      }
+      MouseArea {
+        anchors.fill: parent
+        cursorShape: card.isCenter ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+        onClicked: {
+          if (card.isCenter)
+            cardDeck.applyRequested(card.modelIndex);
+        }
+        onWheel: function (wheel) {
+          if (wheel.angleDelta.y > 0)
+            cardDeck.navigateTo(cardDeck.currentIndex - 1);
+          else if (wheel.angleDelta.y < 0)
+            cardDeck.navigateTo(cardDeck.currentIndex + 1);
+        }
+      }
     }
   }
 }
