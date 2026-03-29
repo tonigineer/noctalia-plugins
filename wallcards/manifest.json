@@ -32,6 +32,7 @@
       "filter_images": ["png", "jpg", "jpeg"],
       "filter_videos": ["mp4", "mkv", "avi", "mov"],
       "hide_help": false,
+      "hide_top_bar": false,
       "live_preview": false,
       "selected_filter": "images",
       "shear_factor": -0.25,

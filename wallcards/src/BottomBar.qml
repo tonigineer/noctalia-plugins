@@ -9,14 +9,15 @@ Rectangle {
   property bool expanded: false
   property bool hideHelp: true
 
-  color: Qt.alpha(Color.mSurface, 0.7)
+  color: Color.mSurface
   height: shortcutRow.height + Style.marginM
   radius: Style.radiusS
   width: expanded ? shortcutRow.width + Style.margin2L : !hideHelp ? collapsedRow.width + Style.margin2L : 0
 
+  // TODO
   Behavior on width {
     NumberAnimation {
-      duration: 200
+      duration: 150
       easing.type: Easing.OutCubic
     }
   }
@@ -42,8 +43,9 @@ Rectangle {
 
     ShortcutHint { keys: "J / K"; label: "Navigate" }
     ShortcutHint { keys: "H / L"; label: "Jump" }
+    ShortcutHint { keys: "T"; label: "Top Bar" }
     ShortcutHint { keys: "Enter"; label: "Apply" }
-    ShortcutHint { keys: "Q"; label: "Quit" }
+    ShortcutHint { keys: "ESC"; label: "Quit" }
 
     Rectangle {
       anchors.verticalCenter: parent.verticalCenter

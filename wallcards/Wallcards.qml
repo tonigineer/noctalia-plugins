@@ -27,6 +27,7 @@ PanelWindow {
   property var filterImages: pluginApi?.pluginSettings?.filter_images ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_images
   property var filterVideos: pluginApi?.pluginSettings?.filter_videos ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_videos
   property bool hideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help ?? true
+  property bool hideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
   property bool livePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
   property bool loading: thumbnailService.loading
   property string loadingMessage: thumbnailService.loadingMessage
@@ -162,12 +163,12 @@ PanelWindow {
           return;
         } else if (event.key === Qt.Key_J) {
           cardDeck.centerWidthRatio = Math.max(cardDeck.centerWidthRatio - 0.01, 0.2);
-          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio
+          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_K) {
           cardDeck.centerWidthRatio = Math.min(cardDeck.centerWidthRatio + 0.01, 0.6);
-          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio
+          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_N) {
@@ -218,6 +219,7 @@ PanelWindow {
         [Qt.Key_A]: () => root.selectedFilter = "all",
         [Qt.Key_I]: () => root.selectedFilter = "images",
         [Qt.Key_V]: () => root.selectedFilter = "videos",
+        [Qt.Key_T]: () => root.hideTopBar = !root.hideTopBar,
         [Qt.Key_R]: () => {
           cardDeck.randomJump();
           topBar.flashShuffle();
@@ -251,12 +253,11 @@ PanelWindow {
       filteredCount: thumbnailService.fileCount
       height: root.topBarHeight
       livePreview: root.livePreview
-      // opacity: 0.9
       pluginApi: root.pluginApi
       radius: root.topBarRadius
       selectedFilter: root.selectedFilter
       shearFactor: root.shearFactor
-      visible: !loadingBar.visible
+      visible: !loadingBar.visible && !root.hideTopBar
       width: cardDeck.width
 
       onFilterSelected: key => root.selectedFilter = key
@@ -273,7 +274,6 @@ PanelWindow {
       anchors.top: cardDeck.bottom
       anchors.topMargin: root.topBarHeight / 3
       hideHelp: root.hideHelp
-      // opacity: 0.9
       shearFactor: root.shearFactor
       visible: !loadingBar.visible
     }

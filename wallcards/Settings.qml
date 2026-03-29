@@ -19,6 +19,7 @@ ColumnLayout {
   property int editCardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
   property real editCenterWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
   property bool editHideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help
+  property bool editHideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
   property string editIconColor: pluginApi?.pluginSettings?.icon_color ?? "none"
   property bool editLivePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
   property string editSelectedFilter: pluginApi?.pluginSettings?.selected_filter || pluginApi?.manifest?.metadata?.defaultSettings?.selected_filter
@@ -36,7 +37,7 @@ ColumnLayout {
 
     pluginApi.pluginSettings.animation_cards_duration = root.editAnimationCardsDuration;
     pluginApi.pluginSettings.animation_window_duration = root.editAnimationWindowDuration;
-    pluginApi.pluginSettings.background_color = root.editBackgroundColor.toString()
+    pluginApi.pluginSettings.background_color = root.editBackgroundColor.toString();
     pluginApi.pluginSettings.background_opacity = root.editBackgroundOpacity;
 
     pluginApi.pluginSettings.center_width_ratio = root.editCenterWidthRatio;
@@ -55,6 +56,7 @@ ColumnLayout {
     pluginApi.pluginSettings.selected_filter = root.editSelectedFilter;
     pluginApi.pluginSettings.live_preview = root.editLivePreview;
     pluginApi.pluginSettings.hide_help = root.editHideHelp;
+    pluginApi.pluginSettings.hide_top_bar = root.editHideTopBar;
     pluginApi.pluginSettings.directory = root.editWallpaperDir;
 
     pluginApi.saveSettings();
@@ -133,6 +135,14 @@ ColumnLayout {
     label: "Hide Shortcuts"
 
     onToggled: c => root.editHideHelp = c
+  }
+  NToggle {
+    checked: root.editHideTopBar
+    defaultValue: pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
+    description: "Hide the toolbar above the cards"
+    label: "Hide Top Bar"
+
+    onToggled: c => root.editHideTopBar = c
   }
   NDivider {
     Layout.fillWidth: true
