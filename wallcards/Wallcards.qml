@@ -141,26 +141,26 @@ PanelWindow {
     }
 
     Keys.onPressed: event => {
-      // Shift — center card size
       if (event.modifiers & Qt.ShiftModifier) {
         if (event.key === Qt.Key_H) {
-          root.cardHeight = Math.min(root.cardHeight + 10, 1200)
+          root.cardHeight = Math.max(root.cardHeight - 10, parent.height * 0.10)
           event.accepted = true
           return
         } else if (event.key === Qt.Key_L) {
-          root.cardHeight = Math.max(root.cardHeight - 10, 100)
+          root.cardHeight = Math.min(root.cardHeight + 10, parent.height * 0.75)
           event.accepted = true
           return
-        // } else if (event.key === Qt.Key_J) {
-        //   root.cardStripWidth = Math.max(root.cardWidth - 5, 20)
-        //   event.accepted = true
-        //   return
-        // } else if (event.key === Qt.Key_K) {
-        //   root.cardStripWidth = Math.min(root.cardWidth + 5, 300)
-        //   event.accepted = true
-        //   return
+        } else if (event.key === Qt.Key_J) {
+          cardDeck.centerWidth = Math.max(cardDeck.centerWidth - 10, parent.width * 0.10)
+          event.accepted = true
+          return
+        } else if (event.key === Qt.Key_K) {
+          cardDeck.centerWidth = Math.min(cardDeck.centerWidth + 10, parent.width * 0.75)
+          cardDeck.centerWidth = cardDeck.centerWidth + 10
+          event.accepted = true
+          return
         } else if (event.key === Qt.Key_N) {
-          root.cardsShown = Math.max(root.cardsShown - 2, 3)
+          root.cardsShown = Math.max(root.cardsShown - 2, 5)
           event.accepted = true
           return
         } else if (event.key === Qt.Key_P) {
@@ -170,7 +170,6 @@ PanelWindow {
         }
       }
 
-      // Ctrl — spacing and strip width
       if (event.modifiers & Qt.ControlModifier) {
         if (event.key === Qt.Key_K) {
           root.cardSpacing = Math.min(root.cardSpacing + 2, 50);
@@ -195,7 +194,6 @@ PanelWindow {
         }
       }
 
-      // Normal keys
       KeyHandler.handleKey(event, {
         [Qt.Key_Question]: () => bottomBar.expanded = !bottomBar.expanded,
         [Qt.Key_Q]: () => root.close(),

@@ -7,11 +7,12 @@ Rectangle {
 
   required property real shearFactor
   property bool expanded: false
+  property bool hideHelp: true
 
   color: Qt.alpha(Color.mSurface, 0.7)
   height: shortcutRow.height + Style.marginM
   radius: Style.radiusS
-  width: expanded ? shortcutRow.width + Style.margin2L : collapsedRow.width + Style.margin2L
+  width: expanded ? shortcutRow.width + Style.margin2L : !hideHelp ? collapsedRow.width + Style.margin2L : 0
 
   Behavior on width {
     NumberAnimation {
@@ -24,17 +25,15 @@ Rectangle {
     xFactor: bottomBar.shearFactor
   }
 
-  // Collapsed — just show toggle hint
   Row {
     id: collapsedRow
     anchors.centerIn: parent
     spacing: Style.marginS
-    visible: !bottomBar.expanded
+    visible: !bottomBar.expanded && !bottomBar.hideHelp
 
     ShortcutHint { keys: "?"; label: "Shortcuts" }
   }
 
-  // Expanded — full shortcuts
   Row {
     id: shortcutRow
     anchors.centerIn: parent
@@ -53,8 +52,8 @@ Rectangle {
       width: 1
     }
 
-    ShortcutHint { keys: "SHIFT / H + L"; label: "Card Heighta" }
-    ShortcutHint { keys: "SHIFT / J + K"; label: "Card Width" }
+    ShortcutHint { keys: "SHIFT / H + L"; label: "Center Height" }
+    ShortcutHint { keys: "SHIFT / J + K"; label: "Center Width" }
     ShortcutHint { keys: "SHIFT / N + P"; label: "Cards Shown" }
 
     Rectangle {
@@ -65,7 +64,7 @@ Rectangle {
     }
 
     ShortcutHint { keys: "CTRL / J + K"; label: "Spacing" }
-    ShortcutHint { keys: "CTRL / H + L"; label: "Strip Width" }
+    ShortcutHint { keys: "CTRL / H + L"; label: "Cards Width" }
     Rectangle {
       anchors.verticalCenter: parent.verticalCenter
       color: Qt.alpha(Color.mOnSurface, 0.15)
