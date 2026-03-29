@@ -29,4 +29,28 @@ NIconButton {
       root.pluginApi?.mainInstance.toggle();
     }
   }
+  onRightClicked: {
+    PanelService.showContextMenu(contextMenu, root, screen);
+  }
+
+  NPopupContextMenu {
+    id: contextMenu
+
+    model: [
+      {
+        "label": I18n.tr("actions.widget-settings"),
+        "action": "widget-settings",
+        "icon": "settings"
+      },
+    ]
+
+    onTriggered: action => {
+      contextMenu.close();
+      PanelService.closeContextMenu(screen);
+
+      if (action === "widget-settings") {
+        BarService.openPluginSettings(screen, pluginApi.manifest);
+      }
+    }
+  }
 }

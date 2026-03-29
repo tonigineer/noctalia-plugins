@@ -11,7 +11,8 @@ Item {
   required property int cardSpacing
   required property int cardStripWidth
   required property int cardsShown
-  property real centerWidth: parent.width / 3
+  property real centerWidth: parent.width * centerWidthRatio
+  required property real centerWidthRatio
   property real centerX: width / 2 - centerWidth / 2
   property int currentIndex: 0
   required property int filteredCount

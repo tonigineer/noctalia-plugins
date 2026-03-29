@@ -14,42 +14,43 @@ import Qt.labs.folderlistmodel
 PanelWindow {
   id: root
 
-  property int animationCardsDuration: cfg.animation_duration ?? defaults.animation_duration ?? 1000
-  property int animationWindowDuration: 500
-  property color backgroundColor: cfg.background_color ?? defaults.background_color ?? "#333333"
-  property real backgroundOpacity: cfg.background_opacity ?? defaults.background_opacity ?? 0.5
-  property int cardHeight: cfg.card_height ?? defaults.card_height
-  property int cardRadius: cfg.card_radius ?? defaults.card_radius
-  property int cardSpacing: cfg.card_spacing ?? defaults.card_spacing
-  property int cardStripWidth: cfg.card_strip_width ?? defaults.card_strip_width
-  property int cardsShown: cfg.cards_shown ?? defaults.cards_shown
-  property var cfg: pluginApi?.pluginSettings || ({})
-  property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
-  property var filterImages: cfg.filter_images ?? defaults.filter_images
-  property var filterVideos: cfg.filter_videos ?? defaults.filter_videos
-  property bool livePreview: cfg.live_preview ?? defaults.live_preview
+  property int animationCardsDuration: pluginApi?.pluginSettings?.animation_cards_duration ?? pluginApi?.manifest?.metadata?.defaultSettings?.animation_cards_duration
+  property int animationWindowDuration: pluginApi?.pluginSettings?.animation_window_duration ?? pluginApi?.manifest?.metadata?.defaultSettings?.animation_window_duration
+  property color backgroundColor: pluginApi?.pluginSettings?.background_color ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_color
+  property real backgroundOpacity: pluginApi?.pluginSettings?.background_opacity ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_opacity
+  property int cardHeight: pluginApi?.pluginSettings?.card_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_height
+  property int cardRadius: pluginApi?.pluginSettings?.card_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_radius
+  property int cardSpacing: pluginApi?.pluginSettings?.card_spacing ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_spacing
+  property int cardStripWidth: pluginApi?.pluginSettings?.card_strip_width ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_strip_width
+  property int cardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
+  property real centerWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
+  property var filterImages: pluginApi?.pluginSettings?.filter_images ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_images
+  property var filterVideos: pluginApi?.pluginSettings?.filter_videos ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_videos
+  property bool hideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help ?? true
+  property bool livePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
   property bool loading: thumbnailService.loading
   property string loadingMessage: thumbnailService.loadingMessage
   property int pendingProcesses: 0
   property var pluginApi: null
-  property string selectedFilter: cfg.selected_filter ?? defaults.selected_filter
-  property var shearFactor: cfg.shear_factor ?? defaults.shear_factor
+  property string selectedFilter: pluginApi?.pluginSettings?.selected_filter || pluginApi?.manifest?.metadata?.defaultSettings?.selected_filter
+  property var shearFactor: pluginApi?.pluginSettings?.shear_factor ?? pluginApi?.manifest?.metadata?.defaultSettings?.shear_factor
   property int thumbnailRevision: thumbnailService.thumbnailRevision
-  property var topBarHeight: cfg.top_bar_height ?? defaults.top_bar_height
-  property var topBarRadius: cfg.top_bar_radius ?? defaults.top_bar_radius
+  property var topBarHeight: pluginApi?.pluginSettings?.top_bar_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_height
+  property var topBarRadius: pluginApi?.pluginSettings?.top_bar_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_radius
 
   signal quitRequested
 
   function close() {
-    if (exitAnim.running)
+    if (exitAnimation.running)
       return;
-    exitAnim.start();
+    exitAnimation.start();
   }
 
   WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
   WlrLayershell.layer: WlrLayer.Overlay
   aboveWindows: true
   color: "transparent"
+  exclusionMode: "Ignore"
   exclusiveZone: 0
   implicitHeight: screen.height
   implicitWidth: screen.width
@@ -66,31 +67,63 @@ PanelWindow {
 
   //
   ParallelAnimation {
-    id: exitAnim
+    id: enterAnimation
+
+    // running: true
+
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.OutCubic
+    //   from: 0.75
+    //   property: "scale"
+    //   target: content
+    //   to: 1.0
+    // }
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.OutCubic
+    //   from: 0
+    //   property: "opacity"
+    //   target: content
+    //   to: 1
+    // }
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.OutCubic
+    //   from: 0
+    //   property: "opacity"
+    //   target: background
+    //   to: root.backgroundOpacity
+    // }
+  }
+
+  //
+  ParallelAnimation {
+    id: exitAnimation
 
     onFinished: root.quitRequested()
 
-    NumberAnimation {
-      duration: root.animationWindowDuration
-      easing.type: Easing.InCubic
-      property: "opacity"
-      target: content
-      to: 0
-    }
-    NumberAnimation {
-      duration: root.animationWindowDuration
-      easing.type: Easing.InCubic
-      property: "scale"
-      target: content
-      to: 0.75
-    }
-    NumberAnimation {
-      duration: root.animationWindowDuration
-      easing.type: Easing.InCubic
-      property: "opacity"
-      target: background
-      to: 0
-    }
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.InCubic
+    //   property: "opacity"
+    //   target: content
+    //   to: 0
+    // }
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.InCubic
+    //   property: "scale"
+    //   target: content
+    //   to: 0.75
+    // }
+    // NumberAnimation {
+    //   duration: root.animationWindowDuration
+    //   easing.type: Easing.InCubic
+    //   property: "opacity"
+    //   target: background
+    //   to: 0
+    // }
   }
 
   //
@@ -99,14 +132,7 @@ PanelWindow {
 
     anchors.fill: parent
     color: root.backgroundColor
-
-    NumberAnimation on opacity {
-      duration: root.animationWindowDuration
-      easing.type: Easing.OutCubic
-      from: 0
-      running: true
-      to: root.backgroundOpacity
-    }
+    opacity: root.backgroundOpacity
 
     MouseArea {
       anchors.fill: parent
@@ -122,69 +148,60 @@ PanelWindow {
     anchors.fill: parent
     focus: true
 
-    NumberAnimation on opacity {
-      duration: root.animationWindowDuration
-      easing.type: Easing.OutCubic
-      from: 0
-      running: true
-      to: 1
-    }
-
-    //
-    NumberAnimation on scale {
-      duration: root.animationWindowDuration
-      easing.overshoot: 0.5
-      easing.type: Easing.OutBack
-      from: 0.75
-      running: true
-      to: 1
-    }
-
     Keys.onPressed: event => {
       if (event.modifiers & Qt.ShiftModifier) {
         if (event.key === Qt.Key_H) {
-          root.cardHeight = Math.max(root.cardHeight - 10, parent.height * 0.10)
-          event.accepted = true
-          return
+          root.cardHeight = Math.max(root.cardHeight - 10, parent.height * 0.10);
+          root.pluginApi.pluginSettings.card_height = root.cardHeight;
+          event.accepted = true;
+          return;
         } else if (event.key === Qt.Key_L) {
-          root.cardHeight = Math.min(root.cardHeight + 10, parent.height * 0.75)
-          event.accepted = true
-          return
+          root.cardHeight = Math.min(root.cardHeight + 10, parent.height * 0.75);
+          root.pluginApi.pluginSettings.card_height = root.cardHeight;
+          event.accepted = true;
+          return;
         } else if (event.key === Qt.Key_J) {
-          cardDeck.centerWidth = Math.max(cardDeck.centerWidth - 10, parent.width * 0.10)
-          event.accepted = true
-          return
+          cardDeck.centerWidthRatio = Math.max(cardDeck.centerWidthRatio - 0.01, 0.2);
+          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio
+          event.accepted = true;
+          return;
         } else if (event.key === Qt.Key_K) {
-          cardDeck.centerWidth = Math.min(cardDeck.centerWidth + 10, parent.width * 0.75)
-          cardDeck.centerWidth = cardDeck.centerWidth + 10
-          event.accepted = true
-          return
+          cardDeck.centerWidthRatio = Math.min(cardDeck.centerWidthRatio + 0.01, 0.6);
+          root.pluginApi.pluginSettings.center_width_ratio = cardDeck.centerWidthRatio
+          event.accepted = true;
+          return;
         } else if (event.key === Qt.Key_N) {
-          root.cardsShown = Math.max(root.cardsShown - 2, 5)
-          event.accepted = true
-          return
+          root.cardsShown = Math.max(root.cardsShown - 2, 5);
+          root.pluginApi.pluginSettings.cards_shown = root.cardsShown;
+          event.accepted = true;
+          return;
         } else if (event.key === Qt.Key_P) {
-          root.cardsShown = Math.min(root.cardsShown + 2, 15)
-          event.accepted = true
-          return
+          root.cardsShown = Math.min(root.cardsShown + 2, 15);
+          root.pluginApi.pluginSettings.cards_shown = root.cardsShown;
+          event.accepted = true;
+          return;
         }
       }
 
       if (event.modifiers & Qt.ControlModifier) {
         if (event.key === Qt.Key_K) {
           root.cardSpacing = Math.min(root.cardSpacing + 2, 50);
+          root.pluginApi.pluginSettings.card_spacing = root.cardSpacing;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_J) {
           root.cardSpacing = Math.max(root.cardSpacing - 2, 0);
+          root.pluginApi.pluginSettings.card_spacing = root.cardSpacing;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_L) {
           root.cardStripWidth = Math.min(root.cardStripWidth + 5, 300);
+          root.pluginApi.pluginSettings.card_strip_width = root.cardStripWidth;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_H) {
           root.cardStripWidth = Math.max(root.cardStripWidth - 5, 20);
+          root.pluginApi.pluginSettings.card_strip_width = root.cardStripWidth;
           event.accepted = true;
           return;
         } else if (event.key === Qt.Key_S) {
@@ -234,7 +251,7 @@ PanelWindow {
       filteredCount: thumbnailService.fileCount
       height: root.topBarHeight
       livePreview: root.livePreview
-      opacity: 0.9
+      // opacity: 0.9
       pluginApi: root.pluginApi
       radius: root.topBarRadius
       selectedFilter: root.selectedFilter
@@ -255,7 +272,8 @@ PanelWindow {
       anchors.horizontalCenterOffset: root.shearFactor * -root.topBarHeight * 4 / 3
       anchors.top: cardDeck.bottom
       anchors.topMargin: root.topBarHeight / 3
-      opacity: 0.9
+      hideHelp: root.hideHelp
+      // opacity: 0.9
       shearFactor: root.shearFactor
       visible: !loadingBar.visible
     }
@@ -269,6 +287,7 @@ PanelWindow {
       cardSpacing: root.cardSpacing
       cardStripWidth: root.cardStripWidth
       cardsShown: root.cardsShown
+      centerWidthRatio: root.centerWidthRatio
       filteredCount: thumbnailService.fileCount
       height: root.cardHeight
       shearFactor: root.shearFactor
