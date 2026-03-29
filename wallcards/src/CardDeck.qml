@@ -22,6 +22,25 @@ Item {
   property int sideCount: Math.floor(cardsShown / 2) - 1
   property int visibleCount: cardsShown
 
+  required property string cacheDir
+  required property var files
+  required property var filterVideos
+
+  function getFileName(idx) {
+    if (files.length === 0 || idx < 0 || idx >= files.length) return "aaaaaaaaaaaaaaa"
+    return files[idx].fileName
+  }
+
+  onFilesChanged: {
+    if (currentIndex >= filteredCount && filteredCount > 0)
+      currentIndex = 0
+    runningIndex = currentIndex
+    animationIndex = currentIndex
+    revision++
+  }
+
+  property int revision: 0
+
   signal applyRequested(int index)
 
   function navigateTo(idx) {
@@ -82,46 +101,7 @@ Item {
   Repeater {
     model: cardDeck.filteredCount > 0 ? cardDeck.visibleCount : 0
 
-    delegate: Rectangle {
-      id: card
-
-      property real fractionalSlot: offset + (cardDeck.runningIndex - cardDeck.animationIndex)
-      property bool isCenter: offset === 0
-      property int modelIndex: cardDeck.wrappedIndex(Math.round(cardDeck.runningIndex) + offset)
-      property int offset: index - cardDeck.halfVisible
-
-      border.color: isCenter ? Color.mOutline : Color.mSurface
-      border.width: isCenter ? Style.borderM : Style.borderS
-      color: "transparent"
-      height: cardDeck.height
-      opacity: Math.max(0, Math.min(1, cardDeck.halfVisible - Math.abs(fractionalSlot)))
-      radius: cardDeck.cardRadius
-      visible: (x + width) > 0 && x < cardDeck.width
-      width: cardDeck.slotToWidth(fractionalSlot)
-      x: cardDeck.slotToX(fractionalSlot)
-      y: 0
-      z: isCenter ? 100 : cardDeck.visibleCount - Math.abs(offset)
-
-      NText {
-        anchors.centerIn: parent
-        color: card.isCenter ? Color.mPrimary : Color.mOnSurface
-        text: card.modelIndex
-      }
-      MouseArea {
-        anchors.fill: parent
-        cursorShape: card.isCenter ? Qt.PointingHandCursor : Qt.ArrowCursor
-
-        onClicked: {
-          if (card.isCenter)
-            cardDeck.applyRequested(card.modelIndex);
-        }
-        onWheel: function (wheel) {
-          if (wheel.angleDelta.y > 0)
-            cardDeck.navigateTo(cardDeck.currentIndex - 1);
-          else if (wheel.angleDelta.y < 0)
-            cardDeck.navigateTo(cardDeck.currentIndex + 1);
-        }
-      }
+    delegate: Card {
     }
   }
 }

@@ -1,5 +1,6 @@
 import "src"
 import "scripts/KeyHandler.js" as KeyHandler
+import "src/Utils.js" as Utils
 import qs.Commons
 import qs.Widgets
 import qs.Services.UI
@@ -26,6 +27,20 @@ PanelWindow {
   property real centerWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
   property var filterImages: pluginApi?.pluginSettings?.filter_images ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_images
   property var filterVideos: pluginApi?.pluginSettings?.filter_videos ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_videos
+  property int filteredCount: filteredFiles.length
+  property var filteredFiles: {
+    if (!thumbnailService.files || thumbnailService.files.length === 0)
+      return [];
+    if (selectedFilter === "all")
+      return thumbnailService.files;
+    var result = [];
+    for (var i = 0; i < thumbnailService.files.length; i++) {
+      var f = thumbnailService.files[i];
+      if (Utils.matchesFilter(f.fileName, selectedFilter, filterImages, filterVideos))
+        result.push(f);
+    }
+    return result;
+  }
   property bool hideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help ?? true
   property bool hideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
   property bool livePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
@@ -250,7 +265,7 @@ PanelWindow {
       anchors.horizontalCenterOffset: shearFactor * -root.topBarHeight * 4 / 3
       animationDuration: root.animationCardsDuration
       currentIndex: cardDeck.currentIndex
-      filteredCount: thumbnailService.fileCount
+      filteredCount: root.filteredCount
       height: root.topBarHeight
       livePreview: root.livePreview
       pluginApi: root.pluginApi
@@ -283,12 +298,15 @@ PanelWindow {
 
       anchors.centerIn: parent
       animationDuration: root.animationCardsDuration
+      cacheDir: thumbnailService.cacheDir
       cardRadius: root.cardRadius
       cardSpacing: root.cardSpacing
       cardStripWidth: root.cardStripWidth
       cardsShown: root.cardsShown
       centerWidthRatio: root.centerWidthRatio
-      filteredCount: thumbnailService.fileCount
+      files: root.filteredFiles
+      filterVideos: root.filterVideos
+      filteredCount: root.filteredCount
       height: root.cardHeight
       shearFactor: root.shearFactor
       visible: !loadingBar.visible
