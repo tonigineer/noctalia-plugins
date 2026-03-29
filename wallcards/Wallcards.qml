@@ -140,21 +140,80 @@ PanelWindow {
       to: 1
     }
 
-    Keys.onPressed: event => KeyHandler.handleKey(event, {
+    Keys.onPressed: event => {
+      // Shift — center card size
+      if (event.modifiers & Qt.ShiftModifier) {
+        if (event.key === Qt.Key_H) {
+          root.cardHeight = Math.min(root.cardHeight + 10, 1200)
+          event.accepted = true
+          return
+        } else if (event.key === Qt.Key_L) {
+          root.cardHeight = Math.max(root.cardHeight - 10, 100)
+          event.accepted = true
+          return
+        // } else if (event.key === Qt.Key_J) {
+        //   root.cardStripWidth = Math.max(root.cardWidth - 5, 20)
+        //   event.accepted = true
+        //   return
+        // } else if (event.key === Qt.Key_K) {
+        //   root.cardStripWidth = Math.min(root.cardWidth + 5, 300)
+        //   event.accepted = true
+        //   return
+        } else if (event.key === Qt.Key_N) {
+          root.cardsShown = Math.max(root.cardsShown - 2, 3)
+          event.accepted = true
+          return
+        } else if (event.key === Qt.Key_P) {
+          root.cardsShown = Math.min(root.cardsShown + 2, 15)
+          event.accepted = true
+          return
+        }
+      }
+
+      // Ctrl — spacing and strip width
+      if (event.modifiers & Qt.ControlModifier) {
+        if (event.key === Qt.Key_K) {
+          root.cardSpacing = Math.min(root.cardSpacing + 2, 50);
+          event.accepted = true;
+          return;
+        } else if (event.key === Qt.Key_J) {
+          root.cardSpacing = Math.max(root.cardSpacing - 2, 0);
+          event.accepted = true;
+          return;
+        } else if (event.key === Qt.Key_L) {
+          root.cardStripWidth = Math.min(root.cardStripWidth + 5, 300);
+          event.accepted = true;
+          return;
+        } else if (event.key === Qt.Key_H) {
+          root.cardStripWidth = Math.max(root.cardStripWidth - 5, 20);
+          event.accepted = true;
+          return;
+        } else if (event.key === Qt.Key_S) {
+          root.pluginApi.saveSettings();
+          event.accepted = true;
+          return;
+        }
+      }
+
+      // Normal keys
+      KeyHandler.handleKey(event, {
+        [Qt.Key_Question]: () => bottomBar.expanded = !bottomBar.expanded,
         [Qt.Key_Q]: () => root.close(),
         [Qt.Key_Escape]: () => root.close(),
         [Qt.Key_A]: () => root.selectedFilter = "all",
         [Qt.Key_I]: () => root.selectedFilter = "images",
         [Qt.Key_V]: () => root.selectedFilter = "videos",
-        [Qt.Key_R]: () => { cardDeck.randomJump(); topBar.flashShuffle(); },
+        [Qt.Key_R]: () => {
+          cardDeck.randomJump();
+          topBar.flashShuffle();
+        },
         [Qt.Key_P]: () => root.livePreview = !root.livePreview,
         [Qt.Key_K]: () => cardDeck.navigateTo(cardDeck.currentIndex + 1),
         [Qt.Key_J]: () => cardDeck.navigateTo(cardDeck.currentIndex - 1),
-        [Qt.Key_Right]: () => cardDeck.navigateTo(cardDeck.currentIndex + 1),
-        [Qt.Key_Left]: () => cardDeck.navigateTo(cardDeck.currentIndex - 1),
         [Qt.Key_L]: () => cardDeck.navigateTo(cardDeck.currentIndex + root.cardsShown - 2),
         [Qt.Key_H]: () => cardDeck.navigateTo(cardDeck.currentIndex - root.cardsShown + 2)
-      })
+      });
+    }
 
     LoadingBar {
       id: loadingBar
@@ -190,6 +249,18 @@ PanelWindow {
       onShuffleRequested: cardDeck.randomJump()
     }
 
+    //
+    BottomBar {
+      id: bottomBar
+
+      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.horizontalCenterOffset: root.shearFactor * -root.topBarHeight * 4 / 3
+      anchors.top: cardDeck.bottom
+      anchors.topMargin: root.topBarHeight / 3
+      opacity: 0.9
+      shearFactor: root.shearFactor
+      visible: !loadingBar.visible
+    }
     //
     CardDeck {
       id: cardDeck
