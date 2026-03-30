@@ -14,7 +14,7 @@
   "settings": {
     "about": "À propos",
     "show-bar": "Afficher la valeur dans la barre",
-    "show-bar-desc": "Affiche la valeur actuelle a cote de l'icone de la calculatrice",
+    "show-bar-desc": "Affiche la valeur actuelle à côté de l'icone de la calculatrice",
     "precision": "Precision decimale: {value}",
     "precision-desc": "Nombre maximal de decimales pour le formatage des resultats",
     "developed-by": "Developpe par Pir0c0pter0<br>v{version}"
