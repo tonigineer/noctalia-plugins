@@ -9,6 +9,7 @@
   "description": "A lightweight taskbar Tamagotchi that lives and evolves while you use your computer.",
   "tags": ["Bar", "Fun", "Gaming"],
   "entryPoints": {
+    "main": "Main.qml",
     "barWidget": "BarWidget.qml",
     "panel": "Panel.qml"
   },

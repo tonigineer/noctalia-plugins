@@ -7,10 +7,11 @@ RowLayout {
     spacing: Style.marginXS
 		width: parent.width
 
-    property int hunger:      100
-    property int happiness:   100
-    property int cleanliness: 100
-    property int energy:      100
+		property var pluginApi: null
+    property int hunger:     	pluginApi?.mainInstance?.hunger 			?? 100
+    property int happiness:  	pluginApi?.mainInstance?.happiness 		?? 100
+    property int cleanliness:	pluginApi?.mainInstance?.cleanliness 	?? 100
+    property int energy:     	pluginApi?.mainInstance?.energy 			?? 100
 
     component Gauge: Item {
 			id: root

@@ -1,18 +1,18 @@
 import QtQuick
 import qs.Commons
 import "./components"
-import "." as Tamagotchi
 import QtMultimedia
 
 Item {
     id: root
 
-    property string petState:     Tamagotchi.TamagotchiState.petState
+		property var pluginApi:   null
 
 		width:  animCtrl.frameW
 		height: animCtrl.frameH
 
-    AnimationController {
+		AnimationController {
+				pluginApi : root.pluginApi
         id: animCtrl
         anchors.centerIn: parent
         frameH:           220
@@ -167,8 +167,8 @@ Item {
 								drop.source.wasDropped = true
 						}
 
-						if (Tamagotchi.TamagotchiState.petState === "sleeping") return
-						Tamagotchi.TamagotchiState.feed(10)
+						if (pluginApi?.mainInstance?.petState === "sleeping") return
+						pluginApi?.mainInstance?.feed(10)
 						soundEat.play()
 						root.burstFood()
 				}
@@ -215,7 +215,7 @@ Item {
 				repeat: true
 
 				onTriggered: {
-						Tamagotchi.TamagotchiState.clean(2)
+						pluginApi?.mainInstance?.clean(2.5)
 						root.burstClean()
 				}
 		}

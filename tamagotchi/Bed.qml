@@ -1,6 +1,5 @@
 import QtQuick
 import qs.Commons
-import "." as Tamagotchi
 
 Rectangle {
     id: root
@@ -10,6 +9,7 @@ Rectangle {
     radius: Style.radiusM
 		color: !pressed ? Color.mPrimary : Color.mSecondary
 
+		property var pluginApi: null
     property bool pressed: false
 
     Behavior on color {
@@ -26,7 +26,7 @@ Rectangle {
 				source: "assets/pillow.png"
 				fillMode: Image.PreserveAspectFit
 				smooth: false
-			}
+		}
 
     MouseArea {
         anchors.fill: parent
@@ -34,7 +34,7 @@ Rectangle {
         onPressed: root.pressed = true
         onReleased: {
             root.pressed = false
-            Tamagotchi.TamagotchiState.sleep()
+            pluginApi?.mainInstance?.sleep()
         }
     }
 }

@@ -1,5 +1,4 @@
 import QtQuick
-import "." as Tamagotchi
 import qs.Commons
 
 
@@ -26,7 +25,7 @@ Rectangle {
 			font.pixelSize: root.width
 			anchors.centerIn: parent
 			rotation: root.rotationAngle
-			opacity: Tamagotchi.TamagotchiState.petState === "sleeping" ?	0 : 1
+			opacity: pluginApi?.mainInstance?.petState === "sleeping" ?	0 : 1
 		}
 
 		Timer {
@@ -55,8 +54,8 @@ Rectangle {
 
 						if (speed > root.speedThreshold && root.canTriggerPlay) {
 								root.canTriggerPlay = false
-								if (Tamagotchi.TamagotchiState.petState !== "sleeping"){
-									Tamagotchi.TamagotchiState.play(18)
+								if (pluginApi?.mainInstance?.petState !== "sleeping"){
+									pluginApi?.mainInstance?.play(18)
 								}
 								playCooldown.start()
 						}

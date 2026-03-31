@@ -1,6 +1,5 @@
 import QtQuick
 import qs.Commons
-import "." as Tamagotchi
 
 Rectangle {
     id: root
@@ -10,6 +9,7 @@ Rectangle {
     radius: Style.radiusM
     color:  "transparent"
 
+		property var pluginApi: null
     property bool _dragging: false
     property bool wasDropped: false
 
@@ -56,15 +56,19 @@ Rectangle {
             root._restX = root.x
 						root._restY = root.y
 
-						if (Tamagotchi.TamagotchiState.petState === "sleeping") return
-						Tamagotchi.TamagotchiState.eating = true
+						if (pluginApi && pluginApi.mainInstance) {
+								if (pluginApi.mainInstance.petState === "sleeping") return
+								pluginApi.mainInstance.eating = true
+						}
         }
 
 				onReleased: {
 						root._dragging = false
 						root.Drag.drop()
 
-						Tamagotchi.TamagotchiState.eating = false
+						if (pluginApi && pluginApi.mainInstance) {
+								pluginApi.mainInstance.eating = false
+						}
 
 						if (root.wasDropped) {
 								disappearAnim.start()

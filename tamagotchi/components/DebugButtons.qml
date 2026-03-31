@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import qs.Commons
-import ".." as Tamagotchi
 
 Row {
     id: root
@@ -69,24 +68,24 @@ Row {
     ActionBtn {
         icon:   "🍗"
         label:  "-10 Comer"
-        action: function() { Tamagotchi.TamagotchiState.feed(-10) }
+        action: function() { pluginApi?.mainInstance?.feed(-10) }
     }
 
     ActionBtn {
         icon:   "🎮"
         label:  "-10 Jugar"
-        action: function() { Tamagotchi.TamagotchiState.happiness += -10 }
+        action: function() { pluginApi?.mainInstance?.happiness += -10 }
     }
 
     ActionBtn {
         icon:   "🧼"
         label:  "-10 Limpieza"
-        action: function() { Tamagotchi.TamagotchiState.clean(-10) }
+        action: function() { pluginApi?.mainInstance?.clean(-10) }
     }
 
     ActionBtn {
-        icon:   Tamagotchi.TamagotchiState.petState === "sleeping" ? "☀️" : "💤"
+        icon:   pluginApi?.mainInstance?.petState === "sleeping" ? "☀️" : "💤"
         label:  "-10 Dormir"
-        action: function() { Tamagotchi.TamagotchiState.energy += -10 }
+        action: function() { pluginApi?.mainInstance?.energy += -10 }
     }
 }

@@ -1,8 +1,8 @@
 import QtQuick
-import ".." as Tamagotchi
 
 Item {
     id: root
+		property var pluginApi: null
 
     property int frameH: 64
     property int frameW: 64
@@ -31,9 +31,9 @@ Item {
         anchors.centerIn: parent
 
         width:  root.frameW
-        height: root.frameH
+				height: root.frameH
 
-        property string currentState: Tamagotchi.TamagotchiState.petState
+        property string currentState: pluginApi?.mainInstance?.petState
 
         source: root._imageMap[currentState] ?? "../assets/sapo_idle.png"
 
@@ -41,7 +41,7 @@ Item {
         smooth: false
 
         sourceClipRect: {
-            if (Tamagotchi.TamagotchiState.eating && root._spriteStates.includes(currentState)) {
+            if (pluginApi?.mainInstance?.eating && root._spriteStates.includes(currentState)) {
                 return Qt.rect(root.spriteW, 0, root.spriteW, root.spriteH)
             }
             return Qt.rect(0, 0, root.spriteW, root.spriteH)

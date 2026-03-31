@@ -3,7 +3,6 @@ import Quickshell
 import qs.Commons
 import qs.Widgets
 import QtQuick.Layouts
-import "." as Tamagotchi
 
 Item {
     id: root
@@ -20,20 +19,14 @@ Item {
     implicitHeight: capsuleHeight
     implicitWidth:  content.implicitWidth + Style.marginM * 2
 
-		onPluginApiChanged: {
-			if (pluginApi) {
-            Tamagotchi.TamagotchiState.pluginApi = pluginApi
-        }
-    }
-
     readonly property int _minStat: Math.min(
-        Tamagotchi.TamagotchiState.hunger,
-        Tamagotchi.TamagotchiState.happiness,
-        Tamagotchi.TamagotchiState.cleanliness
+        pluginApi?.mainInstance?.hunger,
+        pluginApi?.mainInstance?.happiness,
+        pluginApi?.mainInstance?.cleanliness
     )
 
     readonly property string _statIcon: {
-        var ts = Tamagotchi.TamagotchiState
+        var ts = pluginApi?.mainInstance
         var mn = Math.min(ts.hunger, ts.happiness, ts.cleanliness)
         if      (mn === ts.hunger)      return "🍗"
         else if (mn === ts.happiness)   return "💛"
@@ -41,7 +34,7 @@ Item {
     }
 
     readonly property string _petEmoji: {
-        var s = Tamagotchi.TamagotchiState.petState
+        var s = pluginApi?.mainInstance?.petState
         var map = {
             "idle": "🐸", 
             "sleeping": "😴",
@@ -59,10 +52,10 @@ Item {
 
 
     Timer {
-        interval: 6000 // 1 minuto
+        interval: 60000 // 1 minuto
         running:  true
         repeat:   true
-        onTriggered: Tamagotchi.TamagotchiState.decay()
+        onTriggered: pluginApi?.mainInstance?.decay()
 		}
 
     Rectangle {

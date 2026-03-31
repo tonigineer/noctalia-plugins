@@ -1,17 +1,4 @@
-pragma Singleton
 import QtQuick
-
-// Enojado = felicidad
-// Cansado = sue;o
-// Limpio = limpieza
-//
-//
-// Idle
-// Triste = falta de juego
-// Enojodo = falta de comida y cansancio
-// Cansado = cansancio
-// Hambre = falta de comida
-// Durmiendo 
 
 QtObject {
     id: root
@@ -53,8 +40,6 @@ QtObject {
 						return "idle"
 		}
 
-		signal statChanged(string stat, int value)
-
 		function save() {
 			if (!pluginApi) return
         pluginApi.pluginSettings.hunger      = hunger
@@ -92,7 +77,7 @@ QtObject {
 		}
 
 		function decay() {
-				if (petState === "sleeping") {
+				if (root._sleeping) {
 						energy      = Math.min(100, energy + 15)
 						hunger      = Math.max(0, hunger - 0.3)
 						happiness   = Math.max(0, happiness - 0.2)

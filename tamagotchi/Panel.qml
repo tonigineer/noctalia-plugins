@@ -2,14 +2,13 @@ import QtQuick
 import QtQuick.Layouts
 import QtMultimedia
 import qs.Commons
-import "." as Tamagotchi
 import "./components"
 
 Item {
 		id: root
     anchors.fill: parent
 
-    property var pluginApi: null
+		property var pluginApi: null
 
 		property real contentPreferredWidth: 400 * Style.uiScaleRatio
 		property real contentPreferredHeight: 430 * Style.uiScaleRatio
@@ -25,10 +24,7 @@ Item {
 
 				StatBars {
 						Layout.fillWidth: true
-						hunger:      Tamagotchi.TamagotchiState.hunger
-						happiness:   Tamagotchi.TamagotchiState.happiness
-						cleanliness: Tamagotchi.TamagotchiState.cleanliness
-						energy:      Tamagotchi.TamagotchiState.energy
+						pluginApi: root.pluginApi
 				}
 
 
@@ -37,6 +33,7 @@ Item {
 						Layout.preferredHeight: 350   
 
 						Pet {
+								pluginApi: root.pluginApi
 								anchors.centerIn: parent
 						}
 
@@ -44,13 +41,13 @@ Item {
 								anchors.left: parent.left
 								anchors.right: parent.right
 
-								Item { Layout.fillWidth: true }  
-								Bed {}
-								Item { Layout.fillWidth: true }  
-								Food {}
-								Item { Layout.fillWidth: true }  
-								Soap {}
-								Item { Layout.fillWidth: true }  
+								Item 	{ Layout.fillWidth: true }  
+								Bed 	{ pluginApi: root.pluginApi }
+								Item 	{ Layout.fillWidth: true }  
+								Food 	{ pluginApi: root.pluginApi }
+								Item 	{ Layout.fillWidth: true }  
+								Soap 	{ }
+								Item	{ Layout.fillWidth: true }  
 						}
 				}
 
