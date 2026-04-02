@@ -1,0 +1,192 @@
+import QtQuick
+import QtQuick.Layouts
+
+import qs.Commons
+import qs.Widgets
+
+ColumnLayout {
+  id: root
+
+  property var pluginApi: null
+
+  readonly property var cfg: pluginApi?.pluginSettings || ({})
+  readonly property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
+
+  property string editWallpapersFolder: cfg.wallpapersFolder ?? defaults.wallpapersFolder ?? ""
+  property string editDefaultScaling: cfg.defaultScaling ?? defaults.defaultScaling ?? "fill"
+  property int editDefaultFps: cfg.defaultFps ?? defaults.defaultFps ?? 30
+  property int editDefaultVolume: cfg.defaultVolume ?? defaults.defaultVolume ?? 100
+  property bool editDefaultMuted: cfg.defaultMuted ?? defaults.defaultMuted ?? true
+  property bool editDefaultAudioReactiveEffects: cfg.defaultAudioReactiveEffects ?? defaults.defaultAudioReactiveEffects ?? true
+  property bool editDefaultDisableMouse: cfg.defaultDisableMouse ?? defaults.defaultDisableMouse ?? false
+  property bool editDefaultDisableParallax: cfg.defaultDisableParallax ?? defaults.defaultDisableParallax ?? false
+  property bool editDefaultNoFullscreenPause: cfg.defaultNoFullscreenPause ?? defaults.defaultNoFullscreenPause ?? false
+  property bool editDefaultFullscreenPauseOnlyActive: cfg.defaultFullscreenPauseOnlyActive ?? defaults.defaultFullscreenPauseOnlyActive ?? false
+  property bool editAutoDetectWorkshop: cfg.autoDetectWorkshop ?? defaults.autoDetectWorkshop ?? true
+
+  spacing: Style.marginL
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.category.performanceTitle")
+    color: Color.mOnSurface
+    font.weight: Font.Bold
+  }
+
+  RowLayout {
+    Layout.fillWidth: true
+
+    NText {
+      Layout.fillWidth: true
+      text: pluginApi?.tr("settings.defaultFps.label")
+      color: Color.mOnSurface
+    }
+
+    NSpinBox {
+      from: 1
+      to: 240
+      value: root.editDefaultFps
+      suffix: " FPS"
+      onValueChanged: root.editDefaultFps = value
+    }
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultNoFullscreenPause.label")
+    description: pluginApi?.tr("settings.defaultNoFullscreenPause.description")
+    checked: root.editDefaultNoFullscreenPause
+    onToggled: checked => root.editDefaultNoFullscreenPause = checked
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultFullscreenPauseOnlyActive.label")
+    description: pluginApi?.tr("settings.defaultFullscreenPauseOnlyActive.description")
+    checked: root.editDefaultFullscreenPauseOnlyActive
+    onToggled: checked => root.editDefaultFullscreenPauseOnlyActive = checked
+  }
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.category.compatibilityTitle")
+    color: Color.mOnSurface
+    font.weight: Font.Bold
+  }
+
+  NTextInput {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.wallpapersFolder.label")
+    description: pluginApi?.tr("settings.wallpapersFolder.description")
+    placeholderText: pluginApi?.tr("settings.wallpapersFolder.placeholder")
+    text: root.editWallpapersFolder
+    onTextChanged: root.editWallpapersFolder = text
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.autoDetectWorkshop.label")
+    description: pluginApi?.tr("settings.autoDetectWorkshop.description")
+    checked: root.editAutoDetectWorkshop
+    onToggled: checked => root.editAutoDetectWorkshop = checked
+  }
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.category.audioTitle")
+    color: Color.mOnSurface
+    font.weight: Font.Bold
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultMuted.label")
+    description: pluginApi?.tr("settings.defaultMuted.description")
+    checked: root.editDefaultMuted
+    onToggled: checked => root.editDefaultMuted = checked
+  }
+
+  NSpinBox {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultVolume.label")
+    from: 0
+    to: 100
+    suffix: " %"
+    value: root.editDefaultVolume
+    enabled: !root.editDefaultMuted
+    onValueChanged: root.editDefaultVolume = value
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultAudioReactiveEffects.label")
+    checked: root.editDefaultAudioReactiveEffects
+    onToggled: checked => root.editDefaultAudioReactiveEffects = checked
+  }
+
+  NText {
+    Layout.fillWidth: true
+    text: pluginApi?.tr("settings.category.displayTitle")
+    color: Color.mOnSurface
+    font.weight: Font.Bold
+  }
+
+  NComboBox {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultScaling.label")
+    description: pluginApi?.tr("settings.defaultScaling.description")
+    model: [
+      { "key": "fill", "name": "fill" },
+      { "key": "fit", "name": "fit" },
+      { "key": "stretch", "name": "stretch" },
+      { "key": "default", "name": "default" }
+    ]
+    currentKey: root.editDefaultScaling
+    onSelected: key => root.editDefaultScaling = key
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultDisableMouse.label")
+    checked: root.editDefaultDisableMouse
+    onToggled: checked => root.editDefaultDisableMouse = checked
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: pluginApi?.tr("settings.defaultDisableParallax.label")
+    checked: root.editDefaultDisableParallax
+    onToggled: checked => root.editDefaultDisableParallax = checked
+  }
+
+  function saveSettings() {
+    if (!pluginApi) {
+      Logger.e("LWEController", "Cannot save settings: pluginApi is null");
+      return;
+    }
+
+    if (pluginApi.pluginSettings.screens === undefined || pluginApi.pluginSettings.screens === null) {
+      pluginApi.pluginSettings.screens = {};
+    }
+
+    pluginApi.pluginSettings.wallpapersFolder = root.editWallpapersFolder;
+    pluginApi.pluginSettings.defaultScaling = root.editDefaultScaling;
+    pluginApi.pluginSettings.defaultFps = root.editDefaultFps;
+    pluginApi.pluginSettings.defaultVolume = root.editDefaultVolume;
+    pluginApi.pluginSettings.defaultMuted = root.editDefaultMuted;
+    pluginApi.pluginSettings.defaultAudioReactiveEffects = root.editDefaultAudioReactiveEffects;
+    pluginApi.pluginSettings.defaultDisableMouse = root.editDefaultDisableMouse;
+    pluginApi.pluginSettings.defaultDisableParallax = root.editDefaultDisableParallax;
+    pluginApi.pluginSettings.defaultNoFullscreenPause = root.editDefaultNoFullscreenPause;
+    pluginApi.pluginSettings.defaultFullscreenPauseOnlyActive = root.editDefaultFullscreenPauseOnlyActive;
+    pluginApi.pluginSettings.autoDetectWorkshop = root.editAutoDetectWorkshop;
+
+    pluginApi.saveSettings();
+    Logger.i("LWEController", "Settings saved", "wallpapersFolder=", root.editWallpapersFolder, "defaultScaling=", root.editDefaultScaling, "defaultFps=", root.editDefaultFps, "defaultVolume=", root.editDefaultVolume, "defaultMuted=", root.editDefaultMuted, "defaultAudioReactiveEffects=", root.editDefaultAudioReactiveEffects, "defaultDisableMouse=", root.editDefaultDisableMouse, "defaultDisableParallax=", root.editDefaultDisableParallax, "defaultNoFullscreenPause=", root.editDefaultNoFullscreenPause, "defaultFullscreenPauseOnlyActive=", root.editDefaultFullscreenPauseOnlyActive, "autoDetectWorkshop=", root.editAutoDetectWorkshop);
+
+    if (pluginApi.mainInstance && pluginApi.mainInstance.engineAvailable) {
+      Logger.d("LWEController", "Triggering engine reload after settings save");
+      pluginApi.mainInstance.reload();
+    }
+  }
+}

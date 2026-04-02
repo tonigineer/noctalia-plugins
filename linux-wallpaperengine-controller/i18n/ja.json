@@ -1,0 +1,150 @@
+{
+  "widget": {
+    "tooltip": {
+      "checking": "linux-wallpaperengine を確認中",
+      "unavailable": "linux-wallpaperengine がインストールされていません",
+      "running": "壁紙エンジンが設定を適用中です",
+      "ready": "壁紙エンジンパネルを開く"
+    }
+  },
+  "menu": {
+    "reload": "壁紙エンジンを再読み込み",
+    "stop": "壁紙エンジンを停止",
+    "settings": "プラグイン設定"
+  },
+  "main": {
+    "status": {
+      "unavailable": "エンジンは利用できません",
+      "ready": "準備完了",
+      "starting": "エンジンを起動中",
+      "stopped": "停止しました",
+      "crashed": "エンジンが異常終了しました"
+    },
+    "error": {
+      "notInstalled": "PATH に linux-wallpaperengine が見つかりませんでした。",
+      "assetsMissing": "Wallpaper Engine の assets が見つかりません。設定で assets ディレクトリを指定してください。",
+      "noBackground": "壁紙パスが設定されていません。",
+      "opengl": "OpenGL の初期化に失敗しました。ドライバーとコンポジタの互換性を確認してください。"
+    }
+  },
+  "panel": {
+    "title": "Linux WallpaperEngine コントローラー",
+    "installHint": "インストール例: yay -S linux-wallpaperengine-git",
+    "screen": {
+      "label": "対象スクリーン",
+      "description": "選択した壁紙を適用するモニターを選択"
+    },
+    "reload": "再読み込み",
+    "stop": "停止",
+    "folderInvalid": "壁紙ソースディレクトリが無効、またはアクセスできません。",
+    "scanning": "壁紙をスキャン中...",
+    "searchPlaceholder": "壁紙を検索...",
+    "searchClear": "検索をクリア",
+    "filterButton": "フィルター",
+    "sortButton": "並び替え",
+    "applyAllDisplays": "すべてのディスプレイに適用",
+    "perDisplayMode": "マルチディスプレイ",
+    "switchToAllDisplays": "すべてのディスプレイ適用に切替",
+    "switchToPerDisplay": "ディスプレイ別モードに切替",
+    "closePanel": "パネルを閉じる",
+    "confirmApply": "適用",
+    "cancelSelection": "キャンセル",
+    "pendingHint": "選択済みですが未適用です。設定を調整してから確定してください。",
+    "wallpaperScaling": "拡大縮小",
+    "wallpaperVolume": "音量",
+    "wallpaperMuted": "ミュート",
+    "wallpaperAudioReactive": "オーディオ反応",
+    "wallpaperDisableMouse": "マウス操作を無効化",
+    "wallpaperDisableParallax": "パララックス効果を無効化",
+    "resetWallpaperSettings": "グローバル既定値にリセット",
+    "infoType": "タイプ",
+    "infoId": "ID",
+    "infoResolution": "解像度",
+    "infoSize": "サイズ",
+    "scalingFill": "フィル",
+    "scalingFit": "フィット",
+    "scalingStretch": "ストレッチ",
+    "scalingDefault": "既定",
+    "targetAllDisplays": "対象: すべてのディスプレイ",
+    "targetSingleDisplay": "対象: {screen}",
+    "filterAll": "すべて",
+    "filterTypeAll": "すべて",
+    "filterTypeScene": "Scene",
+    "filterTypeVideo": "Video",
+    "filterTypeWeb": "Web",
+    "filterTypeApplication": "Application",
+    "filterResAll": "解像度: すべて",
+    "filterResUnknown": "解像度: 不明",
+    "filterStatic": "静的",
+    "filterDynamic": "動的",
+    "sortName": "名前",
+    "sortDateAdded": "追加日時",
+    "sortSize": "サイズ",
+    "sortRecent": "最近",
+    "sortAscendingToggle": "昇順/降順を切替",
+    "sortId": "ID",
+    "typeScene": "Scene",
+    "typeVideo": "Video",
+    "typeWeb": "Web",
+    "typeApplication": "Application",
+    "resolutionUnknown": "不明",
+    "dynamicBadge": "動的",
+    "count": "壁紙数: {count}",
+    "apply": "適用",
+    "empty": "ソースディレクトリにフォルダーが見つかりません"
+  },
+  "settings": {
+    "category": {
+      "performanceTitle": "パフォーマンス",
+      "compatibilityTitle": "互換性",
+      "audioTitle": "音声",
+      "displayTitle": "表示"
+    },
+    "wallpapersFolder": {
+      "label": "壁紙ソースフォルダー",
+      "description": "壁紙プロジェクトフォルダーを含むディレクトリ",
+      "placeholder": "~/.local/share/Steam/steamapps/workshop/content/431960"
+    },
+    "defaultScaling": {
+      "label": "既定の拡大縮小",
+      "description": "カスタム値がないスクリーンに使用する既定の拡大縮小モード"
+    },
+    "defaultFps": {
+      "label": "既定 FPS",
+      "description": "新規スクリーン設定で使用するフレームレート上限",
+      "placeholder": "30"
+    },
+    "defaultNoFullscreenPause": {
+      "label": "フルスクリーン時に一時停止しない",
+      "description": "フルスクリーンアプリ実行中の一時停止を防止"
+    },
+    "defaultFullscreenPauseOnlyActive": {
+      "label": "アクティブなフルスクリーンのみ一時停止",
+      "description": "Wayland のみ: フルスクリーンウィンドウがアクティブな場合のみ一時停止"
+    },
+    "defaultVolume": {
+      "label": "既定の音量"
+    },
+    "defaultMuted": {
+      "label": "既定でミュート",
+      "description": "既定で壁紙の音声をミュートして起動"
+    },
+    "defaultAudioReactiveEffects": {
+      "label": "オーディオ反応"
+    },
+    "defaultDisableMouse": {
+      "label": "マウス操作を無効化"
+    },
+    "defaultDisableParallax": {
+      "label": "パララックス効果を無効化"
+    },
+    "autoDetectWorkshop": {
+      "label": "Steam 壁紙ディレクトリを自動検出",
+      "description": "ソースフォルダーが空の場合、Steam パスから workshop/content/431960 を推定"
+    },
+    "autoApplyOnStartup": {
+      "label": "起動時に自動適用",
+      "description": "少なくとも 1 つのスクリーンに壁紙が設定されている場合、自動でエンジンを開始"
+    }
+  }
+}
