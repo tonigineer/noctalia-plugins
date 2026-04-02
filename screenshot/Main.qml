@@ -7,6 +7,8 @@ import qs.Services.Noctalia
 import qs.Services.Compositor
 
 Item {
+    property var pluginApi: null
+
     IpcHandler {
         target: "plugin:screenshot"
 
@@ -36,6 +38,8 @@ Item {
 
                 var started = Quickshell.execDetached(args)
                 if (!started) {
+
+                    //
                     UIService.showNotification({
                         title: "Screenshot Error",
                         message: "Failed to run grimshot. Please ensure grimshot is installed and in PATH.",
