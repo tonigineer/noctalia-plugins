@@ -24,7 +24,6 @@
       "background_color": null,
       "background_opacity": null,
       "card_height": 500,
-      "card_radius": 10,
       "card_spacing": 8,
       "card_strip_width": 80,
       "cards_shown": 11,
@@ -36,8 +35,7 @@
       "live_preview": false,
       "selected_filter": "images",
       "shear_factor": -0.25,
-      "top_bar_height": 35,
-      "top_bar_radius": 10
+      "top_bar_height": 35
     }
   }
 }

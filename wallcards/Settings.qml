@@ -13,7 +13,6 @@ ColumnLayout {
   property color editBackgroundColor: pluginApi?.pluginSettings?.background_color ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_color
   property real editBackgroundOpacity: pluginApi?.pluginSettings?.background_opacity ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_opacity
   property int editCardHeight: pluginApi?.pluginSettings?.card_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_height
-  property int editCardRadius: pluginApi?.pluginSettings?.card_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_radius
   property int editCardSpacing: pluginApi?.pluginSettings?.card_spacing ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_spacing
   property int editCardStripWidth: pluginApi?.pluginSettings?.card_strip_width ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_strip_width
   property int editCardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
@@ -25,7 +24,6 @@ ColumnLayout {
   property string editSelectedFilter: pluginApi?.pluginSettings?.selected_filter || pluginApi?.manifest?.metadata?.defaultSettings?.selected_filter
   property real editShearFactor: pluginApi?.pluginSettings?.shear_factor ?? pluginApi?.manifest?.metadata?.defaultSettings?.shear_factor
   property int editTopBarHeight: pluginApi?.pluginSettings?.top_bar_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_height
-  property int editTopBarRadius: pluginApi?.pluginSettings?.top_bar_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_radius
   property string editWallpaperDir: pluginApi?.pluginSettings?.wallpaper_directory || root.pluginApi?.Settings.data.wallpaper.directory
   property var pluginApi: null
 
@@ -42,7 +40,6 @@ ColumnLayout {
 
     pluginApi.pluginSettings.center_width_ratio = root.editCenterWidthRatio;
     pluginApi.pluginSettings.card_height = root.editCardHeight;
-    pluginApi.pluginSettings.card_radius = root.editCardRadius;
     pluginApi.pluginSettings.card_spacing = root.editCardSpacing;
     pluginApi.pluginSettings.card_strip_width = root.editCardStripWidth;
     pluginApi.pluginSettings.cards_shown = root.editCardsShown;
@@ -50,7 +47,6 @@ ColumnLayout {
     pluginApi.pluginSettings.shear_factor = root.editShearFactor;
 
     pluginApi.pluginSettings.top_bar_height = root.editTopBarHeight;
-    pluginApi.pluginSettings.top_bar_radius = root.editTopBarRadius;
 
     pluginApi.pluginSettings.iconColor = root.editIconColor;
     pluginApi.pluginSettings.selected_filter = root.editSelectedFilter;
@@ -248,20 +244,6 @@ ColumnLayout {
     Layout.fillWidth: true
     spacing: Style.marginXXS
 
-    NLabel {
-      description: "Corner rounding of cards"
-      label: "Card Radius"
-    }
-    NValueSlider {
-      Layout.fillWidth: true
-      from: 0
-      stepSize: 1
-      text: root.editCardRadius + "px"
-      to: 48
-      value: root.editCardRadius
-
-      onMoved: value => root.editCardRadius = value
-    }
     ColumnLayout {
       Layout.fillWidth: true
       spacing: Style.marginXXS
@@ -383,21 +365,6 @@ ColumnLayout {
   ColumnLayout {
     Layout.fillWidth: true
     spacing: Style.marginXXS
-
-    NLabel {
-      description: "Corner rounding of the toolbar"
-      label: "Top Bar Radius"
-    }
-    NValueSlider {
-      Layout.fillWidth: true
-      from: 0
-      stepSize: 1
-      text: root.editTopBarRadius + "px"
-      to: 24
-      value: root.editTopBarRadius
-
-      onMoved: value => root.editTopBarRadius = value
-    }
   }
 
   // ── Utils ──

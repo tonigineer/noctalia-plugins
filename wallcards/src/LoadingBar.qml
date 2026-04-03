@@ -71,7 +71,7 @@ Rectangle {
 
     //
     NText {
-      text: "Generating thumbnails… " + String(loadingBar.total - loadingBar.pending).padStart(String(loadingBar.total).length, " ") + " / " + loadingBar.total
+      text: "Generating thumbnails… " + String(Math.max(loadingBar.total - loadingBar.pending, 0)).padStart(String(loadingBar.total).length, " ") + " / " + loadingBar.total
     }
       }
 

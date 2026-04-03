@@ -18,7 +18,7 @@ PanelWindow {
   property color backgroundColor: pluginApi?.pluginSettings?.background_color ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_color
   property real backgroundOpacity: pluginApi?.pluginSettings?.background_opacity ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_opacity
   property int cardHeight: pluginApi?.pluginSettings?.card_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_height
-  property int cardRadius: pluginApi?.pluginSettings?.card_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_radius
+  property int cardRadius: Style.radiusM
   property int cardSpacing: pluginApi?.pluginSettings?.card_spacing ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_spacing
   property int cardStripWidth: pluginApi?.pluginSettings?.card_strip_width ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_strip_width
   property int cardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
@@ -34,10 +34,10 @@ PanelWindow {
   property int pendingProcesses: 0
   property var pluginApi: null
   property string selectedFilter: pluginApi?.pluginSettings?.selected_filter || pluginApi?.manifest?.metadata?.defaultSettings?.selected_filter
-  property var shearFactor: pluginApi?.pluginSettings?.shear_factor ?? pluginApi?.manifest?.metadata?.defaultSettings?.shear_factor
+  property real shearFactor: pluginApi?.pluginSettings?.shear_factor ?? pluginApi?.manifest?.metadata?.defaultSettings?.shear_factor
   property int thumbnailRevision: thumbnailService.thumbnailRevision
-  property var topBarHeight: pluginApi?.pluginSettings?.top_bar_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_height
-  property var topBarRadius: pluginApi?.pluginSettings?.top_bar_radius ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_radius
+  property int topBarHeight: pluginApi?.pluginSettings?.top_bar_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.top_bar_height
+  property int topBarRadius: Style.radiusM
 
   signal quitRequested
 
@@ -58,7 +58,9 @@ PanelWindow {
       wallpaperPath = f.filePath;
     }
 
-    Quickshell.execDetached(["bash", "-c", cmd]);
+    applicant.command = cmd;
+    applicant.running;
+
     WallpaperService.changeWallpaper(wallpaperPath);
   }
   //
@@ -90,6 +92,12 @@ PanelWindow {
   }
   onSelectedFilterChanged: applyFilterToFiles()
 
+  Process {
+    id: applicant
+
+    command: []
+    running: false
+  }
   Connections {
     function onFilesChanged() {
       root.applyFilterToFiles();
@@ -102,7 +110,7 @@ PanelWindow {
   ThumbnailService {
     id: thumbnailService
 
-    cacheDir: root.pluginApi?.Settings.cacheDir
+    cacheDir: root.pluginApi?.Settings.cacheDir + "/wallcards"
     filterImages: root.filterImages
     filterVideos: root.filterVideos
     wallpaperDir: root.pluginApi?.Settings.data.wallpaper.directory
@@ -228,6 +236,7 @@ PanelWindow {
 
       if (event.modifiers & Qt.ControlModifier) {
         if (event.key === Qt.Key_K) {
+          root.cardSpacing = Math.max(root.cardSpacing + 2, 0);
           root.pluginApi.pluginSettings.card_spacing = root.cardSpacing;
           event.accepted = true;
           return;
