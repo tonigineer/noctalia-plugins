@@ -104,7 +104,7 @@ NBox {
                     backgroundColor: Color.mError
                     enabled: !root.isLoading
                     onClicked: {
-                        root.onButtonClicked()
+                        root.buttonClicked()
                     }
                 }
 
@@ -115,7 +115,7 @@ NBox {
                     fontSize: Style.fontSizeS
                     enabled: !root.isLoading
                     onClicked: {
-                        root.onButtonClicked()
+                        root.buttonClicked()
                     }
                 }
             }

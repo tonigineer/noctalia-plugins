@@ -19,6 +19,7 @@ ColumnLayout {
     property string editDisplayMode: root.pluginSettings.displayMode ?? ""
     property string editConnectedColor: root.pluginSettings.connectedColor ?? ""
     property string editDisconnectedColor: root.pluginSettings.disconnectedColor ?? ""
+    property bool disableToastNotifications: root.pluginSettings?.disableToastNotifications ?? false
 
     property string pendingDeleteUuid: ""
     property string pendingDeleteName: ""
@@ -45,6 +46,7 @@ ColumnLayout {
         pluginApi.pluginSettings.displayMode = root.editDisplayMode;
         pluginApi.pluginSettings.connectedColor = root.editConnectedColor;
         pluginApi.pluginSettings.disconnectedColor = root.editDisconnectedColor;
+        pluginApi.pluginSettings.disableToastNotifications = root.disableToastNotifications;
         pluginApi.saveSettings();
 
         Logger.i("NetworkManagerVpn", "Settings saved successfully");
@@ -76,6 +78,16 @@ ColumnLayout {
         currentKey: root.editDisconnectedColor
         onSelected: (key) => {
             root.editDisconnectedColor = key;
+        }
+    }
+
+    NToggle {
+        Layout.fillWidth: true
+        label: pluginApi?.tr("settings.disableToastNotifications")
+        description: pluginApi?.tr("settings.disableToastNotificationsDescription")
+        checked: root.disableToastNotifications
+        onToggled: checked => {
+            root.disableToastNotifications = checked;
         }
     }
 
