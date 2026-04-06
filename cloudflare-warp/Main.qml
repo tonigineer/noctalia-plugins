@@ -9,29 +9,7 @@ Item {
 
   property var pluginApi: null
 
-  onPluginApiChanged: {
-    if (pluginApi) {
-      settingsVersion++
-    }
-  }
-
-  property var settingsWatcher: pluginApi?.pluginSettings
-  onSettingsWatcherChanged: {
-    if (settingsWatcher) {
-      settingsVersion++
-    }
-  }
-
-  property int settingsVersion: 0
-
-  property int refreshInterval: _computeRefreshInterval()
-
-  function _computeRefreshInterval() { return pluginApi?.pluginSettings?.refreshInterval ?? 5000 }
-
-  onSettingsVersionChanged: {
-    refreshInterval = _computeRefreshInterval()
-    updateTimer.interval = refreshInterval
-  }
+  readonly property int refreshInterval: pluginApi?.pluginSettings?.refreshInterval ?? 5000
 
   property bool warpInstalled: false
   property bool warpConnected: false
