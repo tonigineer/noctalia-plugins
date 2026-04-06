@@ -104,7 +104,7 @@ Item {
 
                 // Port number
                 NText {
-                  text: ":" + model.port
+                  text: pluginApi?.tr("panel.portNumber", { port: model.port })
                   pointSize: Style.fontSizeM
                   font.weight: Font.Bold
                   font.family: Settings.data.ui.fontFixed
