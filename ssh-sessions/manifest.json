@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": "https://github.com/noctalia-dev/noctalia-plugins",
   "description": "Manage SSH connections from ~/.ssh/config with active session detection and launcher integration.",
-  "tags": ["Bar", "Panel", "Launcher", "Utility"],
+  "tags": ["Bar", "Panel", "Launcher", "Utility", "Development"],
   "entryPoints": {
     "main": "Main.qml",
     "barWidget": "BarWidget.qml",
@@ -19,6 +19,7 @@
     "plugins": []
   },
   "metadata": {
+    "commandPrefix": "ssh",
     "defaultSettings": {
       "terminalCommand": "",
       "pollInterval": 10,
