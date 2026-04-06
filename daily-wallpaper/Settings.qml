@@ -22,7 +22,7 @@ ColumnLayout {
 
     NComboBox {
         Layout.fillWidth: true
-        label: pluginApi?.tr("settings.source.label") || 'Source'
+        label: pluginApi?.tr("settings.source.label")
         model: [
             {
                 "key": "bing",
