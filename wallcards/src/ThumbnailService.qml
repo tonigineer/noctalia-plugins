@@ -7,10 +7,11 @@ Item {
   id: service
 
   required property string cacheDir
-  required property var filterImages
-  required property var filterVideos
+  required property var imageFilter
+  required property var videoFilter
   required property string wallpaperDir
-  
+  property var colorOrder: ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Monochrome"]
+  property var colorOrderColors: ["#FF4500", "#FFA500", "#FFD700", "#32CD32", "#1E90FF", "#8A2BE2", "#FF69B4", "#A9A9A9"]
   property int fileCount: files.length
   property var files: []
   property bool loading: true
@@ -19,31 +20,20 @@ Item {
 
   signal ready
 
-  function buildFileList() {
-    var items = [];
+  FolderListModel {
+    id: thumbnailModel
 
-    for (let i = 0; i < folderModel2.count; i++) {
-      let filePath = folderModel2.get(i, "filePath");
-      let fileName = folderModel2.get(i, "fileName").substring(0, filePath.lastIndexOf("_x"));
+    folder: service.wallpaperDir ? Qt.resolvedUrl("file://" + service.wallpaperDir) : ""
+    nameFilters: Utils.nameFilters(service.imageFilter, service.videoFilter)
+    showDirs: false
+    sortField: FolderListModel.Name
 
-      let idx = fileName.lastIndexOf("__x");
-      let wallpaperName = fileName.substring(0, idx);
-      let hexColor = fileName.substring(idx + 2);
-      var isVideo = Utils.isVideo(wallpaperName, service.filterVideos);
-
-      console.log(wallpaperName);
-      items.push({
-        fileName: wallpaperName,
-        filePath: wallpaperDir + "/" + wallpaperName,
-        thumbnail: filePath,
-        colorCode: hexColor,
-        isVideo: isVideo
-      });
+    onStatusChanged: {
+      if (status === FolderListModel.Ready) {
+        service.createThumbnails();
+        filesModel.running = true;
+      }
     }
-
-    files = items;
-    service.loading = false;
-    service.ready();
   }
 
   function createThumbnails() {
@@ -52,26 +42,27 @@ Item {
     });
     proc.running = true;
 
-    var items = []
-    for (var i = 0; i < folderModel.count; i++) {
+    var items = [];
+    for (var i = 0; i < thumbnailModel.count; i++) {
       (function (idx) {
-          console.log(service.pendingProcesses)
-          var filePath = folderModel.get(idx, "filePath");
-          var fileName = folderModel.get(idx, "fileName");
+          var filePath = thumbnailModel.get(idx, "filePath");
+          var fileName = thumbnailModel.get(idx, "fileName");
           var thumbnailPath = cacheDir + "/" + fileName;
 
-          var thumbnailCmd = Utils.isVideo(fileName, service.filterVideos) ? videoToThumnailCmd(filePath, thumbnailPath) : imageToThumbnailCmd(filePath, thumbnailPath);
-          var hexCmd = thumbnailHexValueCmd(thumbnailPath)
+          var thumbnailCmd = Utils.isVideo(fileName, service.videoFilter)
+            ? videoToThumnailCmd(filePath, thumbnailPath)
+            : imageToThumbnailCmd(filePath, thumbnailPath);
+          var hexCmd = thumbnailHexValueCmd(thumbnailPath);
 
-          const cmd = `
+          const script = `
             [ -f ${thumbnailPath}* ] && exit 0
             ${thumbnailCmd}
             mv ${thumbnailPath} ${thumbnailPath}__x$(${hexCmd})
-          `
+          `;
 
           service.pendingProcesses++;
           var proc = processComponent.createObject(null, {
-            command: ["bash", "-c", cmd]
+            command: ["bash", "-c", script]
           });
 
           proc.exited.connect(function () {
@@ -79,33 +70,30 @@ Item {
             service.thumbnailRevision++;
 
             if (service.pendingProcesses === 0) {
-              folderModel2.starting
+              filesModel.starting;
             }
 
             proc.destroy();
           });
 
           proc.running = true;
-          items.push({})
+          items.push({});
         })(i);
-
     }
 
-
-    if (folderModel.count === 0) {
+    if (thumbnailModel.count === 0) {
       service.loading = false;
     }
 
     files = items;
   }
 
-
   function imageToThumbnailCmd(filePath, thumbnailPath) {
     return `magick ${filePath} \
       -resize x500 \
       -quality 95 \
       ${thumbnailPath}
-    `
+    `;
   }
 
   function videoToThumnailCmd(filePath, thumbnailPath) {
@@ -114,7 +102,7 @@ Item {
       -vf select=eq(n\\,0),scale=-1:1080 \
       -frames:v 1 \
       -q:v 2 \
-      ${thumbnailPath} </dev/null 2>/dev/null`
+      ${thumbnailPath} </dev/null 2>/dev/null`;
   }
 
   function thumbnailHexValueCmd(thumbnailPath) {
@@ -125,27 +113,11 @@ Item {
       -depth 8 \
       -format "%[hex:p{0,0}]" info:- 2>/dev/null \
       | grep -oE '[0-9A-Fa-f]{6}' \
-      | head -n 1`
+      | head -n 1`;
   }
 
   FolderListModel {
-    id: folderModel
-
-    folder: service.wallpaperDir ? Qt.resolvedUrl("file://" + service.wallpaperDir) : ""
-    nameFilters: Utils.nameFilters(service.filterImages, service.filterVideos)
-    showDirs: false
-    sortField: FolderListModel.Name
-
-    onStatusChanged: {
-      if (status === FolderListModel.Ready) {
-        service.createThumbnails();
-        folderModel2.running = true
-      }
-    }
-  }
-
-  FolderListModel {
-    id: folderModel2
+    id: filesModel
 
     nameFilters: ["*__x*"]
     showDirs: false
@@ -154,7 +126,7 @@ Item {
     property bool running: false
 
     onRunningChanged: {
-      folder = running ? Qt.resolvedUrl("file://" + service.cacheDir) : ""
+      folder = running ? Qt.resolvedUrl("file://" + service.cacheDir) : "";
     }
 
     onStatusChanged: {
@@ -164,10 +136,91 @@ Item {
     }
   }
 
+  function buildFileList() {
+    var items = [];
+
+    for (let i = 0; i < filesModel.count; i++) {
+      const filePath = filesModel.get(i, "filePath");
+      const fileName = filesModel.get(i, "fileName").substring(0, filePath.lastIndexOf("_x"));
+
+      const idx = fileName.lastIndexOf("__x");
+      const wallpaperName = fileName.substring(0, idx);
+      const hexColor = fileName.substring(idx + 2);
+      const filterColor = getFilterColor(hexColor);
+
+      items.push({
+        fileName: wallpaperName,
+        filePath: wallpaperDir + "/" + wallpaperName,
+        thumbnail: filePath,
+        hexCode: hexColor,
+        filterColor: getFilterColor(hexColor),
+        isVideo: Utils.isVideo(wallpaperName, service.videoFilter)
+      });
+    }
+
+    items.sort((a, b) => colorOrder.indexOf(a.filterColor) - colorOrder.indexOf(b.filterColor));
+
+    files = items;
+    service.loading = false;
+    service.ready();
+  }
+
+  function getFilterColor(hexColor) {
+    if (!hexColor)
+      return "Monochrome";
+
+    const cleaned = String(hexColor).trim().replace(/x/g, '').substring(0, 6);
+    console.log(cleaned);
+    if (cleaned.length !== 6)
+      return "Monochrome";
+
+    const r = parseInt(cleaned.substring(0, 2), 16) / 255;
+    const g = parseInt(cleaned.substring(2, 4), 16) / 255;
+    const b = parseInt(cleaned.substring(4, 6), 16) / 255;
+    if ([r, g, b].some(isNaN))
+      return "Monochrome";
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const d = max - min;
+
+    let h = 0;
+    let s = max === 0 ? 0 : d / max;
+    let v = max;
+
+    if (d !== 0) {
+      if (max === r)
+        h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g)
+        h = (b - r) / d + 2;
+      else
+        h = (r - g) / d + 4;
+      h = (h / 6) * 360;
+    }
+
+    if (s < 0.05 || v < 0.08)
+      return "Monochrome";
+    if (h >= 345 || h < 15)
+      return "Red";
+    if (h < 45)
+      return "Orange";
+    if (h < 75)
+      return "Yellow";
+    if (h < 165)
+      return "Green";
+    if (h < 260)
+      return "Blue";
+    if (h < 315)
+      return "Purple";
+    if (h < 345)
+      return "Pink";
+
+    return "Monochrome";
+  }
+
   Component {
     id: processComponent
 
-    Process {
-    }
+    Process {}
   }
 }

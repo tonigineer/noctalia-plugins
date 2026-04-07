@@ -24,8 +24,8 @@ PanelWindow {
   property int cardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
   property real centerWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
   property int currentIndex: cardDeck.currentIndex
-  property var filterImages: pluginApi?.pluginSettings?.filter_images ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_images
-  property var filterVideos: pluginApi?.pluginSettings?.filter_videos ?? pluginApi?.manifest?.metadata?.defaultSettings?.filter_videos
+  property var imageFilter: pluginApi?.manifest?.metadata?.defaultSettings?.image_filter
+  property var videoFilter: pluginApi?.manifest?.metadata?.defaultSettings?.video_filter
   property var filteredFiles: []
   property bool hideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help ?? true
   property bool hideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
@@ -111,8 +111,8 @@ PanelWindow {
     id: thumbnailService
 
     cacheDir: root.pluginApi?.Settings.cacheDir + "/wallcards"
-    filterImages: root.filterImages
-    filterVideos: root.filterVideos
+    imageFilter: root.imageFilter
+    videoFilter: root.videoFilter
     wallpaperDir: root.pluginApi?.Settings.data.wallpaper.directory
   }
 
