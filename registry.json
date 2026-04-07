@@ -546,14 +546,20 @@
     {
       "id": "keybind-cheatsheet",
       "name": "Keybind Cheatsheet",
-      "version": "3.3.0",
+      "version": "3.4.0",
       "official": false,
       "author": "blacku",
       "description": "Universal keyboard shortcuts keymap that automatically detects and displays keybindings for Hyprland or Niri compositors.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
       "minNoctaliaVersion": "3.6.0",
       "license": "MIT",
-      "tags": [],
-      "lastUpdated": "2026-04-04T17:56:57+07:00"
+      "tags": [
+        "Bar",
+        "Panel",
+        "System",
+        "Indicator"
+      ],
+      "lastUpdated": "2026-04-07T22:03:44+02:00"
     },
     {
       "id": "latency-monitor",
