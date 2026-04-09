@@ -202,20 +202,20 @@ DraggableDesktopWidget {
                 }
 
                 // CPU
-                // CPU Label (Left Column)
+                // CPU Label
                 NText {
                     text: pluginApi?.tr("widget.cpu")
                     color: Color.mOnSurfaceVariant
                     font.pointSize: Style.fontSizeL * widgetScale
                 }
 
-                // CPU Values (Right Column)
+                // CPU Values aligned to the right
                 Row {
                     Layout.fillWidth: true
-                    layoutDirection: Qt.RightToLeft // Pushes items to the right wall
-                    spacing: 4
+                    layoutDirection: Qt.RightToLeft
+                    spacing: Style.marginS // Using Style singleton instead of hardcoded 4
 
-                    // Temperature - Using the native color property
+                    // Temperature (Colored via native property)
                     NText {
                         text: root.cpuTemp
                         color: root.getTempColor(root.cpuTemp)
@@ -223,9 +223,10 @@ DraggableDesktopWidget {
                         font.pointSize: Style.fontSizeL * widgetScale
                     }
 
-                    // Separator
+                    // Separator (Translated)
                     NText {
-                        text: "@"
+                        // Ensure "widget.separator_at" is defined in your i18n files as "@"
+                        text: pluginApi?.tr("widget.separator_at")
                         color: Color.mOnSurface
                         font.pointSize: Style.fontSizeL * widgetScale
                     }
