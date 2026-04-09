@@ -274,6 +274,7 @@ Item {
     }
 
     root.loading = true
+    root.stationName = ""
 
     if (root.dataSource === "aqicn") {
       if (!root.aqicnToken) {
@@ -283,7 +284,7 @@ Item {
         return
       }
       var aqicnUrl = "https://api.waqi.info/feed/geo:" + lat + ";" + lon + "/?token=" + root.aqicnToken
-      Logger.d("Air Quality", "Fetching AQICN: " + aqicnUrl)
+      Logger.d("Air Quality", "Fetching AQICN data for geo:" + lat + ";" + lon)
       aqicnFetchProcess.command = ["curl", "-s", aqicnUrl]
       aqicnFetchProcess.running = true
     } else {

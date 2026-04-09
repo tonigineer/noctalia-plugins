@@ -54,6 +54,7 @@ ColumnLayout {
       currentKey: root.editDataSource
       onSelected: key => {
         root.editDataSource = key
+        if (key === "aqicn") root.editAqiScale = "us"
       }
     }
   }
@@ -94,6 +95,7 @@ ColumnLayout {
     NComboBox {
       Layout.preferredWidth: 180 * Style.uiScaleRatio
       Layout.preferredHeight: Style.baseWidgetSize
+      enabled: root.editDataSource !== "aqicn"
       model: [
         { key: "us", name: pluginApi?.tr("settings.aqiScaleUs") },
         { key: "eu", name: pluginApi?.tr("settings.aqiScaleEu") }
@@ -197,7 +199,7 @@ ColumnLayout {
 
     pluginApi.saveSettings()
 
-    // Only refresh if location or scale changed
+    // Only refresh if location, scale, or data source changed
     if (locationChanged || scaleChanged || dataSourceChanged) {
       root.pluginApi.mainInstance?.refresh()
     }

@@ -54,8 +54,7 @@
     "refresh": "Refresh",
     "settings": "Settings",
     "noData": "No data available",
-    "loading": "Loading...",
-    "station": "Station"
+    "loading": "Loading..."
   },
   "settings": {
     "aqiScale": "AQI Scale",
