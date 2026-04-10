@@ -78,8 +78,8 @@ Item {
 
             onEntered: {
                 var text = unreadCount > 0
-                    ? (pluginApi?.tr("widget.tooltipWithCount") || "%1 unread").replace("%1", unreadCount)
-                    : (pluginApi?.tr("widget.tooltip") || "ntfy Notifications");
+                    ? pluginApi?.tr("widget.tooltipWithCount").replace("%1", unreadCount)
+                    : pluginApi?.tr("widget.tooltip");
                 TooltipService.show(root, text, BarService.getTooltipDirection());
             }
 

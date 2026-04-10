@@ -36,11 +36,11 @@ Item {
 
     function priorityLabel(priority) {
         switch (priority) {
-            case 1: return pluginApi?.tr("priority.min") || "Min"
-            case 2: return pluginApi?.tr("priority.low") || "Low"
-            case 3: return pluginApi?.tr("priority.default") || "Default"
-            case 4: return pluginApi?.tr("priority.high") || "High"
-            case 5: return pluginApi?.tr("priority.urgent") || "Urgent"
+            case 1: return pluginApi?.tr("priority.min")
+            case 2: return pluginApi?.tr("priority.low")
+            case 3: return pluginApi?.tr("priority.default")
+            case 4: return pluginApi?.tr("priority.high")
+            case 5: return pluginApi?.tr("priority.urgent")
             default: return ""
         }
     }
@@ -50,17 +50,17 @@ Item {
         var now = Math.floor(Date.now() / 1000);
         var diff = now - unixTime;
 
-        if (diff < 60) return pluginApi?.tr("panel.timeNow") || "now";
+        if (diff < 60) return pluginApi?.tr("panel.timeNow");
         if (diff < 3600) {
             var mins = Math.floor(diff / 60);
-            return (pluginApi?.tr("panel.timeMinutes") || "%1m ago").replace("%1", mins);
+            return pluginApi?.tr("panel.timeMinutes").replace("%1", mins);
         }
         if (diff < 86400) {
             var hours = Math.floor(diff / 3600);
-            return (pluginApi?.tr("panel.timeHours") || "%1h ago").replace("%1", hours);
+            return pluginApi?.tr("panel.timeHours").replace("%1", hours);
         }
         var days = Math.floor(diff / 86400);
-        return (pluginApi?.tr("panel.timeDays") || "%1d ago").replace("%1", days);
+        return pluginApi?.tr("panel.timeDays").replace("%1", days);
     }
 
     Rectangle {
@@ -92,7 +92,7 @@ Item {
                     }
 
                     NText {
-                        text: pluginApi?.tr("panel.title") || "ntfy Notifications"
+                        text: pluginApi?.tr("panel.title")
                         pointSize: Style.fontSizeL
                         font.weight: Style.fontWeightBold
                         color: Color.mOnSurface
@@ -101,7 +101,7 @@ Item {
 
                     NIconButton {
                         icon: "circle-check"
-                        tooltipText: pluginApi?.tr("panel.markAllRead") || "Mark all as read"
+                        tooltipText: pluginApi?.tr("panel.markAllRead")
                         baseSize: Style.baseWidgetSize * 0.8
                         onClicked: {
                             if (main) main.markAllAsRead();
@@ -110,7 +110,7 @@ Item {
 
                     NIconButton {
                         icon: "refresh"
-                        tooltipText: pluginApi?.tr("panel.refresh") || "Refresh"
+                        tooltipText: pluginApi?.tr("panel.refresh")
                         baseSize: Style.baseWidgetSize * 0.8
                         onClicked: {
                             if (main) main.pollMessages();
@@ -119,7 +119,7 @@ Item {
 
                     NIconButton {
                         icon: "x"
-                        tooltipText: pluginApi?.tr("panel.close") || "Close"
+                        tooltipText: pluginApi?.tr("panel.close")
                         baseSize: Style.baseWidgetSize * 0.8
                         onClicked: {
                             if (pluginApi)
@@ -199,7 +199,7 @@ Item {
                             }
 
                             NText {
-                                text: pluginApi?.tr("panel.loading") || "Loading..."
+                                text: pluginApi?.tr("panel.loading")
                                 pointSize: Style.fontSizeM
                                 color: Color.mOnSurfaceVariant
                                 Layout.alignment: Qt.AlignHCenter
@@ -228,14 +228,14 @@ Item {
                             }
 
                             NText {
-                                text: pluginApi?.tr("panel.noTopics") || "No topics configured"
+                                text: pluginApi?.tr("panel.noTopics")
                                 pointSize: Style.fontSizeL
                                 color: Color.mOnSurfaceVariant
                                 Layout.alignment: Qt.AlignHCenter
                             }
 
                             NText {
-                                text: pluginApi?.tr("panel.noTopicsHint") || "Open settings to add topics."
+                                text: pluginApi?.tr("panel.noTopicsHint")
                                 pointSize: Style.fontSizeS
                                 color: Color.mOnSurfaceVariant
                                 wrapMode: Text.Wrap
@@ -266,14 +266,14 @@ Item {
                             }
 
                             NText {
-                                text: pluginApi?.tr("panel.empty") || "No notifications yet"
+                                text: pluginApi?.tr("panel.empty")
                                 pointSize: Style.fontSizeL
                                 color: Color.mOnSurfaceVariant
                                 Layout.alignment: Qt.AlignHCenter
                             }
 
                             NText {
-                                text: pluginApi?.tr("panel.emptyHint") || "Notifications will appear here."
+                                text: pluginApi?.tr("panel.emptyHint")
                                 pointSize: Style.fontSizeS
                                 color: Color.mOnSurfaceVariant
                                 wrapMode: Text.Wrap
@@ -313,7 +313,7 @@ Item {
                                         visible: !messageItem.isRead
                                         width: 8
                                         height: 8
-                                        radius: 4
+                                        radius: width / 2
                                         color: Color.mPrimary
                                         Layout.alignment: Qt.AlignVCenter
                                     }
@@ -423,7 +423,7 @@ Item {
 
                                     NButton {
                                         visible: modelData.click && modelData.click.length > 0
-                                        text: pluginApi?.tr("panel.openLink") || "Open"
+                                        text: pluginApi?.tr("panel.openLink")
                                         onClicked: Qt.openUrlExternally(modelData.click)
                                     }
 
@@ -431,7 +431,7 @@ Item {
 
                                     NButton {
                                         visible: !messageItem.isRead
-                                        text: pluginApi?.tr("panel.markRead") || "Mark read"
+                                        text: pluginApi?.tr("panel.markRead")
                                         onClicked: {
                                             if (main) main.markAsRead(modelData.id);
                                         }

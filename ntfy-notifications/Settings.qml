@@ -68,9 +68,9 @@ ColumnLayout {
         description: pluginApi?.tr("settings.auth.desc")
         minimumWidth: 200
         model: [
-            { "key": "none", "name": pluginApi?.tr("settings.auth.none") || "None" },
-            { "key": "token", "name": pluginApi?.tr("settings.auth.token") || "Access Token" },
-            { "key": "basic", "name": pluginApi?.tr("settings.auth.basic") || "Username & Password" }
+            { "key": "none", "name": pluginApi?.tr("settings.auth.none") },
+            { "key": "token", "name": pluginApi?.tr("settings.auth.token") },
+            { "key": "basic", "name": pluginApi?.tr("settings.auth.basic") }
         ]
         currentKey: root.editAuthMethod
         onSelected: key => {
