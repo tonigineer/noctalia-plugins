@@ -21,7 +21,7 @@
   },
   "toast": {
     "title": "Monitor-Profile",
-    "switched": "Gewechselt zu",
+    "switched": "Gewechselt zu {profile}",
     "error": "Profilwechsel fehlgeschlagen"
   }
 }

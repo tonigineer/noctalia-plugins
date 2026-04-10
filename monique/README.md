@@ -17,12 +17,3 @@ Switch monitor profiles from the Noctalia bar. Shows the active profile as a too
 - [Noctalia](https://github.com/arian-fallahpour/noctalia) ≥ 4.0.0
 - [Monique](https://github.com/ToRvaLDz/monique) installed and available in `$PATH`
 
-## Installation
-
-Copy or symlink the `monique/` folder into your Noctalia plugins directory:
-
-```bash
-ln -s ~/path/to/noctalia-monique/monique ~/.config/noctalia/plugins/monique
-```
-
-Then add the widget to your bar from the Noctalia settings.

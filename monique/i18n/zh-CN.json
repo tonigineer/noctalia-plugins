@@ -21,7 +21,7 @@
   },
   "toast": {
     "title": "显示器配置",
-    "switched": "已切换至",
+    "switched": "已切换至 {profile}",
     "error": "切换配置失败"
   }
 }
