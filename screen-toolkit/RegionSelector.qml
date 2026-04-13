@@ -59,45 +59,34 @@ Variants {
                     if (!m) continue
                     var rw = parseInt(m[3]), rh = parseInt(m[4])
                     if (rw < 10 || rh < 10) continue
-                    regions.push({ 
-                        x: parseInt(m[1]), 
-                        y: parseInt(m[2]), 
-                        w: rw, 
-                        h: rh, 
-                        title: m[5].trim() 
+                    regions.push({
+                        x: parseInt(m[1]),
+                        y: parseInt(m[2]),
+                        w: rw,
+                        h: rh,
+                        title: m[5].trim()
                     })
                 }
                 selectorVariants.windowRegions = regions
                 selectorVariants.windowRegionsFetched = true
             }
         }
-        property bool animateSelection: true
-        property real targetX: 0; property real targetY: 0
-        property real targetW: 0; property real targetH: 0
-        property real selX: 0; property real selY: 0
-        property real selW: 0; property real selH: 0
-        Behavior on selX { enabled: win.animateSelection; SpringAnimation { spring: 5; damping: 0.6 } }
-        Behavior on selY { enabled: win.animateSelection; SpringAnimation { spring: 5; damping: 0.6 } }
-        Behavior on selW { enabled: win.animateSelection; SpringAnimation { spring: 5; damping: 0.6 } }
-        Behavior on selH { enabled: win.animateSelection; SpringAnimation { spring: 5; damping: 0.6 } }
-        onSelXChanged: guides.requestPaint()
-        onSelYChanged: guides.requestPaint()
-        onSelWChanged: guides.requestPaint()
-        onSelHChanged: guides.requestPaint()
-        property real mouseX: 0; property real mouseY: 0
+        property real selX: 0
+        property real selY: 0
+        property real selW: 0
+        property real selH: 0
+        property real mouseX: 0
+        property real mouseY: 0
         property point startPos
         property bool dragging: false
-        Timer {
-            id: dragSyncTimer; interval: 16; repeat: true; running: win.dragging
-            onTriggered: {
-                win.selX = win.targetX; win.selY = win.targetY
-                win.selW = win.targetW; win.selH = win.targetH
-            }
-        }
         property real fadeOpacity: 0.0
         NumberAnimation {
-            id: fadeIn; target: win; property: "fadeOpacity"
-            from: 0.0; to: 1.0; duration: 150; easing.type: Easing.OutCubic
+            id: fadeIn
+            target: win
+            property: "fadeOpacity"
+            from: 0.0; to: 1.0
+            duration: 150
+            easing.type: Easing.OutCubic
         }
         onVisibleChanged: {
             if (visible) {
@@ -125,23 +114,23 @@ Variants {
                         "fi"
                     ]
                 })
-                fadeOpacity = 0.0; dragging = false
-                animateSelection = false
+                fadeOpacity = 0.0
+                dragging = false
                 selX = 0; selY = 0; selW = 0; selH = 0
-                targetX = 0; targetY = 0; targetW = 0; targetH = 0
-                animateSelection = true
                 fadeIn.restart()
             } else {
-                fadeIn.stop(); dragging = false
+                fadeIn.stop()
+                dragging = false
             }
         }
-
         property var pendingCapture: null
         Timer {
-            id: captureDelay; interval: 80; repeat: false
+            id: captureDelay
+            interval: 80; repeat: false
             onTriggered: {
                 if (win.pendingCapture) {
-                    var p = win.pendingCapture; win.pendingCapture = null
+                    var p = win.pendingCapture
+                    win.pendingCapture = null
                     selectorVariants.regionSelected(p.x, p.y, p.w, p.h, p.screen)
                 }
             }
@@ -157,16 +146,19 @@ Variants {
             return -1
         }
         ShaderEffect {
-            anchors.fill: parent; z: 0; opacity: win.fadeOpacity
+            anchors.fill: parent
+            z: 0
+            opacity: win.fadeOpacity
             property vector4d selectionRect: Qt.vector4d(win.selX, win.selY, win.selW, win.selH)
             property real dimOpacity: 0.72
             property vector2d screenSize: Qt.vector2d(win.width, win.height)
             fragmentShader: Qt.resolvedUrl("dimming.frag.qsb")
         }
-
         Canvas {
             id: guides
-            anchors.fill: parent; z: 2; opacity: win.fadeOpacity
+            anchors.fill: parent
+            z: 2
+            opacity: win.fadeOpacity
             onPaint: {
                 var ctx = getContext("2d")
                 ctx.clearRect(0, 0, width, height)
@@ -213,10 +205,10 @@ Variants {
                     ctx.setLineDash([])
                     ctx.strokeStyle = "rgba(255,255,255,0.15)"; ctx.lineWidth = 0.5
                     ctx.beginPath()
-                    ctx.moveTo(sx + sw/3,   sy);       ctx.lineTo(sx + sw/3,   sy + sh)
-                    ctx.moveTo(sx + 2*sw/3, sy);       ctx.lineTo(sx + 2*sw/3, sy + sh)
-                    ctx.moveTo(sx,          sy + sh/3); ctx.lineTo(sx + sw,    sy + sh/3)
-                    ctx.moveTo(sx,          sy+2*sh/3); ctx.lineTo(sx + sw,    sy+2*sh/3)
+                    ctx.moveTo(sx + sw/3,   sy);        ctx.lineTo(sx + sw/3,   sy + sh)
+                    ctx.moveTo(sx + 2*sw/3, sy);        ctx.lineTo(sx + 2*sw/3, sy + sh)
+                    ctx.moveTo(sx,          sy + sh/3); ctx.lineTo(sx + sw,     sy + sh/3)
+                    ctx.moveTo(sx,          sy+2*sh/3); ctx.lineTo(sx + sw,     sy+2*sh/3)
                     ctx.stroke()
                     ctx.strokeStyle = "rgba(0,0,0,0.6)"; ctx.lineWidth = 3
                     ctx.strokeRect(sx, sy, sw, sh)
@@ -241,7 +233,9 @@ Variants {
         }
         Rectangle {
             readonly property real dpr: win.screen?.devicePixelRatio ?? 1.0
-            visible: win.selW > 30 && win.selH > 10; z: 10; opacity: win.fadeOpacity
+            visible: win.selW > 30 && win.selH > 10
+            z: 10
+            opacity: win.fadeOpacity
             width: _szText.implicitWidth + Style.marginL
             height: Style.controlHeightS
             radius: Style.controlHeightS / 2
@@ -249,66 +243,73 @@ Variants {
             border.color: Qt.rgba(1, 1, 1, 0.2); border.width: 1
             x: Math.max(4, Math.min(win.selX + win.selW/2 - width/2, win.width - width - 4))
             y: win.selY > 48 ? win.selY - height - Style.marginS : win.selY + win.selH + Style.marginS
-            Behavior on x { NumberAnimation { duration: 80; easing.type: Easing.OutCubic } }
-            Behavior on y { NumberAnimation { duration: 80; easing.type: Easing.OutCubic } }
             NText {
-                id: _szText; anchors.centerIn: parent; font.weight: Font.Bold
+                id: _szText
+                anchors.centerIn: parent
+                font.weight: Font.Bold
                 text: Math.round(win.selW * parent.dpr) + " × " + Math.round(win.selH * parent.dpr)
-                color: "white"; pointSize: Style.fontSizeXS
+                color: "white"
+                pointSize: Style.fontSizeXS
             }
         }
         Rectangle {
-            visible: !win.dragging && win.selW < 4; z: 10; opacity: win.fadeOpacity
+            visible: !win.dragging && win.selW < 4
+            z: 10
+            opacity: win.fadeOpacity
             width: _coordText.implicitWidth + Style.marginM
             height: Style.controlHeightXXS
             radius: Style.radiusS
             color: Qt.rgba(0, 0, 0, 0.75)
             x: { var bx = win.mouseX + 20; return bx + width > win.width - 4 ? win.mouseX - width - 20 : bx }
             y: { var by = win.mouseY + 20; return by + height > win.height - 4 ? win.mouseY - height - 20 : by }
-            NText { id: _coordText; anchors.centerIn: parent
+            NText {
+                id: _coordText
+                anchors.centerIn: parent
                 text: Math.round(win.mouseX) + ", " + Math.round(win.mouseY)
-                color: Qt.rgba(1,1,1,0.9); pointSize: Style.fontSizeXS }
+                color: Qt.rgba(1,1,1,0.9)
+                pointSize: Style.fontSizeXS
+            }
         }
         Rectangle {
             anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter; bottomMargin: Style.marginXL }
-            z: 10; opacity: win.fadeOpacity * 0.9
+            z: 10
+            opacity: win.fadeOpacity * 0.9
             width: _hintRow.implicitWidth + Style.marginXL
             height: Style.controlHeightS
             radius: Style.controlHeightS / 2
             color: Qt.rgba(0, 0, 0, 0.75)
             border.color: Qt.rgba(1,1,1,0.1); border.width: 1
             Row {
-                id: _hintRow; anchors.centerIn: parent; spacing: 0
+                id: _hintRow
+                anchors.centerIn: parent
+                spacing: 0
                 NText { text: pluginApi?.tr("regionSelector.drag");        color: Qt.rgba(1,1,1,0.7); pointSize: Style.fontSizeXS; font.weight: Font.Bold }
-                NText { text: pluginApi?.tr("regionSelector.toSelect");    color: Qt.rgba(1,1,1,0.4);  pointSize: Style.fontSizeXS }
-                // Window snap hint — hidden on Niri since window detection is unreliable there
+                NText { text: pluginApi?.tr("regionSelector.toSelect");    color: Qt.rgba(1,1,1,0.4); pointSize: Style.fontSizeXS }
                 Item { width: Style.marginL; height: 1; visible: !selectorVariants.isNiri }
                 Rectangle { width: 1; height: 14; color: Qt.rgba(1,1,1,0.25); anchors.verticalCenter: parent.verticalCenter; visible: !selectorVariants.isNiri }
                 Item { width: Style.marginL; height: 1; visible: !selectorVariants.isNiri }
                 NText { text: pluginApi?.tr("regionSelector.clickWindow"); color: Qt.rgba(1,1,1,0.7); pointSize: Style.fontSizeXS; font.weight: Font.Bold; visible: !selectorVariants.isNiri }
-                NText { text: pluginApi?.tr("regionSelector.toSnap");      color: Qt.rgba(1,1,1,0.4);  pointSize: Style.fontSizeXS; visible: !selectorVariants.isNiri }
+                NText { text: pluginApi?.tr("regionSelector.toSnap");      color: Qt.rgba(1,1,1,0.4); pointSize: Style.fontSizeXS; visible: !selectorVariants.isNiri }
                 Item { width: Style.marginL; height: 1 }
                 Rectangle { width: 1; height: 14; color: Qt.rgba(1,1,1,0.25); anchors.verticalCenter: parent.verticalCenter }
                 Item { width: Style.marginL; height: 1 }
                 NText { text: pluginApi?.tr("regionSelector.esc");         color: Qt.rgba(1,1,1,0.7); pointSize: Style.fontSizeXS; font.weight: Font.Bold }
-                NText { text: pluginApi?.tr("regionSelector.toCancel");    color: Qt.rgba(1,1,1,0.4);  pointSize: Style.fontSizeXS }
+                NText { text: pluginApi?.tr("regionSelector.toCancel");    color: Qt.rgba(1,1,1,0.4); pointSize: Style.fontSizeXS }
             }
         }
         MouseArea {
-            anchors.fill: parent; z: 3; hoverEnabled: true
+            anchors.fill: parent
+            z: 3
+            hoverEnabled: true
             acceptedButtons: Qt.LeftButton | Qt.RightButton
             cursorShape: Qt.CrossCursor
             onPressed: (mouse) => {
                 if (mouse.button === Qt.RightButton) {
                     selectorVariants.hide(); selectorVariants.cancelled(); return
                 }
-                win.animateSelection = false
                 win.startPos = Qt.point(mouse.x, mouse.y)
-                win.targetX = mouse.x; win.targetY = mouse.y
-                win.targetW = 0;       win.targetH = 0
-                win.selX = mouse.x;    win.selY = mouse.y
-                win.selW = 0;          win.selH = 0
-                win.animateSelection = true
+                win.selX = mouse.x; win.selY = mouse.y
+                win.selW = 0;       win.selH = 0
                 win.dragging = true
                 guides.requestPaint()
             }
@@ -316,10 +317,10 @@ Variants {
                 win.mouseX = mouse.x; win.mouseY = mouse.y
                 guides.requestPaint()
                 if (win.dragging) {
-                    win.targetX = Math.min(win.startPos.x, mouse.x)
-                    win.targetY = Math.min(win.startPos.y, mouse.y)
-                    win.targetW = Math.abs(mouse.x - win.startPos.x)
-                    win.targetH = Math.abs(mouse.y - win.startPos.y)
+                    win.selX = Math.min(win.startPos.x, mouse.x)
+                    win.selY = Math.min(win.startPos.y, mouse.y)
+                    win.selW = Math.abs(mouse.x - win.startPos.x)
+                    win.selH = Math.abs(mouse.y - win.startPos.y)
                 }
             }
             onReleased: (mouse) => {
@@ -366,3 +367,4 @@ Variants {
         }
     }
 }
+
