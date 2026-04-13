@@ -7,7 +7,7 @@ A Noctalia bar widget that displays a short message — either custom text, a ra
 - **just text** — type anything, it shows up in the bar
 - **List mode** — picks a random line from a text file each time the wallpaper changes
 - **Fortune mode** — shows a random quote from `fortune -s` instead
-- **Wallpaper-triggered refresh** — when list or fortune mode is on, a new entry is picked each time the wallpaper changes
+- **Wallpaper-triggered refresh** — when list or fortune mode is on, a new entry is picked each time the wallpaper changes (can be disabled to pick once per session)
 - **Fortune options** — optionally filter by category (e.g. `computers`), enable offensive quotes (`-o`), or equalise category probability (`-e`)
 - Click the widget to open settings directly
 
@@ -21,5 +21,28 @@ Lines starting with `# ` (hash + space) and blank lines are ignored, so `#hashta
 
 ## Fortune mode
 
-Requires `fortune` to be installed.
-Quotes are filtered to single-line entries of 60 characters or fewer. If no suitable quote is found after 10 attempts, the widget displays `(╯°□°）╯︵ ┻━┻`.
+Requires `fortune` to be installed:
+
+```bash
+# Arch
+sudo pacman -S fortune-mod
+
+# Debian/Ubuntu
+sudo apt install fortune-mod
+```
+
+Quotes are filtered to single-line entries up to a configurable character limit (default: 60). If no suitable quote is found after 10 attempts, the widget displays `(╯°□°）╯︵ ┻━┻`.
+
+## Settings
+
+| Key | Type | Default | Description |
+|---|---|---|---|
+| `text` | string | `"Hello"` | Static text shown in the bar (just text mode) |
+| `fortuneEnabled` | bool | `false` | Enable fortune mode |
+| `fortuneCategory` | string | `""` | Limit fortune to a specific category (e.g. `computers`) |
+| `fortuneMaxLength` | int | `60` | Maximum character length a fortune quote may have |
+| `fortuneOffensive` | bool | `false` | Also draw from the offensive fortune database (`-o`) |
+| `fortuneEqual` | bool | `false` | Give all categories equal probability regardless of size (`-e`) |
+| `listEnabled` | bool | `false` | Enable list mode |
+| `textFile` | string | `""` | Path to a text file; falls back to bundled `examples.txt` if empty |
+| `refreshOnWallpaper` | bool | `true` | Pick a new entry when the wallpaper changes; disable to pick once per session |

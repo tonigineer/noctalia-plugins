@@ -14,8 +14,10 @@ Item {
     readonly property bool fortuneOffensive: cfg.fortuneOffensive ?? defaults.fortuneOffensive ?? false
     readonly property bool fortuneEqual: cfg.fortuneEqual ?? defaults.fortuneEqual ?? false
     readonly property string fortuneCategory: cfg.fortuneCategory ?? defaults.fortuneCategory ?? ""
+    readonly property int fortuneMaxLength: cfg.fortuneMaxLength ?? defaults.fortuneMaxLength ?? 60
     readonly property bool listEnabled: cfg.listEnabled ?? defaults.listEnabled ?? false
     readonly property string textFile: cfg.textFile ?? defaults.textFile ?? ""
+    readonly property bool refreshOnWallpaper: cfg.refreshOnWallpaper ?? defaults.refreshOnWallpaper ?? true
 
     property string fortuneText: ""
     property int _retries: 0
@@ -68,6 +70,7 @@ Item {
     Connections {
         target: WallpaperService
         function onWallpaperChanged(screenName, path) {
+            if (!root.refreshOnWallpaper) return;
             if (root.fortuneEnabled || root.listEnabled) debounce.restart();
         }
     }
@@ -85,7 +88,7 @@ Item {
         stdout: StdioCollector {
             onStreamFinished: {
                 var lines = text.trim().split('\n').filter(l => l.trim().length > 0);
-                var valid = lines.length === 1 && lines[0].length <= 60;
+                var valid = lines.length === 1 && lines[0].length <= root.fortuneMaxLength;
                 if (valid) {
                     root.fortuneText = lines[0].trim();
                     root._retries = 0;
@@ -94,7 +97,7 @@ Item {
                     root.triggerFortune();
                 } else {
                     Logger.w("NotJustText", "Gave up after", root._maxRetries, "retries finding a short single-line fortune");
-                    root.fortuneText = "(╯°□°）╯︵ ┻━┻";
+                    root.fortuneText = root.pluginApi?.tr("fortune.gaveUp");
                     root._retries = 0;
                 }
             }
@@ -102,7 +105,7 @@ Item {
         onExited: (exitCode, exitStatus) => {
             if (exitCode === 127) {
                 Logger.e("NotJustText", "fortune is not installed — install it to use fortune mode");
-                root.fortuneText = "⚠ fortune not installed";
+                root.fortuneText = root.pluginApi?.tr("fortune.notInstalled");
             } else if (exitCode !== 0) {
                 Logger.w("NotJustText", "fortune exited with code", exitCode);
             }

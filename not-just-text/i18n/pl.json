@@ -2,6 +2,10 @@
   "menu": {
     "settings": "Ustawienia widżetu"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune nie jest zainstalowany",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "Tylko tekst",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "Kategoria",
       "desc": "Ogranicz cytaty do określonej kategorii fortune (np. computers, science)"
+    },
+    "fortuneMaxLength": {
+      "label": "Maks. długość cytatu: {value}",
+      "desc": "Maksymalna liczba znaków, jaką może mieć cytat fortune"
     },
     "fortuneOffensive": {
       "label": "Uwzględnij obraźliwe (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "Plik tekstowy",
       "desc": "Ścieżka do pliku tekstowego z jednym wpisem w każdym wierszu. Jako punkt startowy skorzystaj z examples.txt."
+    },
+    "refreshOnWallpaper": {
+      "label": "Odświeżaj przy zmianie tapety",
+      "desc": "Wybiera nowy tekst po zmianie tapety. Wyłącz, aby wybierać tylko raz na sesję."
     }
   }
 }

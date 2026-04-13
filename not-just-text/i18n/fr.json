@@ -2,6 +2,10 @@
   "menu": {
     "settings": "Paramètres du widget"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune non installé",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "Texte simple",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "Catégorie",
       "desc": "Limiter les citations à une catégorie fortune spécifique (ex. computers, science)"
+    },
+    "fortuneMaxLength": {
+      "label": "Longueur max. de citation : {value}",
+      "desc": "Nombre maximum de caractères qu'une citation fortune peut contenir"
     },
     "fortuneOffensive": {
       "label": "Inclure les offensants (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "Fichier texte",
       "desc": "Chemin vers un fichier texte avec une entrée par ligne. Voir examples.txt pour commencer."
+    },
+    "refreshOnWallpaper": {
+      "label": "Actualiser au changement de fond d'écran",
+      "desc": "Choisir un nouveau texte lors du changement de fond d'écran. Désactiver pour ne choisir qu'une fois par session."
     }
   }
 }

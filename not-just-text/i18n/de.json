@@ -2,6 +2,10 @@
   "menu": {
     "settings": "Widget-Einstellungen"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune nicht installiert",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "Nur Text",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "Kategorie",
       "desc": "Zitate auf eine bestimmte fortune-Kategorie beschränken (z. B. computers, science)"
+    },
+    "fortuneMaxLength": {
+      "label": "Max. Zitatlänge: {value}",
+      "desc": "Maximale Zeichenanzahl, die ein fortune-Zitat haben darf"
     },
     "fortuneOffensive": {
       "label": "Anstößige einschließen (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "Textdatei",
       "desc": "Pfad zu einer Textdatei mit einem Eintrag pro Zeile. Unter examples.txt findest du eine Vorlage."
+    },
+    "refreshOnWallpaper": {
+      "label": "Bei Hintergrundbildwechsel aktualisieren",
+      "desc": "Neuen Text auswählen, wenn das Hintergrundbild wechselt. Deaktivieren, um den Text nur einmal pro Sitzung zu wählen."
     }
   }
 }

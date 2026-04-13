@@ -2,6 +2,10 @@
   "menu": {
     "settings": "Widget beállítások"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune nincs telepítve",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "Csak szöveg",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "Kategória",
       "desc": "Idézetek korlátozása egy adott fortune kategóriára (pl. computers, science)"
+    },
+    "fortuneMaxLength": {
+      "label": "Max. idézethossz: {value}",
+      "desc": "A fortune-idézet maximálisan megengedett karakterszáma"
     },
     "fortuneOffensive": {
       "label": "Sértő tartalom (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "Szövegfájl",
       "desc": "Szövegfájl elérési útja, soronként egy bejegyzéssel. Kiindulópontként lásd az examples.txt fájlt."
+    },
+    "refreshOnWallpaper": {
+      "label": "Frissítés háttérkép-váltáskor",
+      "desc": "Új szöveg választása háttérkép-váltáskor. Letiltva munkamenetenként csak egyszer választ."
     }
   }
 }

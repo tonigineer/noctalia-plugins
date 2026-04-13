@@ -2,6 +2,10 @@
   "menu": {
     "settings": "ウィジェット設定"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune がインストールされていません",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "テキストのみ",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "カテゴリー",
       "desc": "引用を特定のfortuneカテゴリーに限定する（例：computers、science）"
+    },
+    "fortuneMaxLength": {
+      "label": "引用の最大文字数：{value}",
+      "desc": "fortuneの引用に許可される最大文字数"
     },
     "fortuneOffensive": {
       "label": "不適切な内容を含む (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "テキストファイル",
       "desc": "1行に1エントリのテキストファイルへのパス。examples.txtを参照してください。"
+    },
+    "refreshOnWallpaper": {
+      "label": "壁紙変更時に更新",
+      "desc": "壁紙が変わるたびに新しいテキストを選択します。無効にするとセッションごとに一度だけ選択します。"
     }
   }
 }

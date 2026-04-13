@@ -2,6 +2,10 @@
   "menu": {
     "settings": "Widget-instellingen"
   },
+  "fortune": {
+    "notInstalled": "⚠ fortune niet geïnstalleerd",
+    "gaveUp": "(╯°□°）╯︵ ┻━┻"
+  },
   "settings": {
     "text": {
       "label": "Gewoon tekst",
@@ -14,6 +18,10 @@
     "fortuneCategory": {
       "label": "Categorie",
       "desc": "Beperk citaten tot een specifieke fortune-categorie (bijv. computers, science)"
+    },
+    "fortuneMaxLength": {
+      "label": "Max. citatlengte: {value}",
+      "desc": "Maximum aantal tekens dat een fortune-citaat mag bevatten"
     },
     "fortuneOffensive": {
       "label": "Aanstootgevend inschakelen (-o)",
@@ -30,6 +38,10 @@
     "textFile": {
       "label": "Tekstbestand",
       "desc": "Pad naar een tekstbestand met één item per regel. Zie examples.txt als startpunt."
+    },
+    "refreshOnWallpaper": {
+      "label": "Vernieuwen bij achtergrondwijziging",
+      "desc": "Kies een nieuwe tekst wanneer de achtergrond verandert. Uitschakelen om slechts één keer per sessie te kiezen."
     }
   }
 }
