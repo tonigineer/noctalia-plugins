@@ -55,6 +55,7 @@ Item {
   property bool tailscaleRunning: false
   property string tailscaleIp: ""
   property string tailscaleStatus: ""
+  property bool needsLogin: false
   property int peerCount: 0
   property bool isRefreshing: false
   property string lastToggleAction: ""
@@ -153,8 +154,15 @@ Item {
         try {
           var data = JSON.parse(stdout);
           root.tailscaleRunning = data.BackendState === "Running";
+          root.needsLogin = data.BackendState === "NeedsLogin";
 
-          if (root.tailscaleRunning && data.Self && data.Self.TailscaleIPs && data.Self.TailscaleIPs.length > 0) {
+          if (root.needsLogin) {
+            root.tailscaleIp = "";
+            root.tailscaleStatus = "NeedsLogin";
+            root.peerCount = 0;
+            root._realPeerList = [];
+            root.exitNodeStatus = null;
+          } else if (root.tailscaleRunning && data.Self && data.Self.TailscaleIPs && data.Self.TailscaleIPs.length > 0) {
             root.tailscaleIp = filterIPv4(data.Self.TailscaleIPs)[0] || data.Self.TailscaleIPs[0];
             root.tailscaleStatus = "Connected";
 
@@ -198,11 +206,13 @@ Item {
         } catch (e) {
           Logger.e("Tailscale", "Failed to parse status: " + e);
           root.tailscaleRunning = false;
+          root.needsLogin = false;
           root.tailscaleStatus = "Error";
           root._realPeerList = [];
         }
       } else {
         root.tailscaleRunning = false;
+        root.needsLogin = false;
         root.tailscaleStatus = "Disconnected";
         root.tailscaleIp = "";
         root.peerCount = 0;
@@ -235,6 +245,50 @@ Item {
   }
 
   property string lastExitNodeAction: ""
+
+  property bool _loginUrlOpened: false
+
+  Process {
+    id: loginProcess
+
+    function _handleLine(data) {
+      if (root._loginUrlOpened) return;
+      var line = data.trim();
+      Logger.d("Tailscale", "Login output: " + line);
+      var urlMatch = line.match(/https?:\/\/\S+/);
+      if (urlMatch) {
+        root._loginUrlOpened = true;
+        Qt.openUrlExternally(urlMatch[0]);
+        ToastService.showNotice(
+          pluginApi?.tr("toast.title"),
+          pluginApi?.tr("toast.login-browser-opened"),
+          "external-link"
+        );
+      }
+    }
+
+    stdout: SplitParser {
+      onRead: data => loginProcess._handleLine(data)
+    }
+
+    stderr: SplitParser {
+      onRead: data => loginProcess._handleLine(data)
+    }
+
+    onExited: function (exitCode, exitStatus) {
+      Logger.d("Tailscale", "Login exited (code " + exitCode + "), urlOpened=" + root._loginUrlOpened);
+      if (exitCode !== 0 && !root._loginUrlOpened) {
+        ToastService.showError(
+          pluginApi?.tr("toast.title"),
+          pluginApi?.tr("toast.login-failed"),
+          "alert-circle"
+        );
+        Logger.e("Tailscale", "Login failed (exit " + exitCode + ")");
+      }
+      root._loginUrlOpened = false;
+      statusDelayTimer.start();
+    }
+  }
 
   // ─── Taildrop state ──────────────────────────────────────────────────────
 
@@ -455,6 +509,7 @@ Item {
   function updateTailscaleStatus() {
     if (!root.tailscaleInstalled) {
       root.tailscaleRunning = false;
+      root.needsLogin = false;
       root.tailscaleIp = "";
       root.tailscaleStatus = "Not installed";
       root.peerCount = 0;
@@ -478,6 +533,18 @@ Item {
       toggleProcess.command = ["tailscale", "up"];
     }
     toggleProcess.running = true;
+  }
+
+  function loginTailscale() {
+    if (!root.tailscaleInstalled)
+      return;
+    var loginServer = pluginApi?.pluginSettings?.loginServer || "";
+    var cmd = ["tailscale", "up", "--accept-routes"];
+    if (loginServer.trim() !== "") {
+      cmd.push("--login-server=" + loginServer.trim());
+    }
+    loginProcess.command = cmd;
+    loginProcess.running = true;
   }
 
   Timer {
@@ -519,12 +586,17 @@ Item {
         "running": root.tailscaleRunning,
         "ip": root.tailscaleIp,
         "status": root.tailscaleStatus,
-        "peers": root.peerCount
+        "peers": root.peerCount,
+        "needsLogin": root.needsLogin
       };
     }
 
     function refresh() {
       updateTailscaleStatus();
+    }
+
+    function login() {
+      loginTailscale();
     }
 
     // Taildrop IPC: qs ipc call plugin:tailscale receive

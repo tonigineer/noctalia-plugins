@@ -35,7 +35,8 @@
       "defaultPeerAction": "copy-ip",
       "taildropEnabled": true,
       "taildropDownloadDir": "~/Downloads",
-      "taildropReceiveMode": "operator"
+      "taildropReceiveMode": "operator",
+      "loginServer": ""
     }
   }
 }
