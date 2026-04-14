@@ -1656,7 +1656,7 @@
     {
       "id": "vscode-provider",
       "name": "VS Code Provider",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "official": false,
       "author": "Krendil",
       "description": "Open VS Code Folders and Workspaces",
@@ -1667,7 +1667,7 @@
         "Launcher",
         "Development"
       ],
-      "lastUpdated": "2026-03-15T17:16:29+01:00"
+      "lastUpdated": "2026-04-08T22:23:54+02:00"
     },
     {
       "id": "wallcards",
