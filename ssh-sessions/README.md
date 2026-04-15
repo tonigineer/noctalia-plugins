@@ -5,7 +5,7 @@ Manage SSH connections from `~/.ssh/config` with active session detection and la
 ## Features
 
 - **Bar Widget**: Shows active SSH session count with tooltip listing connected hosts
-- **Panel**: Host list with active/inactive status indicators and connect buttons
+- **Panel**: Host list with active/inactive status indicators, connect buttons, and fuzzy search with keyboard navigation
 - **Launcher**: Type `>ssh` to search and connect to hosts
 - **Auto-detection**: Parses `~/.ssh/config` automatically and watches for changes
 - **Session Monitoring**: Polls active SSH connections via `pgrep`, filters ProxyJump sub-processes
@@ -20,7 +20,7 @@ Active sessions are detected by polling `pgrep -af "ssh "` at a configurable int
 ## Usage
 
 - **Bar widget**: Left click to open panel, right click for context menu, middle click to refresh
-- **Panel**: Click the terminal icon next to any host to connect
+- **Panel**: Type to search hosts with fuzzy matching. Arrow keys to navigate, Enter to connect, Escape to clear search or close panel. Click the terminal icon to connect directly
 - **Launcher**: Open launcher, type `>ssh`, select a host to connect
 
 ## Settings

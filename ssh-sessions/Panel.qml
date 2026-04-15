@@ -17,6 +17,40 @@ Item {
   readonly property var mainInstance: pluginApi?.mainInstance
   readonly property int activeCount: mainInstance?.activeCount ?? 0
 
+  // Search state
+  property string searchQuery: ""
+  property int selectedIndex: -1
+
+  function getFilteredHosts() {
+    var hosts = root.mainInstance?.sortedHosts ?? []
+    if (!root.searchQuery || root.searchQuery.trim() === "") return hosts
+
+    var results = FuzzySort.go(root.searchQuery, hosts, {
+      keys: ["host.name", "host.hostname", "host.user"],
+      limit: 50
+    })
+    return results.map(function(r) { return r.obj })
+  }
+
+  function connectSelected() {
+    var filtered = getFilteredHosts()
+    if (root.selectedIndex >= 0 && root.selectedIndex < filtered.length) {
+      root.mainInstance?.connectToHost(filtered[root.selectedIndex].host.name)
+    }
+  }
+
+  onVisibleChanged: {
+    if (visible) {
+      root.searchQuery = ""
+      root.selectedIndex = -1
+      Qt.callLater(function() {
+        if (searchInput && searchInput.inputItem) {
+          searchInput.inputItem.forceActiveFocus()
+        }
+      })
+    }
+  }
+
   anchors.fill: parent
 
   Rectangle {
@@ -45,6 +79,40 @@ Item {
         color: root.activeCount > 0 ? Color.mPrimary : Color.mOnSurfaceVariant
       }
 
+      // ======== Search input ========
+      NTextInput {
+        id: searchInput
+        Layout.fillWidth: true
+        placeholderText: pluginApi?.tr("panel.search")
+        text: root.searchQuery
+        onTextChanged: {
+          root.searchQuery = text
+          root.selectedIndex = text.length > 0 ? 0 : -1
+        }
+
+        Keys.onDownPressed: {
+          var filtered = root.getFilteredHosts()
+          if (filtered.length > 0) {
+            root.selectedIndex = Math.min(root.selectedIndex + 1, filtered.length - 1)
+          }
+        }
+        Keys.onUpPressed: {
+          if (root.selectedIndex > 0) {
+            root.selectedIndex = root.selectedIndex - 1
+          }
+        }
+        Keys.onReturnPressed: root.connectSelected()
+        Keys.onEscapePressed: {
+          if (root.searchQuery !== "") {
+            root.searchQuery = ""
+            searchInput.text = ""
+            root.selectedIndex = -1
+          } else {
+            if (pluginApi) pluginApi.closePanel(pluginApi.panelOpenScreen)
+          }
+        }
+      }
+
       // ======== Scrollable host list ========
       NScrollView {
         id: hostScrollView
@@ -58,12 +126,14 @@ Item {
           spacing: Style.marginS
 
           Repeater {
-            model: root.mainInstance?.sortedHosts ?? []
+            model: root.getFilteredHosts()
 
             delegate: NBox {
               required property var modelData
+              required property int index
               Layout.fillWidth: true
               Layout.preferredHeight: hostRow.implicitHeight + Style.marginM * 2
+              color: index === root.selectedIndex ? Qt.alpha(Color.mPrimary, 0.15) : Color.mSurfaceVariant
 
               RowLayout {
                 id: hostRow
