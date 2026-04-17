@@ -169,6 +169,8 @@ Item {
 
     readonly property string defaultPeerAction: pluginApi?.pluginSettings?.defaultPeerAction || pluginApi?.manifest?.metadata?.defaultSettings?.defaultPeerAction || "copy-ip"
 
+    readonly property string adminConsoleUrl: mainInstance?.adminConsoleUrl || ""
+
     readonly property bool isTerminalConfigured: terminalCommand !== ""
 
     readonly property var sortedPeerList: {
@@ -484,8 +486,11 @@ Item {
                 visible: mainInstance?.netbirdRunning ?? false
                 text: pluginApi?.tr("panel.admin-console") || "Admin Console"
                 icon: "external-link"
+                enabled: root.adminConsoleUrl !== ""
                 onClicked: {
-                    Qt.openUrlExternally("https://app.netbird.io/");
+                    if (root.adminConsoleUrl !== "") {
+                        Qt.openUrlExternally(root.adminConsoleUrl);
+                    }
                 }
             }
 

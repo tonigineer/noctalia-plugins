@@ -23,7 +23,8 @@
       "showPing": false,
       "terminalCommand": "",
       "pingCount": 5,
-      "defaultPeerAction": "copy-ip"
+      "defaultPeerAction": "copy-ip",
+      "managementUrl": "https://app.netbird.io/"
     }
   }
 }

@@ -16,6 +16,8 @@
     "show-ping-desc": "Alle verbundenen Peers anpingen und die Latenz (ms) anzeigen. Die Aktualisierung erfolgt im gleichen Intervall wie der Status",
     "show-ping-warning": "Diese Funktion sendet bei jedem Aktualisierungsintervall ICMP-Pakete an jeden verbundenen Peer. Dies kann zu einer erhöhten Netzwerkauslastung und CPU-Belastung führen.",
     "terminal": "Terminal Konfiguration",
+    "management-url": "Management URL",
+    "management-url-desc": "Überschreibt die URL der Admin Konsole. Leer lassen für automatische Erkennung über den NetBird Status.",
     "terminal-detected": "Automatisch erkanntes Terminal",
     "terminal-none": "Es wurde kein Terminalemulator erkannt",
     "ping-count": "Anzahl der Pings",

@@ -16,6 +16,8 @@
 		"show-ping-desc": "Ping tous les pairs connectés et affiche la latence (ms). Se rafraîchit au même intervalle que le statut.",
 		"show-ping-warning": "Cette fonctionnalité envoie des paquets ICMP à chaque pair connecté à chaque intervalle de rafraîchissement. Cela peut augmenter l'utilisation du réseau et la charge CPU.",
 		"terminal": "Configuration du terminal",
+		"management-url": "URL de management",
+		"management-url-desc": "Remplace l'URL de la console d'administration. Laissez vide pour la détecter automatiquement depuis le statut NetBird.",
 		"terminal-detected": "Terminal auto-détecté",
 		"terminal-none": "Aucun émulateur de terminal détecté",
 		"ping-count": "Nombre de pings",

@@ -24,6 +24,8 @@ ColumnLayout {
 
     property string editTerminalCommand: pluginApi?.pluginSettings?.terminalCommand || pluginApi?.manifest?.metadata?.defaultSettings?.terminalCommand || ""
 
+    property string editManagementUrl: pluginApi?.pluginSettings?.managementUrl ?? pluginApi?.manifest?.metadata?.defaultSettings?.managementUrl ?? ""
+
     property string editDefaultPeerAction: pluginApi?.pluginSettings?.defaultPeerAction || pluginApi?.manifest?.metadata?.defaultSettings?.defaultPeerAction || "copy-ip"
 
     spacing: Style.marginM
@@ -147,6 +149,15 @@ ColumnLayout {
         onTextChanged: root.editTerminalCommand = text
     }
 
+    NTextInput {
+        Layout.fillWidth: true
+        label: pluginApi?.tr("settings.management-url") || "Management URL"
+        description: pluginApi?.tr("settings.management-url-desc") || "Override the Admin Console URL. Leave empty to auto-detect from NetBird status."
+        placeholderText: pluginApi?.manifest?.metadata?.defaultSettings?.managementUrl || "https://app.netbird.io/"
+        text: root.editManagementUrl
+        onTextChanged: root.editManagementUrl = text
+    }
+
     NLabel {
         label: pluginApi?.tr("settings.ping-count") || "Ping Count"
         description: (pluginApi?.tr("settings.ping-count-desc") || "Number of ping packets to send when testing connectivity") + " (" + root.editPingCount + ")"
@@ -207,6 +218,7 @@ ColumnLayout {
         pluginApi.pluginSettings.hideDisconnected = root.editHideDisconnected;
         pluginApi.pluginSettings.showPing = root.editShowPing;
         pluginApi.pluginSettings.terminalCommand = root.editTerminalCommand;
+        pluginApi.pluginSettings.managementUrl = root.editManagementUrl;
         pluginApi.pluginSettings.pingCount = root.editPingCount;
         pluginApi.pluginSettings.defaultPeerAction = root.editDefaultPeerAction;
 
