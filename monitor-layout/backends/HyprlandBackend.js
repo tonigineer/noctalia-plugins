@@ -1,6 +1,6 @@
 .pragma library
 // --- Backend interface ---
-// Every backend module must export the following three functions:
+// Every backend module must export the following functions:
 //
 //   buildFetchCommand(cfg, defaults) -> Array<string>
 //     Return the command (as an argv array) that reads the current output state.
@@ -12,6 +12,10 @@
 //   buildApplyCommand(outputs, cfg, defaults) -> { script } | { error }
 //     Build a shell script string that applies the given draft outputs.
 //     Return { error: string } if the command cannot be built.
+//
+//   buildConfigFileContent(outputs) -> { content } | { error }
+//     Build a config file snippet for the given outputs (for copy-to-config).
+//     Return { error: string } if the config cannot be built.
 // ---
 
 function extractSettings(cfg, defaults) {
