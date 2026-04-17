@@ -119,9 +119,26 @@ Item {
     return "unsupported";
   }
 
-  // --- Backend dispatch ---
+  // --- Backend interface ---
+  // Every backend module must export the following functions:
+  //
+  //   buildFetchCommand(cfg, defaults) -> Array<string>
+  //     Return the command (as an argv array) that reads the current output state.
+  //
+  //   parseOutputs(rawText) -> { outputs } | { error }
+  //     Parse the raw stdout text from the fetch command into a normalised array
+  //     of output objects. Return { error: string } on failure.
+  //
+  //   buildApplyCommand(outputs, cfg, defaults) -> { script } | { error }
+  //     Build a shell script string that applies the given draft outputs.
+  //     Return { error: string } if the command cannot be built.
+  //
+  //   buildConfigFileContent(outputs) -> { content } | { error }
+  //     Build a config file snippet for the given outputs (for copy-to-config).
+  //     Return { error: string } if the config cannot be built.
+  //
   // To add a new backend:
-  //   1. Create backends/MyBackend.js implementing the three-function interface.
+  //   1. Create backends/MyBackend.js implementing the interface above.
   //   2. Add: import "backends/MyBackend.js" as MyBackend  (top of file)
   //   3. Add a case for your backend id in each function below.
   // ---
