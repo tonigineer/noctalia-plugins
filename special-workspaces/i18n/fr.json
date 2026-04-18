@@ -1,0 +1,97 @@
+{
+  "menu": {
+    "settings": "Paramètres du widget"
+  },
+  "settings": {
+    "title": "Espaces de travail spéciaux",
+    "description": "Configurez les espaces de travail spéciaux affichés dans le widget de la barre.",
+    "drawer": {
+      "title": "Tiroir",
+      "label": "Afficher le tiroir",
+      "tooltip": "Masquer/afficher le tiroir.",
+      "mainIcon": {
+        "label": "Icône du tiroir",
+        "browseTooltip": "Parcourir les icônes"
+      },
+      "symbolColor": {
+        "label": "Couleur de l'icône",
+        "description": "Modifier la couleur de l'icône du tiroir."
+      },
+      "showPill": {
+        "label": "Afficher la pilule",
+        "description": "Afficher un cercle coloré derrière l'icône du tiroir."
+      },
+      "pillColor": {
+        "label": "Couleur de la pilule",
+        "description": "Modifier la couleur de la pilule du tiroir."
+      },
+      "focusColor": {
+        "label": "Couleur de focus",
+        "description": "Couleur du bouton du tiroir lorsqu'il est actif."
+      },
+      "borderRadius": {
+        "label": "Rayon du bouton",
+        "description": "Arrondi du bouton du tiroir ({value}%)."
+      },
+      "size": {
+        "label": "Taille",
+        "description": "Taille du bouton du tiroir ({value}%)."
+      },
+      "expandDirection": {
+        "label": "Direction d'extension",
+        "description": "La direction dans laquelle les pilules d'espace de travail s'étendent depuis le tiroir.",
+        "down": "Bas",
+        "up": "Haut",
+        "right": "Droite",
+        "left": "Gauche"
+      },
+      "panelBackground": {
+        "enabled": {
+          "label": "Arrière-plan du panneau",
+          "description": "Afficher un arrière-plan derrière le panneau flottant."
+        }
+      },
+      "panelBackgroundColor": {
+        "label": "Couleur d'arrière-plan du panneau",
+        "description": "Couleur d'arrière-plan du panneau flottant."
+      }
+    },
+    "workspaces": {
+      "title": "Espaces de travail",
+      "hideEmpty": {
+        "label": "Masquer les espaces de travail vides",
+        "description": "Masquer les espaces de travail dans le tiroir lorsqu'ils ne sont pas actifs."
+      },
+      "namePlaceholder": "Nom de l'espace de travail",
+      "iconPlaceholder": "Nom de l'icône",
+      "browseTooltip": "Parcourir les icônes",
+      "expandTooltip": "Afficher/masquer les options de style",
+      "removeTooltip": "Supprimer l'espace de travail",
+      "add": "Ajouter un espace de travail",
+      "symbolColor": {
+        "label": "Couleur de l'icône",
+        "description": "Modifier la couleur de l'icône de cet espace de travail."
+      },
+      "showPill": {
+        "label": "Afficher la pilule",
+        "description": "Afficher un cercle coloré derrière l'icône de cet espace de travail."
+      },
+      "pillColor": {
+        "label": "Couleur de la pilule",
+        "description": "Modifier la couleur de la pilule de cet espace de travail."
+      },
+      "size": {
+        "label": "Taille",
+        "description": "Taille du bouton de cet espace de travail ({value}%)."
+      },
+      "focusColor": {
+        "label": "Couleur de focus",
+        "description": "Couleur du bouton de cet espace de travail lorsqu'il est actif."
+      },
+      "borderRadius": {
+        "label": "Rayon du bouton",
+        "description": "Arrondi du bouton de cet espace de travail ({value}%)."
+      }
+    }
+  }
+}
