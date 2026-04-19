@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Io
 import qs.Commons
 import qs.Services.Compositor
+import qs.Services.UI
 
 Item {
   id: root
@@ -10,6 +11,10 @@ Item {
   property var pluginApi: null
 
   readonly property bool isNiri: CompositorService.isNiri
+
+  readonly property var cfg: pluginApi?.pluginSettings || ({})
+  readonly property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
+  readonly property string launcherPrefix: cfg.launcherPrefix ?? defaults.launcherPrefix ?? ">ws"
 
   property var workspaces: []
   readonly property var focusedWorkspace: {
@@ -185,6 +190,25 @@ Item {
 
   IpcHandler {
     target: "plugin:niri-workspaces"
+
+    // Mirrors the shell's `launcher emoji` toggle: open the launcher in
+    // workspace mode, close it if already in that mode, or switch modes if
+    // it's open on a different prefix.
+    function toggle() {
+      if (!pluginApi) return;
+      pluginApi.withCurrentScreen(screen => {
+        var prefix = root.launcherPrefix;
+        var searchText = PanelService.getLauncherSearchText(screen);
+        var isInWsMode = searchText.startsWith(prefix);
+        if (!PanelService.isLauncherOpen(screen)) {
+          PanelService.openLauncherWithSearch(screen, prefix + " ");
+        } else if (isInWsMode) {
+          PanelService.closeLauncher(screen);
+        } else {
+          PanelService.setLauncherSearchText(screen, prefix + " ");
+        }
+      }, Settings.data.appLauncher.overviewLayer);
+    }
 
     function renameCurrent(name: string) {
       root.renameCurrent(name);

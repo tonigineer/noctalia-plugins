@@ -34,11 +34,15 @@ Each workspace row shows action buttons on the right when selected:
 Bind these to Niri keybindings for direct access:
 
 ```sh
+# Open/close the launcher in workspace mode (mirrors the shell's `launcher emoji` toggle).
+qs ipc call plugin:niri-workspaces toggle
+
+# Rename / reset the focused workspace without opening the launcher.
 qs ipc call plugin:niri-workspaces renameCurrent "my name"
 qs ipc call plugin:niri-workspaces unsetCurrent
 ```
 
-These always target the focused workspace.
+`renameCurrent` / `unsetCurrent` always target the focused workspace. `toggle` respects your configured launcher prefix.
 
 ## Requirements
 
