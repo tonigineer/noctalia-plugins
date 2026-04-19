@@ -7,7 +7,7 @@ Item {
 
   property var pluginApi: null
 
-  property string name: pluginApi?.tr("provider.name") || "Niri Workspaces"
+  property string name: pluginApi?.tr("provider.name")
   property var launcher: null
   property bool handleSearch: false
   property string supportedLayouts: "list"
@@ -277,14 +277,14 @@ Item {
 
   function workspaceLabel(ws) {
     if (ws.name && ws.name.length > 0) return ws.idx + " · " + ws.name;
-    return pluginApi?.tr("launcher.unnamedLabel", { "idx": ws.idx }) || ("Workspace " + ws.idx);
+    return pluginApi?.tr("launcher.unnamedLabel", { "idx": ws.idx });
   }
 
   function buildWorkspaceEntry(ws) {
     var label = workspaceLabel(ws);
-    if (ws.is_focused) label += pluginApi?.tr("launcher.currentSuffix") || " (current)";
+    if (ws.is_focused) label += pluginApi?.tr("launcher.currentSuffix");
     var descKey = ws.is_focused ? "launcher.focus.descriptionCurrent" : "launcher.focus.description";
-    var desc = pluginApi?.tr(descKey) || "";
+    var desc = pluginApi?.tr(descKey);
     if (ws.output) desc = desc + " — " + ws.output;
     var wsId = ws.id;
     var hasName = !!(ws.name && ws.name.length > 0);
