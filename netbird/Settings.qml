@@ -151,9 +151,9 @@ ColumnLayout {
 
     NTextInput {
         Layout.fillWidth: true
-        label: pluginApi?.tr("settings.management-url") || "Management URL"
-        description: pluginApi?.tr("settings.management-url-desc") || "Override the Admin Console URL. Leave empty to auto-detect from NetBird status."
-        placeholderText: pluginApi?.manifest?.metadata?.defaultSettings?.managementUrl || "https://app.netbird.io/"
+        label: pluginApi?.tr("settings.management-url")
+        description: pluginApi?.tr("settings.management-url-desc")
+        placeholderText: pluginApi?.manifest?.metadata?.defaultSettings?.managementUrl
         text: root.editManagementUrl
         onTextChanged: root.editManagementUrl = text
     }
