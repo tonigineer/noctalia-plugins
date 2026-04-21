@@ -253,6 +253,22 @@
       "lastUpdated": "2026-03-29T19:05:12-04:00"
     },
     {
+      "id": "cookie-clock",
+      "name": "Cookie Clock",
+      "version": "1.0.0",
+      "official": false,
+      "author": "elrondforwin",
+      "description": "An analog cookie-shaped clock desktop widget. Features a sine-wave cookie background, hour/minute/second hands, dial marks and date bubbless.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "minNoctaliaVersion": "3.6.0",
+      "license": "GPLv3",
+      "tags": [
+        "Desktop",
+        "Fun"
+      ],
+      "lastUpdated": "2026-04-21T18:43:05+03:00"
+    },
+    {
       "id": "currency-exchange",
       "name": "Currency Exchange",
       "version": "1.0.3",
