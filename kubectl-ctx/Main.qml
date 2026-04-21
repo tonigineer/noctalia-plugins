@@ -2,7 +2,6 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.Commons
-import qs.Services.UI
 
 Item {
   id: root
@@ -13,7 +12,7 @@ Item {
   property var defaults: pluginApi?.manifest?.metadata?.defaultSettings || ({})
 
   readonly property string kubeconfigPath: cfg.kubeconfigPath ?? defaults.kubeconfigPath ?? ""
-  readonly property int pollInterval: cfg.pollInterval ?? defaults.pollInterval ?? 30
+  readonly property int pollInterval: cfg.pollInterval ?? defaults.pollInterval ?? 60
   readonly property bool showErrorBadge: cfg.showErrorBadge ?? defaults.showErrorBadge ?? true
   readonly property string terminal: cfg.terminal ?? defaults.terminal ?? ""
 
