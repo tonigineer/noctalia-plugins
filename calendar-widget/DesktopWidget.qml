@@ -12,7 +12,7 @@ DraggableDesktopWidget {
   property var widgetSettings: null
 
   property bool showBackground: true
-	property bool roundedCorners: true
+  property bool roundedCorners: true
 
   readonly property int effectiveFirstDay: {
     let stored = Settings.data.location.firstDayOfWeek;
@@ -29,14 +29,14 @@ DraggableDesktopWidget {
   }
 
   // --- Sizing ---
+  // Fixed height for 6 rows (42 days) ensures the widget doesn't "jump" size
   implicitWidth: Math.round(265 * widgetScale)
-  implicitHeight: Math.round((255 + (calendarRows > 5 ? 32 : 0)) * widgetScale)
+  implicitHeight: Math.round(287 * widgetScale)
   width: implicitWidth
   height: implicitHeight
 
   // --- Date Logic ---
   property date currentDate: new Date()
-  // We use these as "Primitive Anchors"
   property int liveDay: new Date().getDate()
   property int liveMonth: new Date().getMonth()
   property int liveYear: new Date().getFullYear()
@@ -44,14 +44,12 @@ DraggableDesktopWidget {
   function refreshDate() {
     let now = new Date();
     currentDate = now;
-    // Updating these primitives is the "hammer" that forces QML to redraw
     liveDay = now.getDate();
     liveMonth = now.getMonth();
     liveYear = now.getFullYear();
   }
 
-  onVisibleChanged: if (visible)
-                      refreshDate()
+  onVisibleChanged: if (visible) refreshDate()
 
   Timer {
     interval: 60000
@@ -78,7 +76,6 @@ DraggableDesktopWidget {
   }
 
   readonly property int daysInMonth: new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
-  readonly property int calendarRows: Math.ceil((firstDayOffset + daysInMonth) / 7)
 
   // --- UI Layout ---
   ColumnLayout {
@@ -116,6 +113,7 @@ DraggableDesktopWidget {
       columnSpacing: Math.round(Style.marginS * widgetScale)
       Layout.fillWidth: true
 
+      // Weekday Headers
       Repeater {
         model: root.days
         NText {
@@ -128,20 +126,23 @@ DraggableDesktopWidget {
         }
       }
 
+      // Leading Padding (Empty spaces before the 1st of the month)
       Repeater {
         model: root.firstDayOffset
         Item {
-          Layout.preferredWidth: 20 * widgetScale
-          Layout.preferredHeight: 20 * widgetScale
+          Layout.preferredWidth: 28 * widgetScale
+          Layout.preferredHeight: 28 * widgetScale
         }
       }
 
+      // Actual Days of the Month
       Repeater {
         model: root.daysInMonth
         Rectangle {
           readonly property int dayNum: index + 1
-
-          readonly property bool isActuallyToday: dayNum === root.liveDay && root.currentDate.getMonth() === root.liveMonth && root.currentDate.getFullYear() === root.liveYear
+          readonly property bool isActuallyToday: dayNum === root.liveDay &&
+          root.currentDate.getMonth() === root.liveMonth &&
+          root.currentDate.getFullYear() === root.liveYear
 
           Layout.preferredWidth: 28 * widgetScale
           Layout.preferredHeight: 28 * widgetScale
@@ -156,6 +157,15 @@ DraggableDesktopWidget {
             font.weight: isActuallyToday ? Font.Bold : Font.Light
             font.pointSize: Math.round(Style.fontSizeS * widgetScale)
           }
+        }
+      }
+
+      // Trailing Padding (Fills the grid to exactly 6 rows / 42 cells)
+      Repeater {
+        model: 42 - (root.firstDayOffset + root.daysInMonth)
+        Item {
+          Layout.preferredWidth: 28 * widgetScale
+          Layout.preferredHeight: 28 * widgetScale
         }
       }
     }
