@@ -172,19 +172,25 @@ Item {
     return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
   }
 
-  // Format inline markup: **bold** and `code`
+  // Format inline markup: **bold**, *italic*, ~~strike~~, `code`, links, softbreaks
   function _formatInline(text) {
     if (!text) return ""
     if (text.length > 10000) return _escapeHtml(text)
     var result = _escapeHtml(text)
-    // Bold: **text** → <b>text</b>
+    // Strikethrough: ~~text~~ → <s>text</s>  (before bold so ** isn't touched)
+    result = result.replace(/~~([^~]+)~~/g, '<s>$1</s>')
+    // Bold: **text** → <b>text</b>  (before italic so ** doesn't get eaten as *..*)
     result = result.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+    // Italic: *text* → <i>text</i>  (non-greedy, no leading space to avoid stray asterisks)
+    result = result.replace(/\*([^*\s][^*]*?)\*/g, '<i>$1</i>')
     // Inline code: `code` → styled span
     result = result.replace(/`([^`]+)`/g,
       '<code style="font-family:monospace;background-color:' + Color.mSurfaceVariant + ';color:' + Color.mOnSurfaceVariant + ';">$1</code>')
     // Links: [text](url) → clickable (http/https only)
     result = result.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
       '<a href="$2" style="color:' + Color.mPrimary + ';">$1</a>')
+    // Softbreaks / hardbreaks: preserve line breaks from the markdown source
+    result = result.replace(/\n/g, '<br/>')
     return result
   }
 
@@ -441,10 +447,20 @@ Item {
           if (!blockData || !blockData.src) return ""
           var src = blockData.src
           if (src.indexOf("https://") === 0) {
-            if (src.indexOf("https://raw.githubusercontent.com/") === 0
-                || src.indexOf("https://github.com/") === 0
-                || src.indexOf("https://user-images.githubusercontent.com/") === 0)
-              return src
+            var allowedHosts = [
+              "https://raw.githubusercontent.com/",
+              "https://github.com/",
+              "https://user-images.githubusercontent.com/",
+              "https://img.shields.io/",
+              "https://shields.io/",
+              "https://badgen.net/",
+              "https://i.imgur.com/",
+              "https://cdn.jsdelivr.net/",
+              "https://img.youtube.com/"
+            ]
+            for (var i = 0; i < allowedHosts.length; i++) {
+              if (src.indexOf(allowedHosts[i]) === 0) return src
+            }
             return ""
           }
           if (src.indexOf("http") === 0) return ""

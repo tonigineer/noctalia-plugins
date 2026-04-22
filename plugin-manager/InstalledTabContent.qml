@@ -18,6 +18,63 @@ ColumnLayout {
   // Track which plugins are currently updating
   property var updatingPlugins: ({})
   property int installedPluginsRefreshCounter: 0
+  property string pluginSearchText: ""
+
+  // Plugin id targeted by the add-to-bar context menu (set on click, read on action)
+  property string _addToBarPluginId: ""
+
+  // Add a plugin's bar widget to the given section on the current panel screen.
+  // Mirrors the core Settings.Bar → MonitorWidgetsConfig._addWidgetToSection flow.
+  function _addPluginToBar(pluginId, section, pluginName) {
+    if (!pluginApi) return
+    var screen = pluginApi.panelOpenScreen
+    if (!screen || !screen.name) return
+    var screenName = screen.name
+    var widgetId = "plugin:" + pluginId
+
+    var currentWidgets = Settings.getBarWidgetsForScreen(screenName)
+    var widgets = {
+      "left": [],
+      "center": [],
+      "right": []
+    }
+    try {
+      widgets.left = JSON.parse(JSON.stringify(currentWidgets.left || []))
+      widgets.center = JSON.parse(JSON.stringify(currentWidgets.center || []))
+      widgets.right = JSON.parse(JSON.stringify(currentWidgets.right || []))
+    } catch (e) {
+      Logger.w("PluginManager", "Failed to clone bar widgets:", e)
+    }
+
+    var sections = ["left", "center", "right"]
+    for (var s = 0; s < sections.length; s++) {
+      var arr = widgets[sections[s]]
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i].id === widgetId) {
+          var alreadyMsg = pluginApi.tr("panel.already-on-bar").replace("{plugin}", pluginName || pluginId)
+          ToastService.showNotice(pluginApi.tr("panel.title"), alreadyMsg)
+          return
+        }
+      }
+    }
+
+    var newWidget = { "id": widgetId }
+    var meta = BarWidgetRegistry.pluginWidgetMetadata ? BarWidgetRegistry.pluginWidgetMetadata[widgetId] : null
+    if (meta) {
+      Object.keys(meta).forEach(function (key) {
+        if (key !== "id") newWidget[key] = meta[key]
+      })
+    }
+
+    if (!widgets[section]) widgets[section] = []
+    widgets[section].push(newWidget)
+
+    Settings.setScreenOverride(screenName, "widgets", widgets)
+    BarService.widgetsRevision++
+
+    var successMsg = pluginApi.tr("panel.add-to-bar-success").replace("{plugin}", pluginName || pluginId)
+    ToastService.showNotice(pluginApi.tr("panel.title"), successMsg)
+  }
 
   function stripAuthorEmail(author) {
     if (!author) return "";
@@ -101,6 +158,9 @@ ColumnLayout {
     parent: Overlay.overlay
     showToastOnSave: true
   }
+
+  // Plugin name paired with _addToBarPluginId (kept for external call-backs)
+  property var _addToBarPluginName: ""
 
   function uninstallPlugin(pluginId) {
     var manifest = PluginRegistry.getPluginManifest(pluginId);
@@ -195,6 +255,15 @@ ColumnLayout {
     }
   }
 
+  // Search input
+  NTextInput {
+    placeholderText: I18n.tr("placeholders.search")
+    inputIconName: "search"
+    text: root.pluginSearchText
+    onTextChanged: root.pluginSearchText = text
+    Layout.fillWidth: true
+  }
+
   // Installed plugins list
   ColumnLayout {
     spacing: Style.marginM
@@ -238,6 +307,21 @@ ColumnLayout {
             plugins.push(pluginData);
           }
         }
+
+        // Apply fuzzy search
+        var query = root.pluginSearchText.trim();
+        if (query !== "") {
+          var results = FuzzySort.go(query, plugins, {
+            "keys": ["name", "description"],
+            "limit": 50
+          });
+          var out = [];
+          for (var k = 0; k < results.length; k++) {
+            out.push(results[k].obj);
+          }
+          return out;
+        }
+
         return plugins;
       }
 
@@ -326,6 +410,25 @@ ColumnLayout {
             }
 
             NIconButton {
+              id: addToBarBtn
+              icon: "plus"
+              tooltipText: pluginApi?.tr("panel.add-to-bar")
+              baseSize: Style.baseWidgetSize * 0.7
+              visible: (modelData.entryPoints?.barWidget !== undefined)
+              enabled: modelData.enabled
+              onClicked: {
+                var rootRef = root
+                var pid = modelData.id
+                var pname = modelData.name
+                var main = pluginApi?.mainInstance
+                if (!main) return
+                main.showAddToBarMenu(pid, pname, function (chosenId, chosenAction, chosenName) {
+                  rootRef._addPluginToBar(chosenId, chosenAction, chosenName)
+                })
+              }
+            }
+
+            NIconButton {
               icon: "settings"
               tooltipText: pluginApi?.tr("panel.open-settings")
               baseSize: Style.baseWidgetSize * 0.7
@@ -383,16 +486,17 @@ ColumnLayout {
                   updates2[pid] = false;
                   rootRef.updatingPlugins = updates2;
 
-                  if (!pluginApi) return;
+                  var api = rootRef.pluginApi;
+                  if (!api) return;
                   if (success) {
-                    var title = pluginApi.tr("panel.title")
-                    var msg = pluginApi.tr("panel.install-success")
+                    var title = api.tr("panel.title")
+                    var msg = api.tr("panel.install-success")
                     msg = msg.replace("{plugin}", pname)
                     ToastService.showNotice(title, msg);
                   } else {
-                    var title2 = pluginApi.tr("panel.title")
-                    var errMsg = pluginApi.tr("panel.install-error")
-                    errMsg = errMsg.replace("{error}", error || pluginApi.tr("panel.unknown-error"))
+                    var title2 = api.tr("panel.title")
+                    var errMsg = api.tr("panel.install-error")
+                    errMsg = errMsg.replace("{error}", error || api.tr("panel.unknown-error"))
                     ToastService.showError(title2, errMsg);
                   }
                 });

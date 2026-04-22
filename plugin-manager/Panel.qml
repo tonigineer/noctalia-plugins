@@ -35,6 +35,70 @@ Item {
     return raw + "/main/README.md"
   }
 
+  // ── Auto-select first plugin of the active tab ──
+  function _isInstalledSelection(id) {
+    if (!id) return false
+    var ids = PluginRegistry.getAllInstalledPluginIds() || []
+    for (var i = 0; i < ids.length; i++) {
+      if (ids[i] === id) return true
+    }
+    return false
+  }
+
+  function _isAvailableSelection(id) {
+    if (!id) return false
+    var av = PluginService.availablePlugins || []
+    for (var i = 0; i < av.length; i++) {
+      if (av[i].id === id) return true
+    }
+    return false
+  }
+
+  function _firstAvailablePlugin() {
+    var av = (PluginService.availablePlugins || []).slice()
+    av.sort(function (a, b) {
+      var da = a.lastUpdated ? new Date(a.lastUpdated).getTime() : 0
+      var db = b.lastUpdated ? new Date(b.lastUpdated).getTime() : 0
+      return db - da
+    })
+    var hwIdx = -1
+    for (var i = 0; i < av.length; i++) {
+      if (av[i].id === "hello-world") { hwIdx = i; break }
+    }
+    if (hwIdx >= 0) {
+      var hw = av.splice(hwIdx, 1)[0]
+      av.push(hw)
+    }
+    return av.length > 0 ? av[0] : null
+  }
+
+  function _autoSelectForTab(idx) {
+    if (idx === 0) {
+      if (_isInstalledSelection(root.selectedPluginId)) return
+      var ids = PluginRegistry.getAllInstalledPluginIds() || []
+      if (ids.length > 0) {
+        root._selectedPluginFallbackUrl = ""
+        root.selectedPluginId = ids[0]
+      }
+    } else if (idx === 1) {
+      if (_isAvailableSelection(root.selectedPluginId)) return
+      var first = _firstAvailablePlugin()
+      if (first) {
+        root._selectedPluginFallbackUrl = _buildReadmeFallbackUrl(first.id, first.source && first.source.url ? first.source.url : "")
+        root.selectedPluginId = first.id
+      }
+    }
+  }
+
+  Component.onCompleted: Qt.callLater(function () { root._autoSelectForTab(subTabBar.currentIndex) })
+
+  Connections {
+    target: PluginService
+    function onAvailablePluginsUpdated() {
+      if (subTabBar.currentIndex === 1) root._autoSelectForTab(1)
+    }
+  }
+
   Rectangle {
     id: panelContainer
     anchors.fill: parent
@@ -61,6 +125,7 @@ Item {
             Layout.bottomMargin: Style.marginM
             distributeEvenly: true
             currentIndex: 0
+            onCurrentIndexChanged: root._autoSelectForTab(currentIndex)
 
             NTabButton {
               text: pluginApi?.tr("panel.tab-installed")

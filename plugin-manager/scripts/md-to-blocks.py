@@ -46,8 +46,10 @@ def inline_to_plain(tokens):
             parts.append('`' + t.content + '`')
         elif t.type == 'softbreak' or t.type == 'hardbreak':
             parts.append('\n')
-        elif t.type in ('em_open', 'em_close', 's_open', 's_close'):
-            pass  # skip emphasis markers, keep text
+        elif t.type == 'em_open' or t.type == 'em_close':
+            parts.append('*')
+        elif t.type == 's_open' or t.type == 's_close':
+            parts.append('~~')
         elif t.type in ('strong_open',):
             parts.append('**')
         elif t.type in ('strong_close',):
@@ -118,6 +120,7 @@ def parse_markdown(text):
 
     md = MarkdownIt("commonmark", {"html": True})
     md.enable("table")
+    md.enable("strikethrough")
     tokens = md.parse(text)
     blocks = []
     i = 0
