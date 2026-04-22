@@ -21,6 +21,12 @@
         "refreshed": "Available updates refreshed!"
     },
     "settings": {
+        "tabs": {
+            "general": "General",
+            "bar": "Bar",
+            "panel": "Panel",
+            "desktop": "Desktop"
+        },
         "general": {
             "title": "General",
             "desc": "Settings affecting the whole plugin",

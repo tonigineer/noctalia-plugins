@@ -55,7 +55,7 @@ ColumnLayout {
 
         NTabButton {
             icon: "settings"
-            text: "General"
+            text: pluginApi.tr("settings.tabs.general")
             pointSize: Style.fontSizeL
             tabIndex: 0
             checked: tabBar.currentIndex === 0
@@ -63,7 +63,7 @@ ColumnLayout {
 
         NTabButton {
             icon: "crop-16-9"
-            text: "Bar"
+            text: pluginApi.tr("settings.tabs.bar")
             pointSize: Style.fontSizeL
             tabIndex: 1
             checked: tabBar.currentIndex === 1
@@ -71,7 +71,7 @@ ColumnLayout {
 
         NTabButton {
             icon: "table"
-            text: "Panel"
+            text: pluginApi.tr("settings.tabs.panel")
             pointSize: Style.fontSizeL
             tabIndex: 2
             checked: tabBar.currentIndex === 2
@@ -79,7 +79,7 @@ ColumnLayout {
 
         NTabButton {
             icon: "clock"
-            text: "Desktop"
+            text: pluginApi.tr("settings.tabs.desktop")
             pointSize: Style.fontSizeL
             tabIndex: 3
             checked: tabBar.currentIndex === 3
