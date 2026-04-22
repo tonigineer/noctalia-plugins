@@ -73,8 +73,8 @@ Item {
     anchors.fill: parent
     hoverEnabled: true
     cursorShape: Qt.PointingHandCursor
-    onClicked: {
-      if (!root.isActive) root.activated(root.contextName);
+    onPressed: {
+      root.activated(root.contextName);
     }
   }
 }
