@@ -25,6 +25,7 @@ ColumnLayout {
     { "key": "15", "name": "Moonsighting Committee Worldwide" },
     { "key": "16", "name": "Dubai (Experimental)" },
     { "key": "19", "name": "Algeria" },
+    { "key": "23", "name": "Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan" },
     { "key": "99", "name": "Custom Method" }
   ]
 
