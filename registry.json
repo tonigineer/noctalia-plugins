@@ -665,6 +665,24 @@
       "lastUpdated": "2026-04-14T21:58:06+02:00"
     },
     {
+      "id": "kubectl-ctx",
+      "name": "Kubectl Context",
+      "version": "1.0.4",
+      "official": false,
+      "author": "ultherego",
+      "description": "Kubernetes context and namespace switcher with resource browser powered by kubectl.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "minNoctaliaVersion": "4.6.6",
+      "license": "MIT",
+      "tags": [
+        "Bar",
+        "Panel",
+        "Utility",
+        "Development"
+      ],
+      "lastUpdated": "2026-04-23T23:03:50+02:00"
+    },
+    {
       "id": "latency-monitor",
       "name": "Latency Monitor",
       "version": "1.0.1",
