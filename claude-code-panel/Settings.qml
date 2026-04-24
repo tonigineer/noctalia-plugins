@@ -21,23 +21,45 @@ Item {
   readonly property var cs: pluginApi?.pluginSettings?.claude || ({})
 
   // ---- Save indicator state -------------------------------------------------
-  // Every set()/setTop() flips `_saveBlinking` to true and starts the fade-out
-  // timer. The header pill shows "Saved ✓" while blinking and "All changes
-  // saved" idle, so the user has tactile feedback that their edit hit disk.
+  // Each effectful set()/setTop() flips `_saveBlinking` true and starts the
+  // fade-out timer. Two guards prevent spurious flashes:
+  //   `_initialized`   blocks the burst of onValueChanged / onToggled signals
+  //                    that QtQuick fires while bindings settle on first paint.
+  //   value-equality   `set()` / `setTop()` only count as a change when the
+  //                    new value differs from the current one — so re-asserting
+  //                    the same value (during binding setup, after a host
+  //                    Apply, etc.) doesn't trigger a flash.
   property bool _saveBlinking: false
+  property bool _initialized: false
+  Component.onCompleted: Qt.callLater(function () { root._initialized = true; })
+
   Timer {
     id: _saveTimer
     interval: 1400
     onTriggered: root._saveBlinking = false
   }
   function _flashSaved() {
+    if (!_initialized) { return; }
     _saveBlinking = true;
     _saveTimer.restart();
+  }
+
+  // Loose equality check that handles arrays + objects without bringing in a
+  // deep-equal helper. Sufficient for the simple value shapes in claudeSettings.
+  function _same(a, b) {
+    if (a === b) { return true; }
+    if (Array.isArray(a) && Array.isArray(b)) {
+      if (a.length !== b.length) { return false; }
+      for (var i = 0; i < a.length; i++) { if (a[i] !== b[i]) { return false; } }
+      return true;
+    }
+    return false;
   }
 
   function set(key, value) {
     if (!pluginApi) { return; }
     if (!pluginApi.pluginSettings.claude) { pluginApi.pluginSettings.claude = {}; }
+    if (_same(pluginApi.pluginSettings.claude[key], value)) { return; }
     pluginApi.pluginSettings.claude[key] = value;
     pluginApi.saveSettings();
     _flashSaved();
@@ -45,6 +67,7 @@ Item {
 
   function setTop(key, value) {
     if (!pluginApi) { return; }
+    if (_same(pluginApi.pluginSettings[key], value)) { return; }
     pluginApi.pluginSettings[key] = value;
     pluginApi.saveSettings();
     _flashSaved();
