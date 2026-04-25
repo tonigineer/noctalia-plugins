@@ -26,6 +26,10 @@ Item {
   signal applyRequested(int index)
 
   function navigateTo(idx) {
+    var maxLead = Math.max(1, halfVisible - 1);
+    if (Math.abs(runningIndex - animationIndex) >= maxLead)
+      return;
+
     var newIdx = wrappedIndex(idx);
     var diff = 0;
 
@@ -53,14 +57,17 @@ Item {
     return centerWidth + (cardStripWidth - centerWidth) * t;
   }
   function slotToX(slot) {
+    var rightEdge = centerX + centerWidth + cardSpacing;
+    var leftEdge = centerX - cardSpacing - cardStripWidth;
+
     if (slot >= 0 && slot <= 1)
-      return centerX * (1 - slot) + (centerX + centerWidth + cardSpacing) * slot;
-    if (slot >= -1 && slot < 0)
-      return centerX * (1 + slot) + (centerX - cardSpacing - cardStripWidth) * -slot;
+      return centerX + (rightEdge - centerX) * slot;
     if (slot > 1)
-      return centerX + centerWidth + cardSpacing + (slot - 1) * (cardStripWidth + cardSpacing);
+      return rightEdge + (slot - 1) * (cardStripWidth + cardSpacing);
+    if (slot >= -1 && slot < 0)
+      return centerX + (leftEdge - centerX) * (-slot);
     if (slot < -1)
-      return centerX - cardSpacing - cardStripWidth + (slot + 1) * (cardStripWidth + cardSpacing);
+      return leftEdge + (slot + 1) * (cardStripWidth + cardSpacing);
     return 0;
   }
   function wrappedIndex(idx) {
@@ -72,8 +79,7 @@ Item {
   Behavior on animationIndex {
     NumberAnimation {
       duration: cardDeck.animationDuration
-      easing.overshoot: 1
-      easing.type: Easing.OutBack
+      easing.type: Easing.OutCubic
     }
   }
   transform: Matrix4x4 {
