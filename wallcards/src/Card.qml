@@ -30,7 +30,7 @@ Item {
       id: img
 
       anchors.fill: parent
-      // asynchronous: true
+      // asynchronous: true  // TODO: flickering when going backwards
       cache: true
       fillMode: Image.PreserveAspectCrop
       smooth: true
@@ -44,7 +44,7 @@ Item {
     id: border
 
     anchors.fill: parent
-    border.color: isCenter ? Color.mOnSurfaceVariant : Color.mOnSurfaceVariant
+    border.color: isCenter ? Color.mOutline : Qt.alpha(Color.mOutlineVariant, 0.5)
     border.width: 1
     color: "transparent"
     opacity: 0.75

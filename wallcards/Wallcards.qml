@@ -15,6 +15,7 @@ PanelWindow {
 
   property int animationCardsDuration: pluginApi?.pluginSettings?.animation_cards_duration ?? pluginApi?.manifest?.metadata?.defaultSettings?.animation_cards_duration
   property int animationWindowDuration: pluginApi?.pluginSettings?.animation_window_duration ?? pluginApi?.manifest?.metadata?.defaultSettings?.animation_window_duration
+  property bool animateWindow: pluginApi?.pluginSettings?.animate_window ?? pluginApi?.manifest?.metadata?.defaultSettings?.animate_window ?? true
   property color backgroundColor: pluginApi?.pluginSettings?.background_color ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_color
   property real backgroundOpacity: pluginApi?.pluginSettings?.background_opacity ?? pluginApi?.manifest?.metadata?.defaultSettings?.background_opacity
   property int cardHeight: pluginApi?.pluginSettings?.card_height ?? pluginApi?.manifest?.metadata?.defaultSettings?.card_height
@@ -103,7 +104,11 @@ PanelWindow {
   function close() {
     if (exitAnimation.running)
       return;
-    exitAnimation.start();
+    if (root.animateWindow) {
+      exitAnimation.start();
+    } else {
+      root.quitRequested();
+    }
   }
 
   WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
@@ -123,8 +128,15 @@ PanelWindow {
   onSelectedFilterChanged: applyFilterToFiles()
   onSelectedColorFilterChanged: applyFilterToFiles()
   onVisibleChanged: {
-    if (visible)
-      enterAnimation.start();
+    if (visible) {
+      if (root.animateWindow) {
+        enterAnimation.start();
+      } else {
+        content.opacity = 1;
+        content.scale = 1;
+        background.opacity = root.backgroundOpacity;
+      }
+    }
   }
 
   Process {
@@ -287,6 +299,7 @@ PanelWindow {
           root.pluginApi.pluginSettings.live_preview = root.livePreview;
           root.pluginApi.pluginSettings.selected_filter = root.selectedFilter;
           root.pluginApi.pluginSettings.hide_help = root.hideHelp;
+          root.pluginApi.pluginSettings.animate_window = root.animateWindow;
           root.pluginApi.saveSettings();
           event.accepted = true;
           return;
@@ -301,7 +314,7 @@ PanelWindow {
       }
 
       const bindings = {
-        [Qt.Key_Question]: () => bottomBar.expanded = !bottomBar.expanded,
+        [Qt.Key_Question]: () => sideBar.expanded = !sideBar.expanded,
         [Qt.Key_Q]: () => root.close(),
         [Qt.Key_Return]: () => {
           root.applyCurrentCard();
@@ -375,15 +388,13 @@ PanelWindow {
       onShuffleRequested: cardDeck.randomJump()
     }
 
-    BottomBar {
-      id: bottomBar
+    SideBar {
+      id: sideBar
 
-      anchors.horizontalCenter: parent.horizontalCenter
-      anchors.horizontalCenterOffset: root.shearFactor * -root.topBarHeight * 4 / 3
-      anchors.top: cardDeck.bottom
-      anchors.topMargin: root.topBarHeight / 3
+      anchors.left: parent.left
+      anchors.leftMargin: Style.marginL
+      anchors.verticalCenter: parent.verticalCenter
       hideHelp: root.hideHelp
-      shearFactor: root.shearFactor
       visible: !loadingBar.visible
     }
 

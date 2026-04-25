@@ -8,7 +8,6 @@ Row {
   required property string keys
   required property string label
 
-  anchors.verticalCenter: parent.verticalCenter
   spacing: Style.marginXS
 
   Row {

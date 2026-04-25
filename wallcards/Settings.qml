@@ -19,6 +19,7 @@ ColumnLayout {
   property real editCenterWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
   property bool editHideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help
   property bool editHideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
+  property bool editAnimateWindow: pluginApi?.pluginSettings?.animate_window ?? pluginApi?.manifest?.metadata?.defaultSettings?.animate_window ?? true
   property string editIconColor: pluginApi?.pluginSettings?.icon_color ?? "none"
   property bool editLivePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
   property string editSelectedFilter: pluginApi?.pluginSettings?.selected_filter || pluginApi?.manifest?.metadata?.defaultSettings?.selected_filter
@@ -53,6 +54,7 @@ ColumnLayout {
     pluginApi.pluginSettings.live_preview = root.editLivePreview;
     pluginApi.pluginSettings.hide_help = root.editHideHelp;
     pluginApi.pluginSettings.hide_top_bar = root.editHideTopBar;
+    pluginApi.pluginSettings.animate_window = root.editAnimateWindow;
     pluginApi.pluginSettings.directory = root.editWallpaperDir;
 
     pluginApi.saveSettings();
@@ -324,8 +326,8 @@ ColumnLayout {
     spacing: Style.marginXXS
 
     NLabel {
-      description: "Speed of open and close transitions"
-      label: "Window Animation"
+      description: "descrip here"
+      label: "Card Animation Speed"
     }
     NValueSlider {
       Layout.fillWidth: true
@@ -337,6 +339,14 @@ ColumnLayout {
 
       onMoved: value => root.editAnimationWindowDuration = value
     }
+  }
+  NToggle {
+    checked: root.editAnimateWindow
+    defaultValue: pluginApi?.manifest?.metadata?.defaultSettings?.animate_window ?? true
+    description: "Animate the open and close transitions. Based on Card animation speed"
+    label: "Window Animation"
+
+    onToggled: c => root.editAnimateWindow = c
   }
   NDivider {
     Layout.fillWidth: true

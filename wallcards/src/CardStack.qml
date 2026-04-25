@@ -113,8 +113,7 @@ Item {
     else if (event.key === Qt.Key_Return || event.key === Qt.Key_Space || event.key === Qt.Key_Down) {
       applyRequested(root.getFilePath(currentIndex));
       quitRequested();
-    }
-    else if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q)
+    } else if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q)
       quitRequested();
 
     event.accepted = true;

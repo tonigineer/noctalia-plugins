@@ -52,6 +52,7 @@ Rectangle {
       anchors.verticalCenter: parent.verticalCenter
       color: root.accentColor
       text: root.label
+      font.pointSize: Style.fontSizeXS
       visible: root.label !== ""
     }
     Rectangle {

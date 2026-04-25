@@ -21,6 +21,7 @@
     "defaultSettings": {
       "animation_cards_duration": 1000,
       "animation_window_duration": 1000,
+      "animate_window": true,
       "background_color": null,
       "background_opacity": null,
       "card_height": 500,
@@ -29,7 +30,7 @@
       "cards_shown": 11,
       "center_width_ratio": 0.33,
       "image_filter": ["png", "jpg", "jpeg"],
-      "video_filter": ["mp4", "mkv", "avi", "mov"],
+      "video_filter": ["mp4", "avi"],
       "hide_help": false,
       "hide_top_bar": false,
       "live_preview": false,
