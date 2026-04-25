@@ -570,7 +570,7 @@ Item {
           var marker = e.status === "completed" ? "[x]" : (e.status === "in_progress" ? "[~]" : "[ ]");
           lines.push(marker + " " + (e.content || ""));
         }
-        pushMessage({ role: "assistant", kind: "text", text: "**Plan**\n\n" + lines.join("\n") });
+        pushMessage({ role: "assistant", kind: "text", text: "**" + pluginApi?.tr("panel.planTitle") + "**\n\n" + lines.join("\n") });
         break;
       case "usage":
       case "available_commands":
@@ -855,26 +855,26 @@ Item {
 
       case "/model":
         if (!rest) {
-          pushMessage({ role: "assistant", kind: "text", text: (pluginApi?.tr("cmd.modelCurrent") || "Current model: `") + (lastModel || claudeSettings.model || pluginApi?.tr("cmd.modelDefault") || "default") + "`" });
+          pushMessage({ role: "assistant", kind: "text", text: (pluginApi?.tr("cmd.modelCurrent")) + (lastModel || claudeSettings.model || pluginApi?.tr("cmd.modelDefault")) + "`" });
           return true;
         }
         setClaudeField("model", rest);
-        pushMessage({ role: "assistant", kind: "text", text: (pluginApi?.tr("cmd.modelSet") || "Model set to `") + rest + "`" });
+        pushMessage({ role: "assistant", kind: "text", text: pluginApi?.tr("cmd.modelSet") + rest + "`" });
         newSession();
         return true;
 
       case "/cwd":
         if (!rest) {
-          pushMessage({ role: "assistant", kind: "text", text: (pluginApi?.tr("cmd.cwdCurrent") || "Current cwd: ") + "`" + (claudeSettings.workingDir || (pluginApi?.tr("cmd.cwdDefault") || "default")) + "`" });
+          pushMessage({ role: "assistant", kind: "text", text: pluginApi?.tr("cmd.cwdCurrent") + "`" + (claudeSettings.workingDir || pluginApi?.tr("cmd.cwdDefault")) + "`" });
           return true;
         }
         setClaudeField("workingDir", rest);
-        pushMessage({ role: "assistant", kind: "text", text: (pluginApi?.tr("cmd.cwdSet") || "Working dir set to `") + rest + "`." });
+        pushMessage({ role: "assistant", kind: "text", text: pluginApi?.tr("cmd.cwdSet") + rest + "`." });
         newSession();
         return true;
 
       case "/session":
-        pushMessage({ role: "assistant", kind: "text", text: sessionId ? ((pluginApi?.tr("cmd.sessionActive") || "Session: ") + "`" + sessionId + "`") : (pluginApi?.tr("cmd.sessionNone") || "No active session.") });
+        pushMessage({ role: "assistant", kind: "text", text: sessionId ? (pluginApi?.tr("cmd.sessionActive") + "`" + sessionId + "`") : pluginApi?.tr("cmd.sessionNone") });
         return true;
 
       case "/copy":

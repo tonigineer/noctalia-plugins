@@ -46,7 +46,20 @@
     "slashModel": "Show or set the model",
     "slashCwd": "Show or set working directory",
     "slashSession": "Show current session id",
-    "slashCopy": "Copy last assistant message"
+    "slashCopy": "Copy last assistant message",
+    "planTitle": "Plan",
+    "acpNotFound": "`claude-code-acp` not found on PATH.\nThis panel now speaks Agent Client Protocol to the Zed-industries bridge, which wraps the regular `claude` CLI.\nInstall with:\n   npm i -g @anthropic-ai/claude-code @zed-industries/claude-code-acp",
+    "permitYes": "Yes",
+    "permitAllowAll": "Allow all",
+    "permitNo": "No",
+    "tipYesExec": "Allow this specific command, then retry",
+    "tipYesNetwork": "Allow this specific URL/domain, then retry",
+    "tipYesDefault": "Allow this specific file/action, then retry",
+    "tipAllowAllWrite": "Add an allow-all rule for this tool (Edit/Write), then retry",
+    "tipAllowAllExec": "Add an allow-all rule for Bash, then retry",
+    "tipAllowAllNetwork": "Add an allow-all rule for this domain, then retry",
+    "tipAllowAllDefault": "Allow all invocations of this tool, then retry",
+    "tipNo": "Deny and stop the current run"
   },
   "settings": {
     "sectionGeneral": "General",

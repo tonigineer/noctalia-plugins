@@ -89,21 +89,21 @@ Item {
   }
   function _modeBadge(m) {
     if (cs.dangerouslySkipPermissions === true || m === "bypassPermissions") {
-      return pluginApi?.tr("settings.modeBadgeBypass") || "Unrestricted";
+      return pluginApi?.tr("settings.modeBadgeBypass") ;
     }
-    if (m === "acceptEdits") return pluginApi?.tr("settings.modeBadgeAccept") || "Auto-edits";
-    if (m === "plan")        return pluginApi?.tr("settings.modeBadgePlan")   || "Read-only";
-    return pluginApi?.tr("settings.modeBadgeDefault") || "Safe";
+    if (m === "acceptEdits") return pluginApi?.tr("settings.modeBadgeAccept") ;
+    if (m === "plan")        return pluginApi?.tr("settings.modeBadgePlan")   ;
+    return pluginApi?.tr("settings.modeBadgeDefault") ;
   }
 
   // Tab catalog. Add a tab here and a corresponding StackLayout entry below.
   readonly property var _tabs: [
-    { key: "general",     icon: "settings",     label: pluginApi?.tr("settings.tabGeneral")     || "General"        },
-    { key: "permissions", icon: "shield",       label: pluginApi?.tr("settings.tabPermissions") || "Permissions"    },
-    { key: "session",     icon: "cpu",          label: pluginApi?.tr("settings.tabSession")     || "Session & Model"},
-    { key: "mcp",         icon: "plug",         label: pluginApi?.tr("settings.tabMcp")         || "MCP"            },
-    { key: "panel",       icon: "layout",       label: pluginApi?.tr("settings.tabPanel")       || "Panel"          },
-    { key: "danger",      icon: "alert-circle", label: pluginApi?.tr("settings.tabDanger")      || "Danger Zone"    }
+    { key: "general",     icon: "settings",     label: pluginApi?.tr("settings.tabGeneral")             },
+    { key: "permissions", icon: "shield",       label: pluginApi?.tr("settings.tabPermissions")     },
+    { key: "session",     icon: "cpu",          label: pluginApi?.tr("settings.tabSession")     },
+    { key: "mcp",         icon: "plug",         label: pluginApi?.tr("settings.tabMcp")                     },
+    { key: "panel",       icon: "layout",       label: pluginApi?.tr("settings.tabPanel")                 },
+    { key: "danger",      icon: "alert-circle", label: pluginApi?.tr("settings.tabDanger")          }
   ]
   property int currentTab: 0
 
@@ -233,7 +233,7 @@ Item {
             spacing: Style.marginS
             NIcon { icon: "rotate-ccw"; pointSize: Style.fontSizeXS; color: Color.mError }
             NText {
-              text: pluginApi?.tr("settings.resetDefaults") || "Reset to defaults"
+              text: pluginApi?.tr("settings.resetDefaults") 
               pointSize: Style.fontSizeXS
               color: Color.mError
               Layout.fillWidth: true
@@ -272,7 +272,7 @@ Item {
           Layout.margins: Style.marginM
 
           Section {
-            title: pluginApi?.tr("settings.groupBinary") || "Claude binary"
+            title: pluginApi?.tr("settings.groupBinary") 
             NTextInput {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.binary")
@@ -282,12 +282,12 @@ Item {
           }
 
           Section {
-            title: pluginApi?.tr("settings.groupWorkspace") || "Workspace"
+            title: pluginApi?.tr("settings.groupWorkspace") 
             NTextInput {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.workingDir")
               description: pluginApi?.tr("settings.workingDirHelp")
-              text: cs.workingDir || ""
+              text: cs.workingDir 
               placeholderText: "/home/you/project"
               onEditingFinished: set("workingDir", text)
             }
@@ -315,7 +315,7 @@ Item {
           }
 
           NText {
-            text: pluginApi?.tr("settings.restartHint") || ""
+            text: pluginApi?.tr("settings.restartHint") 
             color: Color.mOnSurfaceVariant
             pointSize: Style.fontSizeXS
             wrapMode: Text.Wrap
@@ -378,7 +378,7 @@ Item {
           }
 
           Section {
-            title: pluginApi?.tr("settings.groupTools") || "Tool access"
+            title: pluginApi?.tr("settings.groupTools") 
             NTextInput {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.allowedTools")
@@ -403,7 +403,7 @@ Item {
           Layout.margins: Style.marginM
 
           Section {
-            title: pluginApi?.tr("settings.groupModel") || "Model"
+            title: pluginApi?.tr("settings.groupModel") 
 
             // Side-by-side primary + fallback to keep the relationship obvious.
             RowLayout {
@@ -413,14 +413,14 @@ Item {
                 Layout.fillWidth: true
                 label: pluginApi?.tr("settings.model")
                 description: pluginApi?.tr("settings.modelHelp")
-                text: cs.model || ""
+                text: cs.model 
                 placeholderText: "claude-opus-4-7"
                 onEditingFinished: set("model", text)
               }
               NTextInput {
                 Layout.fillWidth: true
                 label: pluginApi?.tr("settings.fallbackModel")
-                text: cs.fallbackModel || ""
+                text: cs.fallbackModel 
                 placeholderText: "claude-sonnet-4-6"
                 onEditingFinished: set("fallbackModel", text)
               }
@@ -428,7 +428,7 @@ Item {
           }
 
           Section {
-            title: pluginApi?.tr("settings.groupSession") || "Session behavior"
+            title: pluginApi?.tr("settings.groupSession") 
             NCheckbox {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.autoResume")
@@ -453,7 +453,7 @@ Item {
           }
 
           Section {
-            title: pluginApi?.tr("settings.groupSystemPrompt") || "System prompt"
+            title: pluginApi?.tr("settings.groupSystemPrompt") 
             NCheckbox {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.injectNoctaliaContext")
@@ -468,7 +468,7 @@ Item {
               TextArea {
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.round(80 * Style.uiScaleRatio)
-                text: cs.appendSystemPrompt || ""
+                text: cs.appendSystemPrompt 
                 onActiveFocusChanged: {
                   if (!activeFocus) { set("appendSystemPrompt", text); }
                 }
@@ -483,11 +483,11 @@ Item {
           Layout.margins: Style.marginM
 
           Section {
-            title: pluginApi?.tr("settings.sectionMcp") || "MCP"
+            title: pluginApi?.tr("settings.sectionMcp") 
             NTextInput {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.mcpConfigPath")
-              text: cs.mcpConfigPath || ""
+              text: cs.mcpConfigPath 
               placeholderText: "/home/you/.config/claude/mcp.json"
               onEditingFinished: set("mcpConfigPath", text)
             }
@@ -506,7 +506,7 @@ Item {
           Layout.margins: Style.marginM
 
           Section {
-            title: pluginApi?.tr("settings.groupLayout") || "Layout"
+            title: pluginApi?.tr("settings.groupLayout") 
             NComboBox {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.panelPosition")
@@ -529,7 +529,7 @@ Item {
           }
 
           Section {
-            title: pluginApi?.tr("settings.groupSize") || "Size"
+            title: pluginApi?.tr("settings.groupSize") 
             NSpinBox {
               Layout.fillWidth: true
               label: pluginApi?.tr("settings.panelWidth")
@@ -575,14 +575,14 @@ Item {
                 spacing: Style.marginS
                 NIcon { icon: "alert-triangle"; color: Color.mError; pointSize: Style.fontSizeM }
                 NText {
-                  text: pluginApi?.tr("settings.dangerHeading") || "Irreversible / unsafe"
+                  text: pluginApi?.tr("settings.dangerHeading") 
                   font.weight: Font.Bold
                   pointSize: Style.fontSizeM
                   color: Color.mError
                 }
               }
               NText {
-                text: pluginApi?.tr("settings.dangerSubheading") || ""
+                text: pluginApi?.tr("settings.dangerSubheading") 
                 wrapMode: Text.Wrap
                 Layout.fillWidth: true
                 pointSize: Style.fontSizeXS
@@ -647,7 +647,7 @@ Item {
             color: Color.mOnSecondary
           }
           NText {
-            text: pluginApi?.tr("settings.savedFlash") || "Saved"
+            text: pluginApi?.tr("settings.savedFlash") 
             pointSize: Style.fontSizeXS
             font.weight: Font.DemiBold
             color: Color.mOnSecondary
@@ -704,10 +704,10 @@ Item {
   Dialog {
     id: resetConfirm
     modal: true
-    title: pluginApi?.tr("settings.resetDefaults") || "Reset to defaults"
+    title: pluginApi?.tr("settings.resetDefaults") 
     width: 420
     contentItem: NText {
-      text: pluginApi?.tr("settings.resetConfirm") || ""
+      text: pluginApi?.tr("settings.resetConfirm") 
       wrapMode: Text.Wrap
     }
     standardButtons: Dialog.Ok | Dialog.Cancel

@@ -48,14 +48,14 @@ Item {
   // Static catalog mirrors Main.qml handleSlashCommand(). If you add a slash
   // command there, add it here too.
   readonly property var slashCommands: [
-    { cmd: "/help",    desc: pluginApi?.tr("panel.slashHelp")    || "Show local commands" },
-    { cmd: "/clear",   desc: pluginApi?.tr("panel.slashClear")   || "Clear chat (local; session persists)" },
-    { cmd: "/new",     desc: pluginApi?.tr("panel.slashNew")     || "Start a new Claude session" },
-    { cmd: "/stop",    desc: pluginApi?.tr("panel.slashStop")    || "Stop the current run" },
-    { cmd: "/model",   desc: pluginApi?.tr("panel.slashModel")   || "Show or set the model" },
-    { cmd: "/cwd",     desc: pluginApi?.tr("panel.slashCwd")     || "Show or set working directory" },
-    { cmd: "/session", desc: pluginApi?.tr("panel.slashSession") || "Show current session id" },
-    { cmd: "/copy",    desc: pluginApi?.tr("panel.slashCopy")    || "Copy last assistant message" }
+    { cmd: "/help",    desc: pluginApi?.tr("panel.slashHelp") },
+    { cmd: "/clear",   desc: pluginApi?.tr("panel.slashClear") },
+    { cmd: "/new",     desc: pluginApi?.tr("panel.slashNew") },
+    { cmd: "/stop",    desc: pluginApi?.tr("panel.slashStop") },
+    { cmd: "/model",   desc: pluginApi?.tr("panel.slashModel") },
+    { cmd: "/cwd",     desc: pluginApi?.tr("panel.slashCwd") },
+    { cmd: "/session", desc: pluginApi?.tr("panel.slashSession") },
+    { cmd: "/copy",    desc: pluginApi?.tr("panel.slashCopy") }
   ]
   property var slashMenuMatches: []
   property int slashMenuIndex: 0
@@ -234,10 +234,7 @@ Item {
           id: binaryHelp
           anchors.fill: parent
           anchors.margins: Style.marginS
-          text: "`claude-code-acp` not found on PATH.\n" +
-                "This panel now speaks Agent Client Protocol to the Zed-industries bridge, which wraps the regular `claude` CLI.\n" +
-                "Install with:\n" +
-                "   npm i -g @anthropic-ai/claude-code @zed-industries/claude-code-acp"
+          text: pluginApi?.tr("panel.acpNotFound")
           wrapMode: Text.WordWrap
           color: Color.mOnSurface
           pointSize: Style.fontSizeXS
@@ -521,7 +518,7 @@ Item {
               wrapMode: TextEdit.Wrap
               selectByMouse: true
               persistentSelection: true
-              placeholderText: pluginApi?.tr("panel.inputPlaceholder") || ""
+              placeholderText: pluginApi?.tr("panel.inputPlaceholder")
               placeholderTextColor: Qt.alpha(Color.mOnSurfaceVariant, 0.6)
               color: Color.mOnSurface
               background: null
@@ -974,8 +971,8 @@ Item {
                     }
                     NText {
                       text: codeCopy.flashed
-                              ? (pluginApi?.tr("panel.copied") || "Copied")
-                              : (pluginApi?.tr("panel.copy") || "Copy")
+                              ? pluginApi?.tr("panel.copied")
+                              : pluginApi?.tr("panel.copy")
                       pointSize: Style.fontSizeXS
                       color: codeCopyArea.containsMouse ? Color.mOnSecondary : Color.mOnSurfaceVariant
                     }
@@ -1129,11 +1126,11 @@ Item {
                 numeral: "1."
                 iconName: "check"
                 accent: Color.mSecondary
-                label: "Yes"
+                label: pluginApi?.tr("panel.permitYes")
                 tooltip: {
-                  if (approvalRow.classification === "exec")    return "Allow this specific command, then retry";
-                  if (approvalRow.classification === "network") return "Allow this specific URL/domain, then retry";
-                  return "Allow this specific file/action, then retry";
+                  if (approvalRow.classification === "exec")    return pluginApi?.tr("panel.tipYesExec");
+                  if (approvalRow.classification === "network") return pluginApi?.tr("panel.tipYesNetwork");
+                  return pluginApi?.tr("panel.tipYesDefault");
                 }
                 onClicked: {
                   if (bubbleRoot.mainInstance && entry) {
@@ -1146,12 +1143,12 @@ Item {
                 numeral: "2."
                 iconName: "circle-check"
                 accent: Color.mTertiary
-                label: "Allow all"
+                label: pluginApi?.tr("panel.permitAllowAll")
                 tooltip: {
-                  if (approvalRow.classification === "write")   return "Add an allow-all rule for this tool (Edit/Write), then retry";
-                  if (approvalRow.classification === "exec")    return "Add an allow-all rule for Bash, then retry";
-                  if (approvalRow.classification === "network") return "Add an allow-all rule for this domain, then retry";
-                  return "Allow all invocations of this tool, then retry";
+                  if (approvalRow.classification === "write")   return pluginApi?.tr("panel.tipAllowAllWrite");
+                  if (approvalRow.classification === "exec")    return pluginApi?.tr("panel.tipAllowAllExec");
+                  if (approvalRow.classification === "network") return pluginApi?.tr("panel.tipAllowAllNetwork");
+                  return pluginApi?.tr("panel.tipAllowAllDefault");
                 }
                 onClicked: {
                   if (bubbleRoot.mainInstance && entry) {
@@ -1164,8 +1161,8 @@ Item {
                 numeral: "3."
                 iconName: "x"
                 accent: Color.mError
-                label: "No"
-                tooltip: "Deny and stop the current run"
+                label: pluginApi?.tr("panel.permitNo")
+                tooltip: pluginApi?.tr("panel.tipNo")
                 onClicked: {
                   if (bubbleRoot.mainInstance && entry) {
                     bubbleRoot.mainInstance.denyToolUse(entry.id);
@@ -1254,8 +1251,8 @@ Item {
           }
           NText {
             text: copyBtn._copyFlash
-                    ? (pluginApi?.tr("panel.copied") || "Copied")
-                    : (pluginApi?.tr("panel.copy") || "Copy")
+                    ? pluginApi?.tr("panel.copied")
+                    : pluginApi?.tr("panel.copy")
             pointSize: Style.fontSizeXS
             font.weight: Font.Medium
             color: copyMouse.containsMouse ? Color.mOnSecondary : Color.mOnSurfaceVariant
