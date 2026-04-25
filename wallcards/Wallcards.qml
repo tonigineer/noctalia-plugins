@@ -28,6 +28,7 @@ PanelWindow {
   property var imageFilter: pluginApi?.manifest?.metadata?.defaultSettings?.image_filter
   property var videoFilter: pluginApi?.manifest?.metadata?.defaultSettings?.video_filter
   property var filteredFiles: []
+  property var availableColors: []
   property bool hideHelp: pluginApi?.pluginSettings?.hide_help ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_help ?? true
   property bool hideTopBar: pluginApi?.pluginSettings?.hide_top_bar ?? pluginApi?.manifest?.metadata?.defaultSettings?.hide_top_bar ?? false
   property bool livePreview: pluginApi?.pluginSettings?.live_preview ?? pluginApi?.manifest?.metadata?.defaultSettings?.live_preview
@@ -77,6 +78,11 @@ PanelWindow {
     else if (selectedFilter === "videos")
       result = result.filter(f => f.isVideo);
 
+    var colors = {};
+    for (var c = 0; c < result.length; c++)
+      colors[result[c].filterColor] = true;
+    availableColors = Object.keys(colors);
+
     if (selectedColorFilter !== "")
       result = result.filter(f => f.filterColor === selectedColorFilter);
 
@@ -116,6 +122,10 @@ PanelWindow {
   }
   onSelectedFilterChanged: applyFilterToFiles()
   onSelectedColorFilterChanged: applyFilterToFiles()
+  onVisibleChanged: {
+    if (visible)
+      enterAnimation.start();
+  }
 
   Process {
     id: applicant
@@ -143,60 +153,60 @@ PanelWindow {
   ParallelAnimation {
     id: enterAnimation
 
-    // running: true
-
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.OutCubic
-    //   from: 0.75
-    //   property: "scale"
-    //   target: content
-    //   to: 1.0
-    // }
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.OutCubic
-    //   from: 0
-    //   property: "opacity"
-    //   target: content
-    //   to: 1
-    // }
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.OutCubic
-    //   from: 0
-    //   property: "opacity"
-    //   target: background
-    //   to: root.backgroundOpacity
-    // }
+    NumberAnimation {
+      duration: root.animationWindowDuration
+      easing.type: Easing.OutCubic
+      from: 0.85
+      property: "scale"
+      target: content
+      to: 1.0
+    }
+    NumberAnimation {
+      duration: root.animationWindowDuration
+      easing.type: Easing.OutCubic
+      from: 0
+      property: "opacity"
+      target: content
+      to: 1
+    }
+    NumberAnimation {
+      duration: root.animationWindowDuration
+      easing.type: Easing.OutCubic
+      from: 0
+      property: "opacity"
+      target: background
+      to: root.backgroundOpacity
+    }
   }
 
   ParallelAnimation {
     id: exitAnimation
 
+    property int duration: root.animationWindowDuration * 0.4
+
     onFinished: root.quitRequested()
 
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.InCubic
-    //   property: "opacity"
-    //   target: content
-    //   to: 0
-    // }
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.InCubic
-    //   property: "scale"
-    //   target: content
-    //   to: 0.75
-    // }
-    // NumberAnimation {
-    //   duration: root.animationWindowDuration
-    //   easing.type: Easing.InCubic
-    //   property: "opacity"
-    //   target: background
-    //   to: 0
-    // }
+    NumberAnimation {
+      duration: exitAnimation.duration
+      easing.type: Easing.InCubic
+      property: "opacity"
+      target: content
+      to: 0
+    }
+    NumberAnimation {
+      duration: exitAnimation.duration
+      easing.type: Easing.InCubic
+      property: "scale"
+      target: content
+      to: 0.85
+    }
+    NumberAnimation {
+      duration: exitAnimation.duration
+      easing.type: Easing.InCubic
+      property: "opacity"
+      target: background
+      to: 0
+    }
   }
 
   Rectangle {
@@ -204,7 +214,7 @@ PanelWindow {
 
     anchors.fill: parent
     color: root.backgroundColor
-    opacity: root.backgroundOpacity
+    opacity: 0
 
     MouseArea {
       anchors.fill: parent
@@ -218,6 +228,8 @@ PanelWindow {
 
     anchors.fill: parent
     focus: true
+    opacity: 0
+    scale: 0.85
 
     Keys.onPressed: event => {
       if (event.modifiers & Qt.ShiftModifier) {
@@ -341,6 +353,7 @@ PanelWindow {
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.horizontalCenterOffset: shearFactor * -root.topBarHeight * 4 / 3
       animationDuration: root.animationCardsDuration
+      availableColors: root.availableColors
       colorOrder: thumbnailService.colorOrder
       colorOrderColors: thumbnailService.colorOrderColors
       currentCardColor: root.currentCardColor

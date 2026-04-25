@@ -7,6 +7,7 @@ Rectangle {
   id: topBar
 
   required property int animationDuration
+  required property var availableColors
   required property var colorOrder
   required property var colorOrderColors
   required property string currentCardColor
@@ -109,6 +110,7 @@ Rectangle {
         required property string modelData
 
         property bool active: topBar.selectedColorFilter === modelData
+        property bool available: topBar.availableColors.indexOf(modelData) !== -1
         property bool current: topBar.selectedColorFilter === "" && topBar.currentCardColor === modelData
 
         anchors.verticalCenter: parent.verticalCenter
@@ -116,7 +118,7 @@ Rectangle {
         border.width: Style.borderS
         color: topBar.colorOrderColors[index]
         height: Style.margin2L
-        opacity: active ? 1.0 : 0.4
+        opacity: active ? 1.0 : available ? 0.4 : 0.12
         radius: Style.radiusM
         width: height
 
@@ -154,9 +156,20 @@ Rectangle {
           }
         }
 
+        // Unavailable indicator
+        NText {
+          anchors.centerIn: parent
+          color: Color.mOnSurface
+          font.bold: true
+          font.pointSize: Style.fontSizeS
+          text: "✕"
+          visible: !parent.available
+        }
+
         MouseArea {
           anchors.fill: parent
-          cursorShape: Qt.PointingHandCursor
+          cursorShape: parent.available ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+          enabled: parent.available
 
           onClicked: {
             if (parent.active)

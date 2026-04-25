@@ -79,7 +79,15 @@ Item {
     runningIndex = idx;
     animationIndex = idx;
     currentIndex = idx;
-    animBehavior.enabled = true;
+    reenableTimer.restart();
+  }
+
+  Timer {
+    id: reenableTimer
+
+    interval: 0
+
+    onTriggered: animBehavior.enabled = true
   }
 
   width: (cardsShown - 3) * cardStripWidth + (cardsShown - 3) * cardSpacing + centerWidth
