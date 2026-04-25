@@ -277,7 +277,7 @@ NBox {
     ColumnLayout {
       Layout.fillWidth: true
       Layout.alignment: Qt.AlignVCenter
-      spacing: 2
+      spacing: Style.marginXS
 
       NText {
         id: nameText
