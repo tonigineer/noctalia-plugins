@@ -74,9 +74,19 @@ Item {
     return ((idx % filteredCount) + filteredCount) % filteredCount;
   }
 
+  function jumpTo(idx) {
+    animBehavior.enabled = false;
+    runningIndex = idx;
+    animationIndex = idx;
+    currentIndex = idx;
+    animBehavior.enabled = true;
+  }
+
   width: (cardsShown - 3) * cardStripWidth + (cardsShown - 3) * cardSpacing + centerWidth
 
   Behavior on animationIndex {
+    id: animBehavior
+
     NumberAnimation {
       duration: cardDeck.animationDuration
       easing.type: Easing.OutCubic

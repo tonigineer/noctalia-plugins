@@ -24,6 +24,7 @@ PanelWindow {
   property int cardsShown: pluginApi?.pluginSettings?.cards_shown ?? pluginApi?.manifest?.metadata?.defaultSettings?.cards_shown
   property real centerWidthRatio: pluginApi?.pluginSettings?.center_width_ratio ?? pluginApi?.manifest?.metadata?.defaultSettings?.center_width_ratio
   property int currentIndex: cardDeck.currentIndex
+  property string currentCardColor: filteredFiles[currentIndex]?.filterColor ?? ""
   property var imageFilter: pluginApi?.manifest?.metadata?.defaultSettings?.image_filter
   property var videoFilter: pluginApi?.manifest?.metadata?.defaultSettings?.video_filter
   property var filteredFiles: []
@@ -66,6 +67,8 @@ PanelWindow {
   }
   //
   function applyFilterToFiles() {
+    var currentFile = filteredFiles[cardDeck.currentIndex]?.filePath ?? "";
+
     var all = thumbnailService.files ?? [];
     var result = all;
 
@@ -78,8 +81,18 @@ PanelWindow {
       result = result.filter(f => f.filterColor === selectedColorFilter);
 
     filteredFiles = result;
-    cardDeck.navigateTo(0);
-    // TODO: Proper indices tranisition needed here.
+
+    var newIdx = 0;
+    if (currentFile !== "") {
+      for (var i = 0; i < result.length; i++) {
+        if (result[i].filePath === currentFile) {
+          newIdx = i;
+          break;
+        }
+      }
+    }
+
+    cardDeck.jumpTo(newIdx);
   }
   function close() {
     if (exitAnimation.running)
@@ -288,6 +301,12 @@ PanelWindow {
         [Qt.Key_I]: () => root.selectedFilter = "images",
         [Qt.Key_V]: () => root.selectedFilter = "videos",
         [Qt.Key_T]: () => root.hideTopBar = !root.hideTopBar,
+        [Qt.Key_F]: () => {
+          if (root.selectedColorFilter !== "")
+            root.selectedColorFilter = "";
+          else
+            root.selectedColorFilter = root.currentCardColor;
+        },
         [Qt.Key_R]: () => {
           cardDeck.randomJump();
           topBar.flashShuffle();
@@ -324,6 +343,7 @@ PanelWindow {
       animationDuration: root.animationCardsDuration
       colorOrder: thumbnailService.colorOrder
       colorOrderColors: thumbnailService.colorOrderColors
+      currentCardColor: root.currentCardColor
       currentIndex: cardDeck.currentIndex
       filteredCount: root.filteredFiles.length
       height: root.topBarHeight

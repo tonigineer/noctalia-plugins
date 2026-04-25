@@ -9,6 +9,7 @@ Rectangle {
   required property int animationDuration
   required property var colorOrder
   required property var colorOrderColors
+  required property string currentCardColor
   required property int currentIndex
   property real entryOffset: parent.width / 2
   required property int filteredCount
@@ -108,6 +109,7 @@ Rectangle {
         required property string modelData
 
         property bool active: topBar.selectedColorFilter === modelData
+        property bool current: topBar.selectedColorFilter === "" && topBar.currentCardColor === modelData
 
         anchors.verticalCenter: parent.verticalCenter
         border.color: active ? Color.mOnSurface : Qt.alpha(Color.mOutline, 0.3)
@@ -126,6 +128,29 @@ Rectangle {
         Behavior on border.color {
           ColorAnimation {
             duration: Style.animationFast
+          }
+        }
+
+        // Current card indicator
+        Rectangle {
+          anchors.bottom: parent.bottom
+          anchors.bottomMargin: -height - 2
+          anchors.horizontalCenter: parent.horizontalCenter
+          color: parent.current ? topBar.colorOrderColors[parent.index] : "transparent"
+          height: 3
+          radius: height / 2
+          width: parent.current ? parent.width * 0.6 : 0
+
+          Behavior on width {
+            NumberAnimation {
+              duration: Style.animationFast
+              easing.type: Easing.OutCubic
+            }
+          }
+          Behavior on color {
+            ColorAnimation {
+              duration: Style.animationFast
+            }
           }
         }
 
