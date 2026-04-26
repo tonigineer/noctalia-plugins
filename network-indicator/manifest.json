@@ -1,8 +1,8 @@
 {
   "id": "network-indicator",
   "name": "Network Indicator",
-  "version": "1.0.7",
-  "minNoctaliaVersion": "3.7.5",
+  "version": "1.0.8",
+  "minNoctaliaVersion": "4.7.6",
   "author": "tonigineer",
   "license": "MIT",
   "repository": "https://github.com/noctalia-dev/noctalia-plugins",
@@ -23,13 +23,17 @@
     "defaultSettings": {
       "arrowType": "caret",
       "byteThresholdActive": 1024,
-      "fontSizeModifier": 1.0,
+      "fontSizeModifier": 0.75,
       "forceMegabytes": false,
       "iconSizeModifier": 1.0,
       "minWidth": 0,
       "showNumbers": true,
       "spacingInbetween": 0,
-      "useCustomColors": false
+      "useCustomColors": false,
+      "useCustomFont": false,
+      "customFontBold": false,
+      "customFontItalic": false,
+      "horizontalLayout": false
     }
   }
 }
