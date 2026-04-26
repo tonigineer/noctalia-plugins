@@ -1,7 +1,7 @@
 {
     "id": "calibre-provider",
     "name": "Calibre Provider",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "description": "Search for books in your Calibre library",
     "tags": ["Launcher"],
     "minNoctaliaVersion": "4.6.1",
