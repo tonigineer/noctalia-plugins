@@ -55,20 +55,15 @@ Item {
         return pluginApi?.pluginSettings?.managementUrl ?? "";
     }
 
-    function normalizeManagementUrl(rawUrl) {
-        var url = String(rawUrl || "").trim();
-        if (url === "")
-            return "";
-
-        if (url.indexOf("://") === -1) {
-            if (url.indexOf("localhost") === 0 || url.indexOf("127.0.0.1") === 0 || url.indexOf("[::1]") === 0) {
-                return "http://" + url;
-            }
-            return "https://" + url;
-        }
-
-        return url;
-    }
+	function normalizeManagementUrl(rawUrl) {
+	  const url = String(rawUrl || "").trim();
+	  if (!url) return "";
+	
+	  if (/^https?:\/\//i.test(url)) return url;
+	
+	  const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])(?::|\/|$)/i.test(url);
+	  return `${isLocal ? "http" : "https"}://${url}`;
+	}
 
     function extractManagementUrl(data) {
         if (!data)
