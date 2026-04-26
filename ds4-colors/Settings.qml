@@ -40,7 +40,7 @@ ColumnLayout {
             return isNaN(c.r) ? "transparent" : c
         }
         border.color: Color.mOutline
-        border.width: 1
+        border.width: Style.borderS
     }
 
     NText {
@@ -71,7 +71,7 @@ ColumnLayout {
                 radius: Style.radiusS
                 color: modelData
                 border.color: Color.mOutline
-                border.width: 1
+                border.width: Style.borderS
 
                 MouseArea {
                     anchors.fill: parent
