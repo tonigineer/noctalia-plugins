@@ -67,7 +67,7 @@ PanelWindow {
 
     WallpaperService.changeWallpaper(wallpaperPath);
   }
-  //
+
   function applyFilterToFiles() {
     var currentFile = filteredFiles[cardDeck.currentIndex]?.filePath ?? "";
 
@@ -101,6 +101,7 @@ PanelWindow {
 
     cardDeck.jumpTo(newIdx);
   }
+
   function close() {
     if (exitAnimation.running)
       return;
@@ -125,6 +126,7 @@ PanelWindow {
     if (root.livePreview)
       applyCurrentCard();
   }
+
   onSelectedFilterChanged: applyFilterToFiles()
   onSelectedColorFilterChanged: applyFilterToFiles()
   onVisibleChanged: {
@@ -145,6 +147,7 @@ PanelWindow {
     command: []
     running: false
   }
+
   Connections {
     function onFilesChanged() {
       root.applyFilterToFiles();
@@ -305,6 +308,7 @@ PanelWindow {
           return;
         }
       }
+
       function handleKey(event, bindings) {
         const action = bindings[event.key];
         if (action) {
