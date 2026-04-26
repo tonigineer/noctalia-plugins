@@ -719,7 +719,7 @@
     {
       "id": "lyrics-fetch",
       "name": "Lyrics Fetch/Bar Display",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "official": false,
       "author": "Pever3ll",
       "description": "Uses MPRIS data to fetch song lyrics from lrclib.net and displays it in the bar.",
@@ -730,7 +730,7 @@
         "Bar",
         "Music"
       ],
-      "lastUpdated": "2026-04-20T23:23:21+03:00"
+      "lastUpdated": "2026-04-25T13:09:06+02:00"
     },
     {
       "id": "mangowc-layout-switcher",
