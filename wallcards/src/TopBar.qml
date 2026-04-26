@@ -64,19 +64,19 @@ Rectangle {
       model: [
         {
           key: "all",
-          label: topBar.pluginApi?.tr("buttons.all"),
+          label: root.pluginApi?.tr("buttons.all"),
           icon: "wallpaper",
           hotkey: "A"
         },
         {
           key: "images",
-          label: topBar.pluginApi?.tr("buttons.images"),
+          label: root.pluginApi?.tr("buttons.images"),
           icon: "image",
           hotkey: "I"
         },
         {
           key: "videos",
-          label: topBar.pluginApi?.tr("buttons.videos"),
+          label: root.pluginApi?.tr("buttons.videos"),
           icon: "video",
           hotkey: "V"
         }
@@ -88,7 +88,7 @@ Rectangle {
         active: topBar.selectedFilter === modelData.key
         hotkey: modelData.hotkey
         icon: modelData.icon
-        label: modelData.label
+        label: modelData.label || ""
 
         onClicked: topBar.filterSelected(modelData.key)
       }

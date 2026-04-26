@@ -37,7 +37,7 @@ Row {
         Rectangle {
           anchors.verticalCenter: parent.verticalCenter
           border.color: Qt.alpha(Color.mOnSurface, 0.2)
-          border.width: 1
+          border.width: Style.borderS
           color: Qt.alpha(Color.mOnSurface, 0.08)
           height: Style.marginL + 2
           radius: Style.radiusXS
@@ -47,7 +47,7 @@ Row {
             anchors.bottomMargin: 2
             anchors.fill: parent
             border.color: Qt.alpha(Color.mOnSurface, 0.15)
-            border.width: Style.borderL
+            border.width: Style.borderS
             color: Qt.alpha(Color.mOnSurface, 0.05)
             radius: Style.radiusXS
 

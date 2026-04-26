@@ -7,7 +7,6 @@ Rectangle {
 
   property bool expanded: false
   property bool hideHelp: true
-  required property var pluginApi
 
   color: Qt.alpha(Color.mSurface, 0.9)
   radius: Style.radiusS
@@ -39,7 +38,7 @@ Rectangle {
 
     ShortcutHint {
       keys: "?"
-      label: sideBar.pluginApi?.tr("shortcuts.label.help-title")
+      label: root.pluginApi?.tr("shortcuts.label.help-title")
     }
   }
 
@@ -56,19 +55,19 @@ Rectangle {
       color: Qt.alpha(Color.mOnSurface, 0.35)
       font.bold: true
       font.pointSize: Style.fontSizeXXS
-      text: sideBar.pluginApi?.tr("shortcuts.header.navigation")
+      text: root.pluginApi?.tr("shortcuts.header.navigation")
     }
     ShortcutHint {
       keys: "J / K"
-      label: sideBar.pluginApi?.tr("shortcuts.label.navigate")
+      label: root.pluginApi?.tr("shortcuts.label.navigate")
     }
     ShortcutHint {
       keys: "H / L"
-      label: sideBar.pluginApi?.tr("shortcuts.label.jump")
+      label: root.pluginApi?.tr("shortcuts.label.jump")
     }
     ShortcutHint {
       keys: "R"
-      label: sideBar.pluginApi?.tr("shortcuts.label.shuffle")
+      label: root.pluginApi?.tr("shortcuts.label.shuffle")
     }
 
     // Separator
@@ -83,19 +82,19 @@ Rectangle {
       color: Qt.alpha(Color.mOnSurface, 0.35)
       font.bold: true
       font.pointSize: Style.fontSizeXXS
-      text: "ACTIONS"
+      text: root.pluginApi?.tr("shortcuts.header.actions")
     }
     ShortcutHint {
       keys: "ENTER"
-      label: sideBar.pluginApi?.tr("shortcuts.label.apply-quit")
+      label: root.pluginApi?.tr("shortcuts.label.apply-quit")
     }
     ShortcutHint {
       keys: "SPACE"
-      label: sideBar.pluginApi?.tr("shortcuts.label.apply")
+      label: root.pluginApi?.tr("shortcuts.label.apply")
     }
     ShortcutHint {
       keys: "ESC / Q"
-      label: sideBar.pluginApi?.tr("shortcuts.label.quit")
+      label: root.pluginApi?.tr("shortcuts.label.quit")
     }
 
     // Separator
@@ -110,7 +109,7 @@ Rectangle {
       color: Qt.alpha(Color.mOnSurface, 0.35)
       font.bold: true
       font.pointSize: Style.fontSizeXXS
-      text: sideBar.pluginApi?.tr("shortcuts.header.filters")
+      text: root.pluginApi?.tr("shortcuts.header.filters")
     }
     ShortcutHint {
       keys: "A"
@@ -118,15 +117,15 @@ Rectangle {
     }
     ShortcutHint {
       keys: "I"
-      label: sideBar.pluginApi?.tr("shortcuts.label.filter-images")
+      label: root.pluginApi?.tr("shortcuts.label.filter-images")
     }
     ShortcutHint {
       keys: "V"
-      label: sideBar.pluginApi?.tr("shortcuts.label.filter-videos")
+      label: root.pluginApi?.tr("shortcuts.label.filter-videos")
     }
     ShortcutHint {
       keys: "F"
-      label: sideBar.pluginApi?.tr("shortcuts.label.filter-colors")
+      label: root.pluginApi?.tr("shortcuts.label.filter-colors")
     }
 
     // Separator
@@ -141,15 +140,15 @@ Rectangle {
       color: Qt.alpha(Color.mOnSurface, 0.35)
       font.bold: true
       font.pointSize: Style.fontSizeXXS
-      text: sideBar.pluginApi?.tr("shortcuts.header.view")
+      text: root.pluginApi?.tr("shortcuts.header.view")
     }
     ShortcutHint {
       keys: "T"
-      label: sideBar.pluginApi?.tr("shortcuts.label.top-bar")
+      label: root.pluginApi?.tr("shortcuts.label.top-bar")
     }
     ShortcutHint {
       keys: "P"
-      label: sideBar.pluginApi?.tr("shortcuts.label.live-preview")
+      label: root.pluginApi?.tr("shortcuts.label.live-preview")
     }
 
     // Separator
@@ -164,27 +163,27 @@ Rectangle {
       color: Qt.alpha(Color.mOnSurface, 0.35)
       font.bold: true
       font.pointSize: Style.fontSizeXXS
-      text: sideBar.pluginApi?.tr("shortcuts.header.layout")
+      text: root.pluginApi?.tr("shortcuts.header.layout")
     }
     ShortcutHint {
       keys: "SHIFT + H / L"
-      label: sideBar.pluginApi?.tr("shortcuts.label.center-height")
+      label: root.pluginApi?.tr("shortcuts.label.center-height")
     }
     ShortcutHint {
       keys: "SHIFT + J / K"
-      label: sideBar.pluginApi?.tr("shortcuts.label.center-width")
+      label: root.pluginApi?.tr("shortcuts.label.center-width")
     }
     ShortcutHint {
       keys: "SHIFT + N / P"
-      label: sideBar.pluginApi?.tr("shortcuts.label.cards-shown")
+      label: root.pluginApi?.tr("shortcuts.label.cards-shown")
     }
     ShortcutHint {
       keys: "CTRL + J / K"
-      label: sideBar.pluginApi?.tr("shortcuts.label.cards-spacing")
+      label: root.pluginApi?.tr("shortcuts.label.cards-spacing")
     }
     ShortcutHint {
       keys: "CTRL + H / L"
-      label: sideBar.pluginApi?.tr("shortcuts.label.cards-width")
+      label: root.pluginApi?.tr("shortcuts.label.cards-width")
     }
 
     // Separator
@@ -196,11 +195,11 @@ Rectangle {
 
     ShortcutHint {
       keys: "CTRL + S"
-      label: sideBar.pluginApi?.tr("shortcuts.label.save")
+      label: root.pluginApi?.tr("shortcuts.label.save")
     }
     ShortcutHint {
       keys: "?"
-      label: sideBar.pluginApi?.tr("shortcuts.label.hide")
+      label: root.pluginApi?.tr("shortcuts.label.hide")
     }
   }
 }

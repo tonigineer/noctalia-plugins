@@ -111,15 +111,15 @@ ColumnLayout {
     model: [
       {
         "key": "all",
-        "name": root.pluginApi?.tr("filters.all")
+        "name": root.pluginApi?.tr("buttons.all")
       },
       {
         "key": "images",
-        "name": root.pluginApi?.tr("filters.images")
+        "name": root.pluginApi?.tr("buttons.images")
       },
       {
         "key": "videos",
-        "name": root.pluginApi?.tr("filters.videos")
+        "name": root.pluginApi?.tr("buttons.videos")
       }
     ]
 

@@ -70,7 +70,7 @@ Rectangle {
         anchors.bottomMargin: 2
         anchors.fill: parent
         border.color: Qt.alpha(root.accentColor, 0.25)
-        border.width: 1
+        border.width: Style.borderS
         color: Qt.alpha(root.accentColor, 0.1)
         radius: Style.radiusXS
 

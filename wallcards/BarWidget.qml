@@ -12,6 +12,8 @@ NIconButton {
   property var pluginApi: null
   property ShellScreen screen
   property string section: ""
+  property int sectionWidgetIndex: -1
+  property int sectionWidgetsCount: 0
   property string widgetId: ""
 
   baseSize: Style.getCapsuleHeightForScreen(screen?.name)
