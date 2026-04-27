@@ -7,7 +7,7 @@ NIconButtonHot {
     property var pluginApi: null
 
     icon: "screen-share"
-    tooltipText: pluginApi?.tr("bar.tooltip.inactive")
+    tooltipText: pluginApi?.tr("widget.tooltip")
     onClicked: {
         if (pluginApi) pluginApi.togglePanel(screen, this);
     }

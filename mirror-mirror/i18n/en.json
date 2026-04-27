@@ -5,6 +5,9 @@
       "inactive": "Mirror displays"
     }
   },
+  "widget": {
+    "tooltip": "Mirror one monitor to another"
+  },
   "main": {
     "error": {
       "alreadyMirroring": "A mirror session is already active. Stop it before starting another.",
