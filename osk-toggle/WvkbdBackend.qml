@@ -7,7 +7,9 @@ Item {
 
     property var pluginApi: null
 
-    property bool keyboardActive: false
+    property bool _visible: false
+    // Inverted so BarWidget's direct mapping matches wvkbd-toggle's icon convention.
+    readonly property bool keyboardActive: !_visible
     property bool wvkbdOk: false
     property bool available: wvkbdOk
 
@@ -27,7 +29,7 @@ Item {
             availabilityChecker.running = true
             return
         }
-        root._pendingShow = root.keyboardActive
+        root._pendingShow = root._visible
         root._pendingRestart = true
         wvkbd.running = false
     }
@@ -77,7 +79,7 @@ Item {
             }
         }
         onExited: (exitCode, exitStatus) => {
-            root.keyboardActive = false
+            root._visible = false
             if (root._pendingRestart) {
                 root._pendingRestart = false
                 availabilityChecker.running = true
@@ -91,7 +93,7 @@ Item {
         interval: 300
         onTriggered: {
             wvkbd.signal(10)  // SIGUSR1 = show
-            root.keyboardActive = true
+            root._visible = true
         }
     }
 
@@ -109,12 +111,12 @@ Item {
             wvkbd.running = true
             return
         }
-        if (root.keyboardActive) {
+        if (root._visible) {
             wvkbd.signal(12)  // SIGUSR2 = hide
-            root.keyboardActive = false
+            root._visible = false
         } else {
             wvkbd.signal(10)  // SIGUSR1 = show
-            root.keyboardActive = true
+            root._visible = true
         }
     }
 }
