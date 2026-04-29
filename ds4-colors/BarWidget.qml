@@ -101,10 +101,14 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
-            acceptedButtons: Qt.RightButton
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
 
             onClicked: mouse => {
-                PanelService.showContextMenu(contextMenu, root, screen)
+                if (mouse.button === Qt.LeftButton) {
+                    BarService.openPluginSettings(root.screen, pluginApi.manifest)
+                } else if (mouse.button === Qt.RightButton) {
+                    PanelService.showContextMenu(contextMenu, root, screen)
+                }
             }
 
             onEntered: {

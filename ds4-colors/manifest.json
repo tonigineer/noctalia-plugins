@@ -6,7 +6,7 @@
   "author": "Noctalia Team",
   "license": "MIT",
   "repository": "https://github.com/noctalia-dev/noctalia-plugins",
-  "description": "Change the color of your DualShock 4 or DualSense controller lightbar with presets and custom hex colors.",
+  "description": "Change the lightbar color of your DualShock 4 or DualSense controller with a color picker and recent color history.",
   "tags": [
     "Hardware",
     "Gaming",
@@ -21,7 +21,8 @@
     "defaultSettings": {
       "color": "#0064ff",
       "colorIcon": false,
-      "hideOnEmpty": false
+      "hideOnEmpty": false,
+      "recentColors": []
     }
   }
 }

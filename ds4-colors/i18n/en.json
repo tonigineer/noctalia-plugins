@@ -12,6 +12,8 @@
     "error": "Error: {msg}"
   },
   "settings": {
+    "lightbar_color": "Lightbar Color",
+    "recent_colors": "Recent Colors",
     "widget_settings": "Widget Settings",
     "color_icon": {
       "label": "Color Widget Icon",

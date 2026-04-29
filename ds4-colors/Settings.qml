@@ -13,6 +13,7 @@ ColumnLayout {
     property string valueColor: cfg.color ?? defaults.color ?? "#0064ff"
     property bool valueColorIcon: cfg.colorIcon ?? defaults.colorIcon ?? false
     property bool valueHideOnEmpty: cfg.hideOnEmpty ?? defaults.hideOnEmpty ?? false
+    property var valueRecentColors: cfg.recentColors ?? defaults.recentColors ?? []
 
     spacing: Style.marginL
 
@@ -27,6 +28,46 @@ ColumnLayout {
         Layout.fillWidth: true
         selectedColor: root.valueColor
         onColorSelected: color => root.valueColor = color
+    }
+
+    // Recent colors swatches — only shown when there is history
+    ColumnLayout {
+        Layout.fillWidth: true
+        spacing: Style.marginS
+        visible: root.valueRecentColors.length > 0
+
+        NText {
+            text: pluginApi?.tr("settings.recent_colors")
+            pointSize: Style.fontSizeS
+            font.weight: Font.Bold
+            color: Color.mOnSurface
+        }
+
+        GridLayout {
+            Layout.fillWidth: true
+            columns: 8
+            rowSpacing: Style.marginS
+            columnSpacing: Style.marginS
+
+            Repeater {
+                model: root.valueRecentColors
+                delegate: Rectangle {
+                    required property string modelData
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    radius: Style.radiusS
+                    color: modelData
+                    border.color: root.valueColor === modelData ? Color.mPrimary : Color.mOutline
+                    border.width: root.valueColor === modelData ? Style.borderS * 2 : Style.borderS
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: root.valueColor = modelData
+                    }
+                }
+            }
+        }
     }
 
     NDivider {
@@ -69,9 +110,14 @@ ColumnLayout {
 
     NBox {
         Layout.fillWidth: true
+        implicitHeight: infoColumn.implicitHeight + Style.marginXL
 
         ColumnLayout {
-            anchors.fill: parent
+            id: infoColumn
+
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
             anchors.margins: Style.marginM
             spacing: Style.marginS
 
@@ -97,9 +143,19 @@ ColumnLayout {
     function saveSettings() {
         if (!pluginApi) return
 
+        // Prepend the new color and keep the last 8 unique entries
+        const next = [root.valueColor]
+            .concat((root.valueRecentColors || []).filter(c => c !== root.valueColor))
+            .slice(0, 8)
+
         pluginApi.pluginSettings.color = root.valueColor
         pluginApi.pluginSettings.colorIcon = root.valueColorIcon
         pluginApi.pluginSettings.hideOnEmpty = root.valueHideOnEmpty
+        pluginApi.pluginSettings.recentColors = next
+        root.valueRecentColors = next
         pluginApi.saveSettings()
+
+        // Apply the new color to the controller immediately
+        pluginApi.mainInstance?.applyColors()
     }
 }
