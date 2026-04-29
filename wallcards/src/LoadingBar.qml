@@ -70,7 +70,7 @@ Rectangle {
     }
 
     NText {
-      text: root.pluginApi?.tr("widget.generate-thumbs-message") + String(Math.max(loadingBar.total - loadingBar.pending, 0)).padStart(String(loadingBar.total).length, " ") + " / " + loadingBar.total
+      text: `${root.pluginApi?.tr("widget.generate-thumbs-message")} ${String(Math.max(loadingBar.total - loadingBar.pending, 0)).padStart(String(loadingBar.total).length, " ")} / ${loadingBar.total}`
     }
   }
 
