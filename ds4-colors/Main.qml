@@ -37,11 +37,7 @@ Item {
     // resolves their real path, and outputs "led_path|real_path" per line.
     Process {
         id: controllerScanner
-        command: ["sh", "-c",
-            "for d in /sys/class/leds/*:red /sys/class/leds/*::red; do " +
-            "[ -e \"$d\" ] && echo \"$d|$(realpath \"$d\")\"; " +
-            "done 2>/dev/null; exit 0"
-        ]
+        command: ["sh", (pluginApi?.pluginDir ?? "") + "/scripts/scan_controllers.sh"]
         stdout: StdioCollector { id: scannerStdout }
         running: false
 
@@ -112,20 +108,7 @@ Item {
 
     Process {
         id: batteryScanProcess
-        command: ["sh", "-c",
-            "for bat in /sys/class/power_supply/*/capacity; do " +
-            "  dir=$(dirname \"$bat\"); " +
-            "  base=$(basename \"$dir\"); " +
-            "  name=\"\"; " +
-            "  [ -f \"$dir/name\" ] && name=$(cat \"$dir/name\" 2>/dev/null); " +
-            "  devlink=\"\"; " +
-            "  [ -L \"$dir/device\" ] && devlink=$(readlink \"$dir/device\" 2>/dev/null); " +
-            "  case \"$base$name$devlink\" in " +
-            "    *[Ss]ony*|*[Dd]ual[Ss]ense*|*[Dd]ual[Ss]hock*|*054[Cc]*|*ps-controller*) " +
-            "      cat \"$bat\" 2>/dev/null; exit 0;; " +
-            "  esac; " +
-            "done; echo -1"
-        ]
+        command: ["sh", (pluginApi?.pluginDir ?? "") + "/scripts/scan_battery.sh"]
         stdout: StdioCollector { id: batteryStdout }
         running: false
 
@@ -284,11 +267,13 @@ Item {
     IpcHandler {
         target: "plugin:ds4-colors"
 
-        function setColor(r, g, b) {
-            root.setColor(parseInt(r) || 0, parseInt(g) || 0, parseInt(b) || 0)
+        // Set lightbar color by individual RGB components (0-255)
+        function setColor(r: int, g: int, b: int) {
+            root.setColor(r, g, b)
         }
 
-        function setColorHex(hex) {
+        // Set lightbar color by hex string, e.g. "#ff0000" or "ff0000"
+        function setColorHex(hex: string) {
             const clean = String(hex).replace("#", "")
             const r = parseInt(clean.substring(0, 2), 16) || 0
             const g = parseInt(clean.substring(2, 4), 16) || 0
@@ -296,10 +281,12 @@ Item {
             root.setColor(r, g, b)
         }
 
+        // Turn the lightbar off
         function off() {
             root.setColor(0, 0, 0)
         }
 
+        // Force an immediate rescan for connected controllers
         function scan() {
             root.scanControllers()
         }

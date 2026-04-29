@@ -23,66 +23,10 @@ ColumnLayout {
         color: Color.mOnSurface
     }
 
-    NTextInput {
+    NColorPicker {
         Layout.fillWidth: true
-        label: pluginApi?.tr("settings.hex_color.label")
-        description: pluginApi?.tr("settings.hex_color.desc")
-        text: root.valueColor
-        onTextChanged: root.valueColor = text
-    }
-
-    Rectangle {
-        Layout.preferredWidth: 64
-        Layout.preferredHeight: 64
-        radius: Style.radiusM
-        color: {
-            const c = Qt.color(root.valueColor)
-            return isNaN(c.r) ? "transparent" : c
-        }
-        border.color: Color.mOutline
-        border.width: Style.borderS
-    }
-
-    NText {
-        text: pluginApi?.tr("settings.presets.label")
-        pointSize: Style.fontSizeS
-        font.weight: Font.Bold
-        color: Color.mOnSurface
-        Layout.topMargin: Style.marginS
-    }
-
-    GridLayout {
-        Layout.fillWidth: true
-        columns: 8
-        rowSpacing: Style.marginS
-        columnSpacing: Style.marginS
-
-        Repeater {
-            model: [
-                "#ff0000", "#ff7f00", "#ffff00", "#7fff00",
-                "#00ff00", "#00ff7f", "#00ffff", "#007fff",
-                "#0000ff", "#7f00ff", "#ff00ff", "#ff007f",
-                "#ffffff", "#ff88aa", "#0064ff", "#000000"
-            ]
-            delegate: Rectangle {
-                required property string modelData
-                Layout.preferredWidth: 32
-                Layout.preferredHeight: 32
-                radius: Style.radiusS
-                color: modelData
-                border.color: Color.mOutline
-                border.width: Style.borderS
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        root.valueColor = modelData
-                        root.applyAndSave()
-                    }
-                }
-            }
-        }
+        selectedColor: root.valueColor
+        onColorSelected: color => root.valueColor = color
     }
 
     NDivider {
@@ -149,8 +93,8 @@ ColumnLayout {
         }
     }
 
-    // Persist settings and immediately apply color to the controller
-    function applyAndSave() {
+    // Called by the shell when the user clicks "Save"
+    function saveSettings() {
         if (!pluginApi) return
 
         pluginApi.pluginSettings.color = root.valueColor
@@ -161,10 +105,5 @@ ColumnLayout {
         if (pluginApi.mainInstance) {
             pluginApi.mainInstance.applyColors()
         }
-    }
-
-    // Called by the shell when the user clicks "Save"
-    function saveSettings() {
-        applyAndSave()
     }
 }

@@ -12,14 +12,6 @@
     "error": "Error: {msg}"
   },
   "settings": {
-    "lightbar_color": "Lightbar Color",
-    "hex_color": {
-      "label": "Hex Color",
-      "desc": "Enter color code (e.g., #ff0000)"
-    },
-    "presets": {
-      "label": "Presets"
-    },
     "widget_settings": "Widget Settings",
     "color_icon": {
       "label": "Color Widget Icon",
