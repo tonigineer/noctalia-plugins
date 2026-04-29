@@ -165,30 +165,26 @@ Item {
             return
         }
 
-        const scriptPath = pluginApi?.pluginDir
-            ? (pluginApi.pluginDir + "/set_ds4_color.sh")
-            : ""
-        if (!scriptPath) {
-            lastError = "Script not found"
+        const pluginDir = pluginApi?.pluginDir ?? ""
+        if (!pluginDir) {
+            lastError = "Plugin dir not found"
             isApplying = false
             return
         }
 
         // Try direct write first (works when udev rules are set up)
-        const redBrightness = controller.red + "/brightness"
-        const greenBrightness = controller.green + "/brightness"
-        const blueBrightness = controller.blue + "/brightness"
-
-        colorWriter.command = ["sh", "-c",
-            "if [ -w '" + redBrightness + "' ]; then " +
-            "echo " + root.currentR + " > '" + redBrightness + "' && " +
-            "echo " + root.currentG + " > '" + greenBrightness + "' && " +
-            "echo " + root.currentB + " > '" + blueBrightness + "' && " +
-            "echo 'direct:ok'; " +
-            "else echo 'direct:fail'; fi"
+        colorWriter.command = [
+            "sh",
+            pluginDir + "/scripts/write_color.sh",
+            controller.red,
+            controller.green,
+            controller.blue,
+            String(root.currentR),
+            String(root.currentG),
+            String(root.currentB)
         ]
         colorWriter.controllerPath = basePath
-        colorWriter.scriptPath = scriptPath
+        colorWriter.scriptPath = pluginDir + "/set_ds4_color.sh"
         colorWriter.controller = controller
         colorWriter.running = true
     }
