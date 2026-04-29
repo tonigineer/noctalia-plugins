@@ -19,11 +19,11 @@ Item {
     property int currentG: 100
     property int currentB: 255
 
-    // Periodic scan for controllers
+    // Periodic scan for controllers — only when none are detected
     Timer {
         id: scanTimer
         interval: 5000
-        running: true
+        running: false
         repeat: true
         onTriggered: root.scanControllers()
     }
@@ -91,6 +91,9 @@ Item {
             }
 
             root.isInitialScan = false
+
+            // Only scan when no controllers are detected
+            scanTimer.running = newKeys.length === 0
 
             // Only scan battery when controllers exist
             if (newKeys.length > 0) {
@@ -289,6 +292,6 @@ Item {
     }
 
     Component.onCompleted: {
-        if (pluginApi) scanControllers()
+        if (pluginApi) root.scanControllers()
     }
 }
