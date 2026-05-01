@@ -1074,7 +1074,7 @@ Item {
 
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
-    width: 500 * Style.uiScaleRatio
+    width: 680 * Style.uiScaleRatio
     height: 480 * Style.uiScaleRatio
     modal: true
     focus: true
@@ -1098,18 +1098,28 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        height: 44 * Style.uiScaleRatio
+        height: 48 * Style.uiScaleRatio
         color: Color.mPrimary
-        radius: Style.radiusS
+        radius: Style.radiusL
+        topLeftRadius: Style.radiusL
+        topRightRadius: Style.radiusL
+        bottomLeftRadius: 0
+        bottomRightRadius: 0
 
         RowLayout {
           anchors.fill: parent
           anchors.leftMargin: Style.marginL
           anchors.rightMargin: Style.marginM
 
+          NIcon {
+            icon: "clipboard-check"
+            pointSize: Style.fontSizeL
+            color: Color.mOnPrimary
+          }
+
           NText {
             text: pluginApi?.tr("panel.todo_details.title")
-            font.pointSize: Style.fontSizeM
+            font.pointSize: Style.fontSizeL
             font.weight: Font.Bold
             color: Color.mOnPrimary
             Layout.fillWidth: true
@@ -1117,9 +1127,10 @@ Item {
 
           NIconButton {
             icon: "x"
-            colorBg: Qt.rgba(1, 1, 1, 0.2)
+            colorBg: Qt.rgba(1, 1, 1, 0.15)
             colorBgHover: Qt.rgba(1, 1, 1, 0.3)
             colorFg: Color.mOnPrimary
+            baseSize: Style.baseWidgetSize
             onClicked: detailDialog.close()
           }
         }
@@ -1127,6 +1138,7 @@ Item {
 
       // Scrollable content (below header)
       Flickable {
+        id: detailFlick
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: headerBar.bottom
@@ -1139,20 +1151,34 @@ Item {
         ColumnLayout {
           id: contentColumn
           anchors.fill: parent
-          anchors.leftMargin: Style.marginL
-          anchors.rightMargin: Style.marginL
-          anchors.topMargin: Style.marginM
-          anchors.bottomMargin: Style.marginM
-          spacing: Style.marginM
+          anchors.leftMargin: Style.marginL * 1.2
+          anchors.rightMargin: Style.marginL * 1.2
+          anchors.topMargin: Style.marginL
+          anchors.bottomMargin: Style.marginL * 2
+          spacing: Style.marginL
 
-          // Todo text
-          NText {
-            text: detailDialog.todoText
-            font.pointSize: Style.fontSizeL
-            font.weight: Font.Bold
-            color: Color.mOnSurface
-            wrapMode: Text.Wrap
+          // Todo text with priority indicator
+          RowLayout {
             Layout.fillWidth: true
+            spacing: Style.marginM
+
+            // Priority color bar
+            Rectangle {
+              Layout.preferredWidth: 4
+              Layout.preferredHeight: todoTextItem.implicitHeight
+              radius: 2
+              color: getPriorityColor(detailDialog.todoPriority)
+            }
+
+            NText {
+              id: todoTextItem
+              text: detailDialog.todoText
+              font.pointSize: Style.fontSizeL
+              font.weight: Font.Bold
+              color: Color.mOnSurface
+              wrapMode: Text.Wrap
+              Layout.fillWidth: true
+            }
           }
 
           // Details section with add/edit button
@@ -1282,15 +1308,21 @@ Item {
 
             // Page
             RowLayout {
-              spacing: Style.marginS
+              spacing: Style.marginM
               Layout.fillWidth: true
+
+              NIcon {
+                icon: "folder"
+                pointSize: Style.fontSizeS
+                color: Color.mOnSurfaceVariant
+              }
 
               NText {
                 text: pluginApi?.tr("panel.todo_details.label_page")
                 font.pointSize: Style.fontSizeS
                 color: Color.mOnSurfaceVariant
-                Layout.preferredWidth: 80 * Style.uiScaleRatio
-                Layout.alignment: Qt.AlignTop
+                Layout.preferredWidth: 72 * Style.uiScaleRatio
+                Layout.alignment: Qt.AlignVCenter
               }
 
               NText {
@@ -1298,21 +1330,27 @@ Item {
                 font.pointSize: Style.fontSizeS
                 font.weight: Font.Medium
                 color: Color.mOnSurface
-                Layout.alignment: Qt.AlignTop
+                Layout.alignment: Qt.AlignVCenter
               }
             }
 
             // Status
             RowLayout {
-              spacing: Style.marginS
+              spacing: Style.marginM
               Layout.fillWidth: true
+
+              NIcon {
+                icon: detailDialog.todoCompleted ? "circle-check" : "clock"
+                pointSize: Style.fontSizeS
+                color: Color.mOnSurfaceVariant
+              }
 
               NText {
                 text: pluginApi?.tr("panel.todo_details.label_status")
                 font.pointSize: Style.fontSizeS
                 color: Color.mOnSurfaceVariant
-                Layout.preferredWidth: 80 * Style.uiScaleRatio
-                Layout.alignment: Qt.AlignTop
+                Layout.preferredWidth: 72 * Style.uiScaleRatio
+                Layout.alignment: Qt.AlignVCenter
               }
 
               NText {
@@ -1320,21 +1358,27 @@ Item {
                 font.pointSize: Style.fontSizeS
                 font.weight: Font.Medium
                 color: detailDialog.todoCompleted ? Color.mPrimary : Color.mError
-                Layout.alignment: Qt.AlignTop
+                Layout.alignment: Qt.AlignVCenter
               }
             }
 
             // Priority
             RowLayout {
-              spacing: Style.marginS
+              spacing: Style.marginM
               Layout.fillWidth: true
+
+              NIcon {
+                icon: "flag"
+                pointSize: Style.fontSizeS
+                color: Color.mOnSurfaceVariant
+              }
 
               NText {
                 text: pluginApi?.tr("panel.todo_details.label_priority")
                 font.pointSize: Style.fontSizeS
                 color: Color.mOnSurfaceVariant
-                Layout.preferredWidth: 82 * Style.uiScaleRatio
-                Layout.alignment: Qt.AlignTop
+                Layout.preferredWidth: 72 * Style.uiScaleRatio
+                Layout.alignment: Qt.AlignVCenter
               }
 
               // Priority selector with H/M/L buttons
@@ -1432,15 +1476,21 @@ Item {
 
             // Created date
             RowLayout {
-              spacing: Style.marginS
+              spacing: Style.marginM
               Layout.fillWidth: true
+
+              NIcon {
+                icon: "calendar"
+                pointSize: Style.fontSizeS
+                color: Color.mOnSurfaceVariant
+              }
 
               NText {
                 text: pluginApi?.tr("panel.todo_details.label_created")
                 font.pointSize: Style.fontSizeS
                 color: Color.mOnSurfaceVariant
-                Layout.preferredWidth: 80 * Style.uiScaleRatio
-                Layout.alignment: Qt.AlignTop
+                Layout.preferredWidth: 72 * Style.uiScaleRatio
+                Layout.alignment: Qt.AlignVCenter
               }
 
               NText {
@@ -1449,9 +1499,15 @@ Item {
                 color: Color.mOnSurface
                 wrapMode: Text.Wrap
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
+                Layout.alignment: Qt.AlignVCenter
               }
             }
+          }
+
+          // Spacer to provide bottom padding
+          Item {
+            Layout.preferredHeight: Style.marginL * 2
+            Layout.fillWidth: true
           }
         }
       }
