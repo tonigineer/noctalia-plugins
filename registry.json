@@ -1913,7 +1913,7 @@
     {
       "id": "workspace-overview",
       "name": "Workspace Overview for Hyprland",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "official": false,
       "author": "doughbran",
       "description": "Workspace overview with live window previews and wallpaper backgrounds for Hyprland.",
@@ -1926,7 +1926,7 @@
         "Panel",
         "Utility"
       ],
-      "lastUpdated": "2026-03-29T19:05:12-04:00"
+      "lastUpdated": "2026-04-29T18:32:38+02:00"
     },
     {
       "id": "world-clock",
