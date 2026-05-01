@@ -23,28 +23,72 @@ Item {
     // Shared column width reference (content area minus outer margins, table inner margins, and column spacing)
     readonly property real tableContentWidth: panelContainer.width - 2 * Style.marginL - 2 * Style.marginS - 2 * Style.marginS - 2 * Style.marginM
 
+    NPopupContextMenu { // Context menu
+        id: contextMenu
+        property string packageID: ""
+        property string source: ""
+        property string text: ""
+        model: [
+            {
+                "label": pluginApi.tr("panel.context.copy") + ' "' + text + '"',
+                "action": "copy",
+                "icon": "copy"
+            },
+            {
+                "label": pluginApi.tr("panel.context.open") + ' "' + packageID + '"',
+                "action": "open",
+                "icon": "external-link"
+            }
+        ]
+
+        onTriggered: action => {
+            // Always close the menu first
+            contextMenu.close();
+            PanelService.closeContextMenu(screen);
+
+            // Handle actions
+            if (action === "copy") {
+                Logger.d("Arch Updater", "copy")
+                root.pluginApi.mainInstance.copy(text) // Copy text
+            }
+            else if (action === "open") {
+                Logger.d("Arch Updater", "open")
+                root.pluginApi.mainInstance.openURL(source, packageID) // Open link
+            }
+        }
+    }
+
     component TableTooltip: MouseArea {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.LeftButton
-        property string tooltipText: ""
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        property string packageID: ""
+        property string source: ""
+        property string text: ""
         property string tooltipDirection: "auto"
 
-        Item {
+        Item { // Empty item that tracks mouse
             id: cursorProxy
             x: parent.mouseX
             y: parent.mouseY
             width: 0
-            height: 0
+            height: Style.marginL
         }
 
-        onEntered: TooltipService.show(cursorProxy, tooltipText, tooltipDirection)
+        onEntered: TooltipService.show(cursorProxy, text, tooltipDirection) // Show the tooltip at the cursor
         onExited: TooltipService.hide()
-
-        onClicked: {
-            Quickshell.execDetached(["sh", "-c", "wl-copy '" + tooltipText + "'"])
-            ToastService.showNotice('Copied "' + tooltipText + '"')
-            Logger.d("Arch Updater", "Copied " + tooltipText)
+        onClicked: (mouse) => {
+            if (mouse.button === Qt.LeftButton) {
+                root.pluginApi.mainInstance.copy(text) // Copy text
+            }
+            else if (mouse.button === Qt.RightButton) {
+                contextMenu.packageID = packageID
+                contextMenu.source = source
+                contextMenu.text = text
+                PanelService.showContextMenu(contextMenu, cursorProxy, screen) // Open context menu
+                contextMenu.anchor.rect.x = 0
+                contextMenu.anchor.rect.y = Style.marginXL
+            }
         }
     }
 
@@ -168,7 +212,9 @@ Item {
                                     
                                     TableTooltip {
                                         anchors.fill: parent
-                                        tooltipText: modelData.name
+                                        packageID: modelData.id
+                                        source: modelData.source
+                                        text: modelData.name
                                         tooltipDirection: BarService.getTooltipDirection(root.screen?.name)
                                     }
                                 }
@@ -183,7 +229,9 @@ Item {
                                     
                                     TableTooltip {
                                         anchors.fill: parent
-                                        tooltipText: modelData.oldVer
+                                        packageID: modelData.id
+                                        source: modelData.source
+                                        text: modelData.oldVer
                                         tooltipDirection: BarService.getTooltipDirection(root.screen?.name)
                                     }
                                 }
@@ -199,7 +247,9 @@ Item {
                                     
                                     TableTooltip {
                                         anchors.fill: parent
-                                        tooltipText: modelData.newVer
+                                        packageID: modelData.id
+                                        source: modelData.source
+                                        text: modelData.newVer
                                         tooltipDirection: BarService.getTooltipDirection(root.screen?.name)
                                     }
                                 }
