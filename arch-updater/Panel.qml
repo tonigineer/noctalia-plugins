@@ -110,32 +110,30 @@ Item {
                 Layout.preferredHeight: title.implicitHeight + Style.marginM * 2
                 
                 RowLayout {
-                id: title
-                anchors.fill: parent
-                anchors.margins: Style.marginM
-                spacing: Style.marginS
+                    id: title
+                    anchors.fill: parent
+                    anchors.margins: Style.marginM
+                    spacing: Style.marginS
 
-                NIcon {
-                    icon: "arrow-big-down-lines"
-                    color: Color.mPrimary
-                    pointSize: Style.fontSizeXL
-                }
-
-                NText {
-                    Layout.fillWidth: true
-                    text: pluginApi?.tr("panel.title")
-                    font.weight: Style.fontWeightBold
-                    pointSize: Style.fontSizeXL
-                    color: Color.mOnSurface
-                }
-                
-                NIconButton {
-                    icon: "close"
-                    baseSize: Style.baseWidgetSize * 0.8
-                    onClicked: {
-                        if (mainInstance) mainInstance.clearHistory();
+                    NIcon {
+                        icon: "arrow-big-down-lines"
+                        color: Color.mPrimary
+                        pointSize: Style.fontSizeXL
                     }
-                }
+
+                    NText {
+                        Layout.fillWidth: true
+                        text: pluginApi?.tr("panel.title")
+                        font.weight: Style.fontWeightBold
+                        pointSize: Style.fontSizeXL
+                        color: Color.mOnSurface
+                    }
+                    
+                    NIconButton {
+                        icon: "close"
+                        baseSize: Style.baseWidgetSize * 0.8
+                        onClicked: pluginApi.closePanel(pluginApi.panelOpenScreen)
+                    }
                 }
             }
 
