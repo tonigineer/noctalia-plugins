@@ -856,6 +856,62 @@ Item {
         }
     }
 
+    function markAllNotificationsAsRead() {
+        if (!root.token || root.notificationsList.length === 0) return
+        var ids = root.notificationsList.map(function(n) { return n.id })
+        root.notificationsList = []
+        root.notificationCount = 0
+        for (var i = 0; i < ids.length; i++) {
+            root.markReadQueue.push(ids[i])
+        }
+        if (!root.isMarkingRead) processMarkReadQueue()
+    }
+
+    property var markReadQueue: []
+    property bool isMarkingRead: false
+
+    Process {
+        id: markReadProcess
+        stdout: StdioCollector {}
+        onExited: function(exitCode) {
+            if (exitCode !== 0) {
+                Logger.e("GitHubFeed", "Failed to mark notification as read, exit code: " + exitCode)
+            }
+            root.isMarkingRead = false
+            if (root.markReadQueue.length > 0) {
+                processMarkReadQueue()
+            } else {
+                fetchNotifications()
+            }
+        }
+    }
+
+    function markNotificationAsRead(threadId) {
+        var updated = []
+        for (var i = 0; i < root.notificationsList.length; i++) {
+            if (root.notificationsList[i].id !== threadId) updated.push(root.notificationsList[i])
+        }
+        root.notificationsList = updated
+        if (root.notificationCount > 0) root.notificationCount--
+
+        root.markReadQueue.push(threadId)
+        if (!root.isMarkingRead) processMarkReadQueue()
+    }
+
+    function processMarkReadQueue() {
+        if (root.markReadQueue.length === 0) return
+        var threadId = root.markReadQueue.shift()
+        root.isMarkingRead = true
+        markReadProcess.command = [
+            "curl", "-s", "--max-time", "10",
+            "-X", "PATCH",
+            "-H", "Authorization: Bearer " + root.token,
+            "-H", "Accept: application/vnd.github.v3+json",
+            root.githubRestApiUrl + "/notifications/threads/" + threadId
+        ]
+        markReadProcess.running = true
+    }
+
     function finalizeFetch() {
         root.collectedEvents.sort(function(a, b) {
             var dateA = new Date(a.created_at)

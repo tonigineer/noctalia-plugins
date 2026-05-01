@@ -154,6 +154,13 @@ Item {
                         }
                     }
                 }
+
+                NIconButton {
+                    icon: "checks"
+                    visible: root.currentTab === 1 && (root.mainInstance?.notificationCount || 0) > 0
+                    colorFg: Color.mOnSurfaceVariant
+                    onClicked: root.mainInstance?.markAllNotificationsAsRead()
+                }
             }
 
             RowLayout {
@@ -430,7 +437,7 @@ Item {
                                 id: notifCard
                                 Layout.fillWidth: true
                                 height: notifContent.implicitHeight + Style.marginM * 2
-                                color: notifMouse.containsMouse ? Qt.lighter(Color.mSurface, 1.05) : Color.mSurface
+                                color: cardHover.hovered ? Qt.lighter(Color.mSurface, 1.05) : Color.mSurface
                                 radius: Style.radiusM
 
                                 Behavior on color {
@@ -438,6 +445,8 @@ Item {
                                 }
 
                                 property var notification: modelData
+
+                                HoverHandler { id: cardHover }
 
                                 RowLayout {
                                     id: notifContent
@@ -479,6 +488,7 @@ Item {
                                             Item { Layout.fillWidth: true }
 
                                             NText {
+                                                visible: !cardHover.hovered
                                                 text: formatRelativeTime(notifCard.notification.updated_at)
                                                 pointSize: Style.fontSizeXS
                                                 color: Color.mOnSurfaceVariant
@@ -499,7 +509,6 @@ Item {
                                 MouseArea {
                                     id: notifMouse
                                     anchors.fill: parent
-                                    hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
 
                                     onClicked: {
@@ -508,6 +517,19 @@ Item {
                                             Qt.openUrlExternally(url)
                                         }
                                     }
+                                }
+
+                                NIconButton {
+                                    z: 1
+                                    visible: cardHover.hovered
+                                    anchors {
+                                        right: parent.right
+                                        verticalCenter: parent.verticalCenter
+                                        rightMargin: Style.marginM
+                                    }
+                                    icon: "check"
+                                    colorFg: Color.mOnSurfaceVariant
+                                    onClicked: root.mainInstance?.markNotificationAsRead(notifCard.notification.id)
                                 }
                             }
                         }
