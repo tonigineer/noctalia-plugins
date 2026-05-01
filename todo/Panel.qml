@@ -199,7 +199,7 @@ Item {
                   anchors.fill: parent
                   color: "transparent"
                   border.color: Color.mOutline
-                  border.width: 1
+                  border.width: Style.borderS
                   radius: Style.iRadiusS
 
                   Row {
@@ -542,7 +542,7 @@ Item {
                       Layout.preferredWidth: 4  // Width of the priority line
                       Layout.preferredHeight: parent.height - Style.marginS
                       Layout.alignment: Qt.AlignVCenter  // Align vertically centered
-                      radius: 2
+                      radius: Style.iRadiusXXXS
 
                       // Determine color based on priority using helper function
                       color: {
@@ -787,7 +787,7 @@ Item {
                               color: Color.mPrimary
                               radius: Style.iRadiusS
                               border.color: Qt.rgba(0, 0, 0, 0.2)
-                              border.width: 1
+                              border.width: Style.borderS
                             }
                           }
 
@@ -874,7 +874,7 @@ Item {
                               color: Color.mPrimary
                               radius: Style.iRadiusS
                               border.color: Qt.rgba(0, 0, 0, 0.2)
-                              border.width: 1
+                              border.width: Style.borderS
                             }
                           }
 
@@ -1079,7 +1079,7 @@ Item {
                             color: Color.mError
                             radius: Style.iRadiusS
                             border.color: Qt.rgba(0, 0, 0, 0.2)
-                            border.width: 1
+                            border.width: Style.borderS
                           }
                         }
 
@@ -1173,7 +1173,7 @@ Item {
       color: Color.mSurface
       radius: Style.radiusL
       border.color: Color.mOutline
-      border.width: 1
+      border.width: Style.borderS
     }
 
     // Content
@@ -1254,7 +1254,7 @@ Item {
             Rectangle {
               Layout.preferredWidth: 4
               Layout.preferredHeight: todoTextItem.implicitHeight
-              radius: 2
+              radius: Style.iRadiusXXXS
               color: getPriorityColor(detailDialog.todoPriority)
             }
 
@@ -1327,7 +1327,7 @@ Item {
                     color: Color.mPrimary
                     radius: Style.iRadiusS
                     border.color: Qt.rgba(0, 0, 0, 0.2)
-                    border.width: 1
+                    border.width: Style.borderS
                   }
                 }
               }
@@ -1522,10 +1522,10 @@ Item {
                 Rectangle {
                   width: 28
                   height: 28
-                  radius: 4
+                  radius: Style.iRadiusXXS
                   color: detailDialog.todoPriority === "high" ? getPriorityColor("high") : Qt.rgba(getPriorityColor("high").r, getPriorityColor("high").g, getPriorityColor("high").b, 0.2)
                   border.color: detailDialog.todoPriority === "high" ? getPriorityColor("high") : "transparent"
-                  border.width: 2
+                  border.width: Style.borderM
 
                   NText {
                     anchors.centerIn: parent
@@ -1551,10 +1551,10 @@ Item {
                 Rectangle {
                   width: 28
                   height: 28
-                  radius: 4
+                  radius: Style.iRadiusXXS
                   color: detailDialog.todoPriority === "medium" ? getPriorityColor("medium") : Qt.rgba(getPriorityColor("medium").r, getPriorityColor("medium").g, getPriorityColor("medium").b, 0.2)
                   border.color: detailDialog.todoPriority === "medium" ? getPriorityColor("medium") : "transparent"
-                  border.width: 2
+                  border.width: Style.borderM
 
                   NText {
                     anchors.centerIn: parent
@@ -1580,10 +1580,10 @@ Item {
                 Rectangle {
                   width: 28
                   height: 28
-                  radius: 4
+                  radius: Style.iRadiusXXS
                   color: detailDialog.todoPriority === "low" ? getPriorityColor("low") : Qt.rgba(getPriorityColor("low").r, getPriorityColor("low").g, getPriorityColor("low").b, 0.2)
                   border.color: detailDialog.todoPriority === "low" ? getPriorityColor("low") : "transparent"
-                  border.width: 2
+                  border.width: Style.borderM
 
                   NText {
                     anchors.centerIn: parent
