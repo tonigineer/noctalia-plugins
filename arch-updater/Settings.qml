@@ -32,6 +32,8 @@ ColumnLayout {
 
     // Panel
     property bool boldVerPanel: pluginApi.pluginSettings.boldVerPanel ?? pluginApi.manifest.metadata.defaultSettings.boldVerPanel
+    property bool panelTooltip: pluginApi.pluginSettings.panelTooltip ?? pluginApi.manifest.metadata.defaultSettings.panelTooltip
+    property bool panelContext: pluginApi.pluginSettings.panelContext ?? pluginApi.manifest.metadata.defaultSettings.panelContext
     property bool closeButton: pluginApi.pluginSettings.closeButton ?? pluginApi.manifest.metadata.defaultSettings.closeButton
 
     // Desktop Widget
@@ -118,7 +120,7 @@ ColumnLayout {
                 text: root.systemCmd
                 onTextChanged: {
                     root.systemCmd = text
-                    Logger.d("Arch Updater", "Check command set to: " + root.systemCmd)
+                    Logger.d("Arch Updater", "System command set to: " + root.systemCmd)
                 }
             }
 
@@ -130,7 +132,7 @@ ColumnLayout {
                 text: root.aurCmd
                 onTextChanged: {
                     root.aurCmd = text
-                    Logger.d("Arch Updater", "Check command set to: " + root.aurCmd)
+                    Logger.d("Arch Updater", "AUR command set to: " + root.aurCmd)
                 }
             }
 
@@ -142,7 +144,7 @@ ColumnLayout {
                 text: root.updateCmd
                 onTextChanged: {
                     root.updateCmd = text
-                    Logger.d("Arch Updater", "Name command set to: " + root.updateCmd)
+                    Logger.d("Arch Updater", "Update command set to: " + root.updateCmd)
                 }
             }
 
@@ -427,6 +429,34 @@ ColumnLayout {
                 }
             }
 
+            // Tooltip Toggle
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: panelTooltipToggle.implicitHeight
+                NToggle {
+                    id: panelTooltipToggle
+                    anchors.fill: parent
+                    label: pluginApi.tr("settings.panel.tooltip.text")
+                    description: pluginApi.tr("settings.panel.tooltip.desc")
+                    checked: root.panelTooltip
+                    onToggled: checked => root.panelTooltip = checked
+                }
+            }
+
+            // Context Menu Toggle
+            Item {
+                Layout.fillWidth: true
+                Layout.preferredHeight: panelContextToggle.implicitHeight
+                NToggle {
+                    id: panelContextToggle
+                    anchors.fill: parent
+                    label: pluginApi.tr("settings.panel.context.text")
+                    description: pluginApi.tr("settings.panel.context.desc")
+                    checked: root.panelContext
+                    onToggled: checked => root.panelContext = checked
+                }
+            }
+
             // Close Button Toggle
             Item {
                 Layout.fillWidth: true
@@ -521,6 +551,8 @@ ColumnLayout {
 
         // Panel
         pluginApi.pluginSettings.boldVerPanel = root.boldVerPanel
+        pluginApi.pluginSettings.panelTooltip = root.panelTooltip
+        pluginApi.pluginSettings.panelContext = root.panelContext
         pluginApi.pluginSettings.closeButton = root.closeButton
 
         // Desktop Widget

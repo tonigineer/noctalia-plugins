@@ -118,7 +118,7 @@ Rectangle {
 
         // ── Usage bar ────────────────────────────────────────────────────────
         ColumnLayout {
-            visible: (device?.isMounted ?? false) && (device?.usedPercent ?? 0) > 0
+            visible: device?.isMounted ?? false
             Layout.fillWidth: true
             spacing: Style.marginXS
 
@@ -148,7 +148,9 @@ Rectangle {
                 Layout.fillWidth: true
 
                 NText {
-                    text: pluginApi?.tr("device.used", { size: device?.usedSize ?? "" })
+                    text: device?.usedSize ?? ""
+                        ? pluginApi?.tr("device.used", { size: device?.usedSize ?? "" })
+                        : pluginApi?.tr("device.loading")
                     pointSize: Style.fontSizeXXS
                     color: Color.mOnSurfaceVariant
                 }
@@ -156,7 +158,9 @@ Rectangle {
                 Item { Layout.fillWidth: true }
 
                 NText {
-                    text: pluginApi?.tr("device.free", { size: device?.freeSize ?? "" })
+                    text: device?.freeSize ?? ""
+                        ? pluginApi?.tr("device.free", { size: device?.freeSize ?? "" })
+                        : ""
                     pointSize: Style.fontSizeXXS
                     color: Color.mOnSurfaceVariant
                 }

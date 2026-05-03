@@ -9,6 +9,10 @@
         "settings": "Settings"
     },
     "panel": {
+        "context": {
+            "open": "Open",
+            "copy": "Copy"
+        },
         "title": "Arch Updater",
         "name": "Name",
         "oldVer": "Old Version",
@@ -104,6 +108,14 @@
             "boldVer": {
                 "text": "Bold New Version",
                 "desc": "Make the new version column bold"
+            },
+            "tooltip": {
+                "text": "Tooltip",
+                "desc": "Show a tooltip when hovering over text in the table"
+            },
+            "context": {
+                "text": "Context Menu",
+                "desc": "Show context menu when right clicking in the table"
             },
             "closeButton": {
                 "text": "Close Button",

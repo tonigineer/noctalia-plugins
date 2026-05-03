@@ -1,13 +1,7 @@
-import QtQuick.Layouts
-import QtQuick.Controls
-import QtQuick.Effects
 import QtQuick
 import Quickshell
 import Quickshell.Services.Polkit
-import Quickshell.Wayland
 import qs.Commons
-import qs.Widgets
-import qs.Services.UI
 
 Item {
     id: root

@@ -1,6 +1,4 @@
-<p align="center">
-<img src="preview.png" alt="Hyprland Visual Editor Banner" width="800">
-</p>
+![Preview](preview.png)
 
 # 🦉 Hyprland Visual Editor (HVE)
 

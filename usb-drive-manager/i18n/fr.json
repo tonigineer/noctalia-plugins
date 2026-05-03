@@ -14,6 +14,7 @@
   },
   "device": {
     "mounted": "Monté",
+    "loading": "Chargement...",
     "used": "{size} utilisé",
     "free": "{size} libre",
     "action-open": "Ouvrir",
