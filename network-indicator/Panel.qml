@@ -68,6 +68,13 @@ Item {
           Layout.fillWidth: true
         }
 
+        NText {
+          text: `Interval ${(SystemStatService.networkIntervalMs / 1000)}s`
+          pointSize: Style.fontSizeXXS
+          color: Qt.alpha(Color.mOnSurface, 0.5)
+          Layout.alignment: Qt.AlignVCenter
+        }
+
         NIconButton {
           icon: "settings"
           tooltipText: root.pluginApi?.tr("actions.widget-settings")
@@ -124,7 +131,7 @@ Item {
           anchors.fill: parent
           anchors.margins: Style.marginS
 
-          label: root.pluginApi?.tr("panel.upload") ?? ""
+          label: root.pluginApi?.tr("panel.upload")
           iconName: root.iconType + "-up"
           accentColor: root.colorTx
           history: SystemStatService.txSpeedHistory
@@ -149,7 +156,34 @@ Item {
       return (SystemStatService.formatSpeed(bytesPerSec).replace(/([0-9.]+)([A-Za-z]+)/, "$1 $2") + "/s");
     }
 
+    function timeAgo(idx) {
+      const n = graphRoot.history.length;
+      if (n < 2 || idx < 0)
+        return "";
+
+      const secsAgo = Math.round((n - 1 - idx) * SystemStatService.networkIntervalMs / 1000);
+      if (secsAgo < 60)
+        return secsAgo + "s ago";
+
+      const mins = Math.floor(secsAgo / 60);
+      const secs = secsAgo % 60;
+      return mins + "m " + secs + "s ago";
+    }
+
+    readonly property real yTickHigh: graphRoot.maxValue > 0 ? graphRoot.maxValue * 0.66 : 0
+    readonly property real yTickLow: graphRoot.maxValue > 0 ? graphRoot.maxValue * 0.33 : 0
+    readonly property real yAxisWidth: yAxisSizer.width + Style.marginXL
+
     spacing: Style.marginXS
+
+    // Hidden text to measure the widest Y-axis label.
+    // TODO: find a better way.
+    NText {
+      id: yAxisSizer
+      visible: false
+      text: graphRoot.formatSpeed(graphRoot.yTickHigh)
+      pointSize: Style.fontSizeXS * 0.8
+    }
 
     RowLayout {
       Layout.fillWidth: true
@@ -190,7 +224,11 @@ Item {
 
         NGraph {
           id: graph
-          anchors.fill: parent
+          anchors.top: parent.top
+          anchors.bottom: parent.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.rightMargin: graphRoot.yAxisWidth
           values: graphRoot.history
           minValue: 0
           maxValue: graphRoot.maxValue
@@ -202,9 +240,65 @@ Item {
           animateScale: true
         }
 
+        // ── Y-axis scale ──
+
+        Repeater {
+          model: [
+            {
+              value: graphRoot.yTickHigh,
+              fraction: 0.66
+            },
+            {
+              value: graphRoot.yTickLow,
+              fraction: 0.33
+            }
+          ]
+
+          delegate: Item {
+            required property var modelData
+            anchors.left: parent.left
+            anchors.right: parent.right
+            y: graphArea.height * (1.0 - modelData.fraction)
+            visible: graphRoot.maxValue > 0
+
+            Rectangle {
+              id: horizontalLineYLabel
+              anchors.left: parent.left
+              anchors.right: yLabel.left
+              anchors.rightMargin: Style.marginXS
+              height: 1
+              color: Qt.alpha(Color.mOnSurface, 0.08)
+            }
+
+            Rectangle {
+              id: yLabel
+              anchors.right: parent.right
+              y: -height / 2
+              implicitWidth: yLabelText.implicitWidth + Style.marginXS * 2
+              implicitHeight: yLabelText.implicitHeight + 2
+              radius: Style.radiusXS
+              color: Qt.alpha(graphRoot.accentColor, 0.10)
+
+              NText {
+                id: yLabelText
+                anchors.centerIn: parent
+                text: graphRoot.formatSpeed(modelData.value)
+                pointSize: Style.fontSizeXS * 0.8
+                color: Qt.alpha(graphRoot.accentColor, 0.7)
+              }
+            }
+          }
+        }
+
+        // ── Hover ──
+
         MouseArea {
           id: hover
-          anchors.fill: parent
+          anchors.top: parent.top
+          anchors.bottom: parent.bottom
+          anchors.left: parent.left
+          anchors.right: parent.right
+          anchors.rightMargin: graphRoot.yAxisWidth
           hoverEnabled: true
 
           readonly property int idx: {
@@ -229,14 +323,16 @@ Item {
             color: Qt.alpha(Color.mOnSurface, 0.25)
 
             Rectangle {
+              readonly property real posX: -implicitWidth / 2
               readonly property string _label: {
                 if (hover.value < 0)
                   return "";
-                return graphRoot.formatSpeed(hover.value);
+                const speed = graphRoot.formatSpeed(hover.value);
+                const time = graphRoot.timeAgo(hover.idx);
+                return speed + (time ? " · " + time : "");
               }
 
-              readonly property real posX: -implicitWidth / 2
-              x: Math.max(-parent.x, Math.min(graphArea.width - parent.x - implicitWidth, posX))
+              x: Math.max(-parent.x, Math.min(hover.width - parent.x - implicitWidth, posX))
               y: Style.marginXS
 
               implicitWidth: bubbleText.implicitWidth + Style.marginS * 2

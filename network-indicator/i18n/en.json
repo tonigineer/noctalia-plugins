@@ -18,12 +18,9 @@
     },
     "slots": {
       "label": "Cell Assignment",
-      "desc": "Choose what each cell displays."
+      "desc": "Choose what each cell displays. No duplicates possible. E.g., use empty slots to only show icons."
     },
     "slot": {
-      "prefix": "Slot",
-      "row": "Row",
-      "col": "Col",
       "txIcon": "TX Icon",
       "rxIcon": "RX Icon",
       "txSpeed": "TX Speed",
@@ -98,7 +95,7 @@
     },
     "rowSpacing": {
       "label": "Row Spacing",
-      "desc": "Spacing between rows in grid layout (obsolete in horizontal layout)."
+      "desc": "Spacing between rows in grid layout (has no effect in horizontal layout)."
     }
   }
 }
