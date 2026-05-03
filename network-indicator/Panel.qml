@@ -318,7 +318,7 @@ Item {
                 return 0;
               return (hover.idx / (n - 1)) * parent.width - width / 2;
             }
-            width: 1
+            width: Style.borderS
             height: parent.height
             color: Qt.alpha(Color.mOnSurface, 0.25)
 
@@ -340,7 +340,7 @@ Item {
               radius: Style.radiusS
               color: Color.mSurfaceVariant
               border.color: Qt.alpha(Color.mOnSurface, 0.15)
-              border.width: 1
+              border.width: Style.borderS
 
               NText {
                 id: bubbleText
