@@ -42,3 +42,4 @@ Access settings through the widget's context menu.
 
 - The widget reads `SystemStatService.txSpeed` and `SystemStatService.rxSpeed`; the polling interval is determined by that service.
 - The graph panel uses `SystemStatService.rxSpeedHistory` and `SystemStatService.txSpeedHistory` with `NGraph` from the Noctalia Shell.
+- Unfortunately, the update interval `SystemStatService.networkIntervalMs` is currently hardcoded to `3000` by Noctalia.
