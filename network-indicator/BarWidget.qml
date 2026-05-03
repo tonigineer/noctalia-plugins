@@ -79,7 +79,6 @@ Item {
   implicitWidth: contentWidth
   implicitHeight: contentHeight
 
-  // Actual widget components
   NIcon {
     id: txIconElement
     icon: root.iconType + "-up"
@@ -129,6 +128,8 @@ Item {
     }
   }
 
+  readonly property var spacers: [spacer0, spacer1, spacer2, spacer3]
+
   Item {
     id: spacer0
   }
@@ -141,8 +142,6 @@ Item {
   Item {
     id: spacer3
   }
-
-  readonly property var spacers: [spacer0, spacer1, spacer2, spacer3]
 
   Rectangle {
     id: visualCapsule
@@ -222,6 +221,11 @@ Item {
 
       model: [
         {
+          "label": root.pluginApi?.tr("actions.toggle-panel"),
+          "action": "toggle-panel",
+          "icon": "activity"
+        },
+        {
           "label": root.pluginApi?.tr("actions.widget-settings"),
           "action": "widget-settings",
           "icon": "settings"
@@ -232,7 +236,9 @@ Item {
         contextMenu.close();
         PanelService.closeContextMenu(screen);
 
-        if (action === "widget-settings") {
+        if (action === "toggle-panel")
+          pluginApi.togglePanel(root.screen, root);
+        else if (action === "widget-settings") {
           BarService.openPluginSettings(screen, pluginApi.manifest);
         }
       }

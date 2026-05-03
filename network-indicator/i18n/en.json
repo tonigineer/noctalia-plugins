@@ -1,6 +1,13 @@
 {
   "actions": {
-    "widget-settings": "Widget settings"
+    "widget-settings": "Widget settings",
+    "toggle-panel": "Toggle Monitor"
+  },
+  "panel": {
+    "title": "Network Activity",
+    "close": "Close",
+    "download": "Download",
+    "upload": "Upload"
   },
   "settings": {
     "layout": {
