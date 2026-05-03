@@ -114,7 +114,7 @@ PanelWindow {
                 NImageRounded {
                     Layout.preferredWidth: Style.fontSizeXXL * 2
                     Layout.preferredHeight: Style.fontSizeXXL * 2
-                    imagePath: (flow && flow.iconName) ? Quickshell.iconPath(flow.iconName) : ""
+                    imagePath: Settings.preprocessPath(Settings.data.general.avatarImage) || ((flow && flow.iconName) ? Quickshell.iconPath(flow.iconName) : "")
                     fallbackIcon: "lock"
                     borderWidth: 0
                 }
